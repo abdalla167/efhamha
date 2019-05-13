@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="5dp"
+        android:layout_marginRight="26dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginBottom="13dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:id="@+id/article_image"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:background="@color/colorAccent"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="منذ 15 دقيقه"
+                android:layout_marginTop="10dp"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                />
+
+            <TextView
+                android:id="@+id/article_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="الصائمون الأوائل"
+                android:textSize="20dp"
+                android:textColor="@android:color/black"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                />
+
+            <TextView
+                android:id="@+id/article_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=" بواسطة : محمد أحمد"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="10dp"
+                />
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/article_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="الحمد لله رب العالمين, والعاقبة للمتقين, ولا عدوان إلا على الظالمين, والصلاة والسلام على نبيه الأمين, وعلى آله الغر الميامين, وعلى صحابته الكرام أجمعين, وعلى التابعين لهم بإحسان إلى يوم الدين..أما بعد: حتى نحصل على  الثمرة المرجوة من الصيام لابد أن يكون صيامنا كما كان عليه حال سلفنا الصالح, تنافساً في الطاعات, وتزوداً من النوافل والقربات, ومن أهمها أداء الفرائض مع جماعة المسلمين, والحرص على أداء صلاة التراويح والقيام, وبذل الصدقات للمحتاجين, وتجنب كل ما يطعن ويفسد الصيام من الأقوال والأفعال."
+                    android:textSize="16sp"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_thumbs_up_hand_symbol"
+                            android:tint="@color/colorAccent"
+                            android:padding="10dp"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="5"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/darker_gray"
+                            android:layout_marginBottom="15dp"
+                            />
+
+                    </LinearLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chat"
+                            android:tint="@android:color/darker_gray"
+                            android:padding="10dp"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/darker_gray"
+                            android:layout_marginBottom="15dp"
+                            />
+
+                    </LinearLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_eye"
+                            android:tint="@android:color/darker_gray"
+                            android:padding="10dp"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="12"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/darker_gray"
+                            android:layout_marginBottom="15dp"
+                            />
+
+                    </LinearLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_share_option"
+                            android:tint="@android:color/darker_gray"
+                            android:padding="10dp"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="3"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/darker_gray"
+                            android:layout_marginBottom="15dp"
+                            />
+
+                    </LinearLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
