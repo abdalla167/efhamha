@@ -56,4 +56,19 @@ public class InputValidator {
         }
         return true;
     }
+    public static boolean emailValidation(EditText emailET){
+
+        String email = emailET.getText().toString().trim();
+
+        if(email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() ) {
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                emailET.setError("البريد الألكتروني غير صالح");
+
+            if (email.isEmpty())
+                emailET.setError("يرجي كتابة البريد الألكتروني");
+
+            return false;
+        }
+        return true;
+    }
 }

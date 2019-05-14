@@ -12,5 +12,8 @@
     <string name="create_new_account">ليس لديك حساب ؟ سجل الأن</string>
     <string name="show">أظهار</string>
     <string name="register">تسجيل</string>
+    <string name="forget_password">هل نسيت كلمة السر</string>
+    <string name="reset_password">أعادة تعيين كلمة السر</string>
+    <string name="reset_password_instructions">لإعادة تعيين كلمة السر ، أدخل بريدك الإلكتروني ، واضغط على الزر وتحقق من البريد الألكتروني و أتبع التعليمات.</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package atmosphere.sh.efhamha.aesh.ha.SignUp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import atmosphere.sh.efhamha.aesh.ha.InputValidator;
 import atmosphere.sh.efhamha.aesh.ha.R;
+import atmosphere.sh.efhamha.aesh.ha.SignIn.SignInActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -69,6 +71,8 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(EmailAndPasswordActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            //startActivity(new Intent(getApplicationContext(), SignInActivity.class));
+                            //finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());

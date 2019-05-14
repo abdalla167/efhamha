@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
@@ -29,9 +30,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import atmosphere.sh.efhamha.aesh.ha.ArticleActivity;
 import atmosphere.sh.efhamha.aesh.ha.InputValidator;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import atmosphere.sh.efhamha.aesh.ha.SignUp.EmailAndPasswordActivity;
+import atmosphere.sh.efhamha.aesh.ha.SignUp.ForgetPasswordActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -158,7 +161,9 @@ public class SignInActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            signInEmailEditText.setText(user.getDisplayName());
+                            Toast.makeText(getApplicationContext(), "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                            //startActivity(new Intent(getApplicationContext(), ArticleActivity.class));
+                            //finish();
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -175,13 +180,15 @@ public class SignInActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.signIn_forget_password_text_view:
+                startActivity(new Intent(getApplicationContext(), ForgetPasswordActivity.class));
+                //signOut();
                 break;
             case R.id.signIn_button:
                 if(getInputData())
                     signIn(email, password);
                 break;
             case R.id.signIn_signUp_text_view:
-                startActivity(new Intent(SignInActivity.this, EmailAndPasswordActivity.class));
+                startActivity(new Intent(getApplicationContext(), EmailAndPasswordActivity.class));
                 break;
             case R.id.signIn_google_button:
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -199,7 +206,9 @@ public class SignInActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG1, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(SignInActivity.this, "Login in!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignInActivity.this, "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                            //startActivity(new Intent(getApplicationContext(), ArticleActivity.class));
+                            //finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG1, "signInWithEmail:failure", task.getException());
@@ -217,5 +226,27 @@ public class SignInActivity extends AppCompatActivity {
         password = signInPasswordEditText.getText().toString().trim();
 
         return true;
+    }
+
+    private void signOut(){
+        GoogleSignInClient mGoogleSignInClient ;
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() { //signout google
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            mAuth.getInstance().signOut(); //signout firebase
+                            Toast.makeText(SignInActivity.this, "Sign Out", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 }
