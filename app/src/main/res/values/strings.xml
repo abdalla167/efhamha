@@ -3,4 +3,14 @@
 
     <string name="content">الحمد لله رب العالمين, والعاقبة للمتقين, ولا عدوان إلا على الظالمين, والصلاة والسلام على نبيه الأمين, وعلى آله الغر الميامين, وعلى صحابته الكرام أجمعين, وعلى التابعين لهم بإحسان إلى يوم الدين..أما بعد: حتى نحصل على  الثمرة المرجوة من الصيام لابد أن يكون صيامنا كما كان عليه حال سلفنا الصالح, تنافساً في الطاعات, وتزوداً من النوافل والقربات, ومن أهمها أداء الفرائض مع جماعة المسلمين, والحرص على أداء صلاة التراويح والقيام, وبذل الصدقات للمحتاجين, وتجنب كل ما يطعن ويفسد الصيام من الأقوال والأفعال.</string>
     <string name="title">الصائمون الأوائل</string>
+    <string name="image_icon">Image Icon</string>
+    <string name="signIn">تسجيل الدخول</string>
+    <string name="forget_your_password">هل نسيت كلمة السر؟</string>
+    <string name="or">أو</string>
+    <string name="google">تسجيل دخول بواسطه جوجل</string>
+    <string name="facebook">تسجيل دخول بواسطه فيسبوك</string>
+    <string name="create_new_account">ليس لديك حساب ؟ سجل الأن</string>
+    <string name="show">أظهار</string>
+    <string name="register">تسجيل</string>
+
 </resources>

@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import atmosphere.sh.efhamha.aesh.ha.SignIn.SignInActivity;
+
 public class SplashScreenActivity extends AppCompatActivity
 {
 
@@ -33,7 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity
             public void run()
             {
                 // go to the main activity
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                Intent i = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(i);
                 // kill current activity
                 finish();
