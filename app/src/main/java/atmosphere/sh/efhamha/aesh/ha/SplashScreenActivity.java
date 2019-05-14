@@ -35,7 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity
             public void run()
             {
                 // go to the main activity
-                Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                Intent i = new Intent(getApplicationContext(), ArticleActivity.class);
                 startActivity(i);
                 // kill current activity
                 finish();
