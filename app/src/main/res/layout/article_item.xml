@@ -112,14 +112,16 @@
                         >
 
                         <ImageView
+                            android:id="@+id/like_btn"
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_thumbs_up_hand_symbol"
-                            android:tint="@color/colorAccent"
                             android:padding="10dp"
-                            />
+                            android:src="@drawable/ic_thumbs_up_hand_symbol"
+                            android:tint="@color/colorAccent" />
 
                         <TextView
+                            android:id="@+id/numlikes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="5"
@@ -146,6 +148,7 @@
                         >
 
                         <ImageView
+                            android:id="@+id/comment_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_chat"
@@ -154,14 +157,14 @@
                             />
 
                         <TextView
+                            android:id="@+id/numcomments"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            android:gravity="center"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/darker_gray"
                             android:layout_marginBottom="15dp"
-                            />
+                            android:gravity="center"
+                            android:text="0"
+                            android:textColor="@android:color/darker_gray"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -180,6 +183,7 @@
                         >
 
                         <ImageView
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_eye"
@@ -188,6 +192,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/numviews"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="12"
@@ -214,6 +219,7 @@
                         >
 
                         <ImageView
+                            android:id="@+id/share_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_share_option"
@@ -222,6 +228,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/numshare"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="3"

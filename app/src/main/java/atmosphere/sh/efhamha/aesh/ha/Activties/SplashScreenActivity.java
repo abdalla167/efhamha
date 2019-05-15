@@ -1,4 +1,4 @@
-package atmosphere.sh.efhamha.aesh.ha;
+package atmosphere.sh.efhamha.aesh.ha.Activties;
 
 import android.content.Intent;
 import android.os.Build;
@@ -6,16 +6,11 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import atmosphere.sh.efhamha.aesh.ha.SignIn.SignInActivity;
+import atmosphere.sh.efhamha.aesh.ha.R;
 
 public class SplashScreenActivity extends AppCompatActivity
 {

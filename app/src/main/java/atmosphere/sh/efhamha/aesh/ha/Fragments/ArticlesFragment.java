@@ -4,46 +4,52 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.HashMap;
 
-import atmosphere.sh.efhamha.aesh.ha.ArticleActivity;
+
+import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
+import atmosphere.sh.efhamha.aesh.ha.Adapter.ArchicleAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
-public class ArticlesFragment extends Fragment
-{
+public class ArticlesFragment extends Fragment {
     View view;
 
-    RecyclerView recyclerView;
-    List<ArticleModel> articleModels;
-    articlesAdapter articlesAdapter;
+    private RecyclerView recyclerView;
+    private ArchicleAdapter adapter;
+    private ArrayList<ArticleModel> articleModels;
+
+    // define some lists for get likes comments shares views
+
+
+    ArrayList<Integer> like_list = new ArrayList<>();
+    ArrayList<Integer> share_list = new ArrayList<>();
+    ArrayList<Integer> view_list = new ArrayList<>();
+
+
+    private HashMap<Integer,ArrayList<String>> usercomments;
+    ArrayList<String>comments=new ArrayList<>();
+
+
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.article_fragment, container, false);
 
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         recyclerView = view.findViewById(R.id.recyclerview);
@@ -53,78 +59,45 @@ public class ArticlesFragment extends Fragment
 
         articleModels = new ArrayList<>();
 
-        articleModels.add(new ArticleModel(getResources().getString(R.string.title), getResources().getString(R.string.content), R.color.colorAccent));
-        articleModels.add(new ArticleModel(getResources().getString(R.string.title), getResources().getString(R.string.content), R.color.colorAccent));
-        articleModels.add(new ArticleModel(getResources().getString(R.string.title), getResources().getString(R.string.content), R.color.colorAccent));
-        articleModels.add(new ArticleModel(getResources().getString(R.string.title), getResources().getString(R.string.content), R.color.colorAccent));
+        addfakedata();
 
-        articlesAdapter = new articlesAdapter(articleModels);
+        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", 1, like_list, share_list, view_list, usercomments));
 
-        recyclerView.setAdapter(articlesAdapter);
-    }
 
-    public class articlesAdapter extends RecyclerView.Adapter<articlesAdapter.Viewholder>
-    {
-        List<ArticleModel> articleModels;
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getContext());
+        adapter = new ArchicleAdapter(articleModels);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
-        articlesAdapter(List<ArticleModel> articleModels)
-        {
-            this.articleModels = articleModels;
-        }
+        // when click on item save object to another activity
 
-        @NonNull
-        @Override
-        public Viewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
-        {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.article_item, viewGroup, false);
-            return new  Viewholder(view);
-        }
+        adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener() {
+            @Override
+            public void open_content(int position) {
 
-        @Override
-        public void onBindViewHolder(@NonNull final Viewholder viewholder, int i)
-        {
-            String title = articleModels.get(i).getTitle();
-            String content = articleModels.get(i).getContent();
-            int image = articleModels.get(i).getImageurl();
-
-            viewholder.title.setText(title);
-            viewholder.content.setText(content);
-            viewholder.image.setImageResource(image);
-
-            viewholder.content.setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    Intent intent = new Intent(getContext(), ArticleActivity.class);
-                    startActivity(intent);
-                }
-            });
-        }
-
-        @Override
-        public int getItemCount()
-        {
-            return articleModels.size();
-        }
-
-        class Viewholder extends RecyclerView.ViewHolder
-        {
-            View view;
-
-            TextView title,content;
-            ImageView image;
-
-            Viewholder(@NonNull View itemView)
-            {
-                super(itemView);
-
-                view = itemView;
-
-                title = view.findViewById(R.id.article_title);
-                content = view.findViewById(R.id.article_content);
-                image = view.findViewById(R.id.article_image);
+                Intent intent = new Intent(getActivity(), ArticleActivity.class);
+                intent.putExtra("article object", articleModels.get(position));
+                startActivity(intent);
             }
-        }
+        });
+
+
+
+
     }
+
+    private void addfakedata() {
+        for (int i = 0; i < 3; i++) {
+            like_list.add(i);
+            share_list.add(i);
+            view_list.add(i);
+            comments.add(i+"تعليق");
+        }
+        usercomments = new HashMap<>();
+        usercomments.put(1,comments);
+
+    }
+
+
 }

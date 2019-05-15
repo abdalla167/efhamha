@@ -1,7 +1,6 @@
-package atmosphere.sh.efhamha.aesh.ha.SignUp;
+package atmosphere.sh.efhamha.aesh.ha.Activties;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-import atmosphere.sh.efhamha.aesh.ha.InputValidator;
 import atmosphere.sh.efhamha.aesh.ha.R;
-import atmosphere.sh.efhamha.aesh.ha.SignIn.SignInActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

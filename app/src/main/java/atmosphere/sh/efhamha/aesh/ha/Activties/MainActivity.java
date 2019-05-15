@@ -1,4 +1,4 @@
-package atmosphere.sh.efhamha.aesh.ha;
+package atmosphere.sh.efhamha.aesh.ha.Activties;
 
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -17,6 +17,7 @@ import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.InfoFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.NotificationsFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ProfileFragment;
+import atmosphere.sh.efhamha.aesh.ha.R;
 
 public class MainActivity extends AppCompatActivity
 {

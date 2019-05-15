@@ -1,4 +1,4 @@
-package atmosphere.sh.efhamha.aesh.ha.SignIn;
+package atmosphere.sh.efhamha.aesh.ha.Activties;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -33,11 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import atmosphere.sh.efhamha.aesh.ha.ArticleActivity;
-import atmosphere.sh.efhamha.aesh.ha.InputValidator;
 import atmosphere.sh.efhamha.aesh.ha.R;
-import atmosphere.sh.efhamha.aesh.ha.SignUp.EmailAndPasswordActivity;
-import atmosphere.sh.efhamha.aesh.ha.SignUp.ForgetPasswordActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

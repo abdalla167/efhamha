@@ -12,22 +12,25 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignUp.ForgetPasswordActivity"></activity>
-        <activity android:name=".SignUp.EmailAndPasswordActivity" />
-        <activity android:name=".SignIn.SignInActivity" />
+        <activity android:name=".Activties.ForgetPasswordActivity"></activity>
+        <activity android:name=".Activties.EmailAndPasswordActivity" />
+        <activity android:name=".Activties.SignInActivity" />
         <activity
-            android:name=".ArticleActivity"
+            android:name=".Activties.ArticleActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".Activties.SplashScreenActivity"
             android:theme="@style/SplashScreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Activties.MainActivity" >
+
+        </activity>
     </application>
 
 </manifest>

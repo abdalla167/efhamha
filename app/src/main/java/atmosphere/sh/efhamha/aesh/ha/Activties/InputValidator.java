@@ -1,4 +1,4 @@
-package atmosphere.sh.efhamha.aesh.ha;
+package atmosphere.sh.efhamha.aesh.ha.Activties;
 
 import android.util.Patterns;
 import android.widget.EditText;
