@@ -1,6 +1,8 @@
 package atmosphere.sh.efhamha.aesh.ha.SignIn;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -59,6 +61,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private String email, password;
     private ProgressDialog progressDialog;
+    private AlertDialog.Builder alertDialog;
 
     //Google
     private GoogleApiClient mGoogleApiClient;
@@ -177,32 +180,11 @@ public class SignInActivity extends AppCompatActivity {
                 });
     }
 
-
-    @OnClick({R.id.signIn_forget_password_text_view, R.id.signIn_button, R.id.signIn_signUp_text_view, R.id.signIn_google_button})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.signIn_forget_password_text_view:
-                startActivity(new Intent(getApplicationContext(), ForgetPasswordActivity.class));
-                //signOut();
-                break;
-            case R.id.signIn_button:
-                if(getInputData())
-                    signIn(email, password);
-                break;
-            case R.id.signIn_signUp_text_view:
-                startActivity(new Intent(getApplicationContext(), EmailAndPasswordActivity.class));
-                break;
-            case R.id.signIn_google_button:
-                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
-                break;
-        }
-    }
-
     private void signIn(String email, String password) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("رجاء الأنتظار....");
         progressDialog.show();
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -212,9 +194,22 @@ public class SignInActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG1, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(SignInActivity.this, "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                            //startActivity(new Intent(getApplicationContext(), ArticleActivity.class));
-                            //finish();
+                            if(! user.isEmailVerified()){
+                                alertDialog = new AlertDialog.Builder(SignInActivity.this);
+                                alertDialog.setTitle("الرجاء تأكيد الايميل");
+                                alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
+                                alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                });
+                                alertDialog.show();
+                            } else {
+                                Toast.makeText(SignInActivity.this, "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                                //startActivity(new Intent(getApplicationContext(), ArticleActivity.class));
+                                //finish();
+                            }
                         } else {
                             progressDialog.dismiss();
                             // If sign in fails, display a message to the user.
@@ -256,4 +251,26 @@ public class SignInActivity extends AppCompatActivity {
                 });
 
     }
+
+    @OnClick({R.id.signIn_forget_password_text_view, R.id.signIn_button, R.id.signIn_signUp_text_view, R.id.signIn_google_button})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.signIn_forget_password_text_view:
+                startActivity(new Intent(getApplicationContext(), ForgetPasswordActivity.class));
+                //signOut();
+                break;
+            case R.id.signIn_button:
+                if(getInputData())
+                    signIn(email, password);
+                break;
+            case R.id.signIn_signUp_text_view:
+                startActivity(new Intent(getApplicationContext(), EmailAndPasswordActivity.class));
+                break;
+            case R.id.signIn_google_button:
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+                break;
+        }
+    }
+
 }

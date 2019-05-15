@@ -1,6 +1,8 @@
 package atmosphere.sh.efhamha.aesh.ha.SignUp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -38,6 +40,7 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
 
     private String email, password;
     private ProgressDialog progressDialog;
+    private AlertDialog.Builder alertDialog;
     private static final String TAG = "signUp";
 
     //Firebase
@@ -78,7 +81,17 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(EmailAndPasswordActivity.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                            emialAddressVerification(user);
+                            alertDialog = new AlertDialog.Builder(EmailAndPasswordActivity.this);
+                            alertDialog.setTitle("الرجاء تأكيد الايميل");
+                            alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
+                            alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+                            alertDialog.show();
                             //startActivity(new Intent(getApplicationContext(), SignInActivity.class));
                             //finish();
                         } else {
@@ -100,5 +113,19 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
         password = signUpPasswordEditText.getText().toString().trim();
 
         return true;
+    }
+
+    private void emialAddressVerification(FirebaseUser user){
+        user.sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.e(TAG, "Verification email sent to ");
+                        } else {
+                            Log.e(TAG, "sendEmailVerification failed!", task.getException());
+                        }
+                    }
+                });
     }
 }
