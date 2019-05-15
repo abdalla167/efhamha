@@ -83,6 +83,7 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             emialAddressVerification(user);
                             alertDialog = new AlertDialog.Builder(EmailAndPasswordActivity.this);
+                            alertDialog.setCancelable(false);
                             alertDialog.setTitle("الرجاء تأكيد الايميل");
                             alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
                             alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener() {

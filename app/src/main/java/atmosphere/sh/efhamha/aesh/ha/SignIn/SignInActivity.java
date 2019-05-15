@@ -196,6 +196,7 @@ public class SignInActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             if(! user.isEmailVerified()){
                                 alertDialog = new AlertDialog.Builder(SignInActivity.this);
+                                alertDialog.setCancelable(false);
                                 alertDialog.setTitle("الرجاء تأكيد الايميل");
                                 alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
                                 alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener() {
