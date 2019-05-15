@@ -1,5 +1,6 @@
 package atmosphere.sh.efhamha.aesh.ha.SignIn;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -57,13 +58,14 @@ public class SignInActivity extends AppCompatActivity {
     TextView toggleTextView;
 
     private String email, password;
+    private ProgressDialog progressDialog;
+
     //Google
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_GOOGLE_SIGN_IN = 1;
     private static final String TAG = "GoogleLogin";
 
-    private static final String TAG1 = "GoogleLogin";
-
+    private static final String TAG1 = "SignInWithEmail";
 
     //Firebase
     private FirebaseAuth mAuth;
@@ -150,8 +152,8 @@ public class SignInActivity extends AppCompatActivity {
     //Google Method
     //Firebase Authentication With Google
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -198,11 +200,15 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void signIn(String email, String password) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("رجاء الأنتظار....");
+        progressDialog.show();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            progressDialog.dismiss();
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG1, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -210,6 +216,7 @@ public class SignInActivity extends AppCompatActivity {
                             //startActivity(new Intent(getApplicationContext(), ArticleActivity.class));
                             //finish();
                         } else {
+                            progressDialog.dismiss();
                             // If sign in fails, display a message to the user.
                             Log.w(TAG1, "signInWithEmail:failure", task.getException());
                             Toast.makeText(SignInActivity.this, "Authentication failed. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

@@ -1,5 +1,6 @@
 package atmosphere.sh.efhamha.aesh.ha.SignUp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,7 +29,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     Button btnResetPassword;
 
     private String email;
-
+    private ProgressDialog progressDialog;
     //Firebase
     private FirebaseAuth mAuth;
     @Override
@@ -52,14 +53,20 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     }
 
     private void resetPassowrd(String email) {
+        progressDialog = new ProgressDialog(getApplicationContext());
+        progressDialog.setMessage("رجاء الأنتظار....");
+        progressDialog.show();
+
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
+                    progressDialog.dismiss();
                     Toast.makeText(ForgetPasswordActivity.this, "افحص بريدك الألكتروني لأعاده تعيين كلمة السر", Toast.LENGTH_SHORT).show();
                     //startActivity(new Intent(getApplicationContext(), SignInActivity.class));
                     //finish();
                 } else{
+                    progressDialog.dismiss();
                     Toast.makeText(ForgetPasswordActivity.this, "تعذر أرسال الأيميل" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }

@@ -1,5 +1,6 @@
 package atmosphere.sh.efhamha.aesh.ha.SignUp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,7 +37,8 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
     EditText signUpConfirmPasswordEditText;
 
     private String email, password;
-    private static final String TAG = "signup";
+    private ProgressDialog progressDialog;
+    private static final String TAG = "signUp";
 
     //Firebase
     private FirebaseAuth mAuth;
@@ -62,11 +64,17 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
     }
 
     private void signUp(String email, String password) {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("رجاء الأنتظار....");
+        progressDialog.show();
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            progressDialog.dismiss();
+
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -74,6 +82,8 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
                             //startActivity(new Intent(getApplicationContext(), SignInActivity.class));
                             //finish();
                         } else {
+                            progressDialog.dismiss();
+
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(EmailAndPasswordActivity.this, "Authentication failed. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
