@@ -16,4 +16,9 @@
     <string name="reset_password">أعادة تعيين كلمة السر</string>
     <string name="reset_password_instructions">لإعادة تعيين كلمة السر ، أدخل بريدك الإلكتروني ، واضغط على الزر وتحقق من البريد الألكتروني و أتبع التعليمات.</string>
 
+    // Facebook
+    <string name="facebook_app_id">1080893165427925</string>
+    <string name="fb_login_protocol_scheme">fb1080893165427925</string>
+
+
 </resources>

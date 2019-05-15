@@ -142,10 +142,10 @@
         android:weightSum="2"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/or_textView"
-        >
+        app:layout_constraintTop_toBottomOf="@id/or_textView">
 
-        <Button
+
+    <Button
             android:id="@+id/signIn_google_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -175,6 +175,9 @@
             android:text="@string/facebook"
             android:textColor="@color/colorWhite"
             />
+
+
+
     </LinearLayout>
 
     <TextView
@@ -192,5 +195,18 @@
         app:layout_constraintBottom_toTopOf="@+id/signIn_forget_password_text_view"
         app:layout_constraintEnd_toEndOf="@+id/signIn_password_editText"
         app:layout_constraintTop_toBottomOf="@+id/signIn_email_editText" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

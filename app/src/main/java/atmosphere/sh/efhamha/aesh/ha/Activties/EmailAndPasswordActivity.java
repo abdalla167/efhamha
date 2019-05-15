@@ -18,6 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import atmosphere.sh.efhamha.aesh.ha.Helpers.InputValidator;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -6,10 +6,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 import atmosphere.sh.efhamha.aesh.ha.R;
 
 public class SplashScreenActivity extends AppCompatActivity

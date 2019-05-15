@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import atmosphere.sh.efhamha.aesh.ha.Helpers.InputValidator;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
