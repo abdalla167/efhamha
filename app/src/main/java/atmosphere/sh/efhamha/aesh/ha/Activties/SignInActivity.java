@@ -178,7 +178,8 @@ public class SignInActivity extends AppCompatActivity
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -207,14 +208,15 @@ public class SignInActivity extends AppCompatActivity
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful())
+                        {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getApplicationContext(), "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                             //startActivity(new Intent(getApplicationContext(), ArticleActivity.class));
                             //finish();
-
+                            updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -239,6 +241,7 @@ public class SignInActivity extends AppCompatActivity
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(SignInActivity.this, "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                            updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -248,7 +251,8 @@ public class SignInActivity extends AppCompatActivity
                 });
     }
 
-    private void signIn(String email, String password) {
+    private void signIn(String email, String password)
+    {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("رجاء الأنتظار....");
         progressDialog.show();
@@ -269,8 +273,9 @@ public class SignInActivity extends AppCompatActivity
                                 alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
                                 alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-
+                                    public void onClick(DialogInterface dialog, int which)
+                                    {
+                                        updateUI();
                                     }
                                 });
                                 alertDialog.show();
@@ -278,6 +283,7 @@ public class SignInActivity extends AppCompatActivity
                                 Toast.makeText(SignInActivity.this, "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                                 //startActivity(new Intent(getApplicationContext(), ArticleActivity.class));
                                 //finish();
+                                updateUI();
                             }
                         } else {
                             progressDialog.dismiss();
@@ -357,5 +363,11 @@ public class SignInActivity extends AppCompatActivity
             case R.id.signIn_facebook_button:
                 //loginButton.performClick();
         }
+    }
+
+    public void updateUI()
+    {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -9,7 +9,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,8 +59,15 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_and_password);
+
         ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white_24dp);
+        getSupportActionBar().setTitle("");
 
         profileImage.setOnClickListener(new View.OnClickListener()
         {
@@ -130,10 +139,13 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
                             alertDialog.setCancelable(false);
                             alertDialog.setTitle("الرجاء تأكيد الايميل");
                             alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
-                            alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener() {
+                            alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener()
+                            {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
                                 }
                             });
                             alertDialog.show();
@@ -160,17 +172,31 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
         return true;
     }
 
-    private void emialAddressVerification(FirebaseUser user){
+    private void emialAddressVerification(FirebaseUser user)
+    {
         user.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful())
+                        {
                             Log.e(TAG, "Verification email sent to ");
                         } else {
                             Log.e(TAG, "sendEmailVerification failed!", task.getException());
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home :
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
