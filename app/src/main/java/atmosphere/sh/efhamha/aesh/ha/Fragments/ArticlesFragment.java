@@ -20,7 +20,8 @@ import atmosphere.sh.efhamha.aesh.ha.Adapter.ArchicleAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
-public class ArticlesFragment extends Fragment {
+public class ArticlesFragment extends Fragment
+{
     View view;
 
     private RecyclerView recyclerView;
@@ -29,27 +30,25 @@ public class ArticlesFragment extends Fragment {
 
     // define some lists for get likes comments shares views
 
-
     ArrayList<Integer> like_list = new ArrayList<>();
     ArrayList<Integer> share_list = new ArrayList<>();
     ArrayList<Integer> view_list = new ArrayList<>();
 
-
-    private HashMap<Integer,ArrayList<String>> usercomments;
-    ArrayList<String>comments=new ArrayList<>();
-
-
+    private HashMap<Integer, ArrayList<String>> usercomments;
+    ArrayList<String> comments = new ArrayList<>();
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         view = inflater.inflate(R.layout.article_fragment, container, false);
 
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
 
         recyclerView = view.findViewById(R.id.recyclerview);
@@ -62,7 +61,9 @@ public class ArticlesFragment extends Fragment {
         addfakedata();
 
         articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", 1, like_list, share_list, view_list, usercomments));
-
+        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", 1, like_list, share_list, view_list, usercomments));
+        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", 1, like_list, share_list, view_list, usercomments));
+        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", 1, like_list, share_list, view_list, usercomments));
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
@@ -72,7 +73,8 @@ public class ArticlesFragment extends Fragment {
 
         // when click on item save object to another activity
 
-        adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener()
+        {
             @Override
             public void open_content(int position) {
 
@@ -81,23 +83,18 @@ public class ArticlesFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-
-
-
     }
 
-    private void addfakedata() {
-        for (int i = 0; i < 3; i++) {
+    private void addfakedata()
+    {
+        for (int i = 0; i < 3; i++)
+        {
             like_list.add(i);
             share_list.add(i);
             view_list.add(i);
-            comments.add(i+"تعليق");
+            comments.add(i + "تعليق");
         }
         usercomments = new HashMap<>();
-        usercomments.put(1,comments);
-
+        usercomments.put(1, comments);
     }
-
-
 }

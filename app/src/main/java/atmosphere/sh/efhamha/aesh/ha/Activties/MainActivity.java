@@ -1,5 +1,6 @@
 package atmosphere.sh.efhamha.aesh.ha.Activties;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -12,6 +13,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.InfoFragment;
@@ -58,8 +62,17 @@ public class MainActivity extends AppCompatActivity
                         loadFragment(infoFragment);
                         return true;
                     case R.id.profile:
-                        Fragment profileFragment = new ProfileFragment();
-                        loadFragment(profileFragment);
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        if (user != null)
+                        {
+                            Fragment profileFragment = new ProfileFragment();
+                            loadFragment(profileFragment);
+                        } else
+                            {
+                                Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                startActivity(intent);
+                            }
                         return true;
                 }
                 return false;

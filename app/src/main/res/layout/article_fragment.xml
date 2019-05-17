@@ -15,6 +15,7 @@
         android:layout_marginLeft="26dp"
         android:layout_marginTop="26dp"
         android:layout_marginRight="26dp"
+        android:textColor="@android:color/white"
         />
 
     <android.support.v7.widget.RecyclerView

@@ -7,10 +7,10 @@
     <string name="signIn">تسجيل الدخول</string>
     <string name="forget_your_password">هل نسيت كلمة السر؟</string>
     <string name="or">أو</string>
-    <string name="google">تسجيل دخول بواسطه جوجل</string>
-    <string name="facebook">تسجيل دخول بواسطه فيسبوك</string>
+    <string name="google"> بواسطه جوجل</string>
+    <string name="facebook">بواسطه فيسبوك</string>
     <string name="create_new_account">ليس لديك حساب ؟ سجل الأن</string>
-    <string name="show">أظهار</string>
+    <string name="show">اظهار</string>
     <string name="register">تسجيل</string>
     <string name="forget_password">هل نسيت كلمة السر</string>
     <string name="reset_password">أعادة تعيين كلمة السر</string>

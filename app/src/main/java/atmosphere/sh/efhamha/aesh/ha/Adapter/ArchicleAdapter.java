@@ -41,7 +41,8 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
         ImageView imageArchi, imagelike, imagecomment, imageshare;
 
 
-        public ViewHolde(@NonNull View itemView, final OnItemClickListener Listener) {
+        public ViewHolde(@NonNull View itemView, final OnItemClickListener Listener)
+        {
             super(itemView);
 
             title = itemView.findViewById(R.id.article_title);

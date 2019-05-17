@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,8 +51,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignInActivity extends AppCompatActivity {
-
+public class SignInActivity extends AppCompatActivity
+{
     @BindView(R.id.signIn_email_editText)
     EditText signInEmailEditText;
     @BindView(R.id.signIn_password_editText)
@@ -63,13 +64,13 @@ public class SignInActivity extends AppCompatActivity {
     @BindView(R.id.signIn_signUp_text_view)
     TextView signInSignUpTextView;
     @BindView(R.id.signIn_google_button)
-    Button signInGoogleButton;
-    @BindView(R.id.toggle_textView)
-    TextView toggleTextView;
-    @BindView(R.id.login_button)
-    LoginButton loginButton;
+    ImageView signInGoogleButton;
+    //@BindView(R.id.toggle_textView)
+    //TextView toggleTextView;
+    //@BindView(R.id.login_button)
+    //LoginButton loginButton;
     @BindView(R.id.signIn_facebook_button)
-    Button signInFacebookButton;
+    ImageView signInFacebookButton;
 
     private String email, password;
     private ProgressDialog progressDialog;
@@ -100,19 +101,21 @@ public class SignInActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        toggleTextView.setVisibility(View.GONE);
+        //toggleTextView.setVisibility(View.GONE);
         signInPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         signInPasswordEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (signInPasswordEditText.getText().length() >= 1)
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                /*if (signInPasswordEditText.getText().length() >= 1)
                     toggleTextView.setVisibility(View.VISIBLE);
                 else
-                    toggleTextView.setVisibility(View.GONE);
+                    toggleTextView.setVisibility(View.GONE);*/
             }
 
             @Override
@@ -120,20 +123,20 @@ public class SignInActivity extends AppCompatActivity {
 
             }
         });
-        toggleTextView.setOnClickListener(new View.OnClickListener() {
+        /*toggleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toggleTextView.getText().equals("أظهار")) {
-                    toggleTextView.setText("أخفاء");
+                if (toggleTextView.getText().equals("اظهار")) {
+                    toggleTextView.setText("اخفاء");
                     signInPasswordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     signInPasswordEditText.setSelection(signInPasswordEditText.length());
                 } else {
-                    toggleTextView.setText("أظهار");
+                    toggleTextView.setText("اظهار");
                     signInPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     signInPasswordEditText.setSelection(signInPasswordEditText.length());
                 }
             }
-        });
+        });*/
 
         ////////////////////////////////////// Google SignIn //////////////////////////////////////////////////////////////////////////////////////
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -152,7 +155,7 @@ public class SignInActivity extends AppCompatActivity {
                 .build();
         ////////////////////////////////////// Facebook SignIn ///////////////////////////////////////////////////////////////////////////////////
         callbackManager = CallbackManager.Factory.create();
-        loginButton.setReadPermissions("email");
+        /*loginButton.setReadPermissions("email");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -171,8 +174,7 @@ public class SignInActivity extends AppCompatActivity {
                 Toast.makeText(SignInActivity.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
-        });
-
+        });*/
     }
 
     @Override
@@ -298,43 +300,40 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     // Sign Out Method
-     public void signOut() {
+    public void signOut() {
 
-         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-         List<? extends UserInfo> infos = user.getProviderData();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        List<? extends UserInfo> infos = user.getProviderData();
 
-         for (UserInfo ui : infos) {
-             String providerId = ui.getProviderId();
-             if (providerId.equals(GoogleAuthProvider.PROVIDER_ID)) {
-                 GoogleSignInClient mGoogleSignInClient ;
-                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                         .requestIdToken(getString(R.string.default_web_client_id))
-                         .requestEmail()
-                         .build();
-                 mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-                 mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                         new OnCompleteListener<Void>() { //signout google
-                             @Override
-                             public void onComplete(@NonNull Task<Void> task) {
-                                 if(task.isSuccessful()) {
-                                     mAuth.getInstance().signOut(); //signout firebase
-                                     Toast.makeText(SignInActivity.this, "Sign Out! Google", Toast.LENGTH_SHORT).show();
-                                 }
-                                 else
-                                     Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                             }
-                         });
-             } else if (providerId.equals(FacebookAuthProvider.PROVIDER_ID)){
-                 LoginManager.getInstance().logOut();
-                 mAuth.getInstance().signOut(); //signout firebase
-                 Toast.makeText(SignInActivity.this, "Sign Out! Facebook", Toast.LENGTH_SHORT).show();
-             } else  {
-                 mAuth.getInstance().signOut();
-                 Toast.makeText(SignInActivity.this, "Sign Out! Email and Password", Toast.LENGTH_SHORT).show();
-             }
-
-
-         }
+        for (UserInfo ui : infos) {
+            String providerId = ui.getProviderId();
+            if (providerId.equals(GoogleAuthProvider.PROVIDER_ID)) {
+                GoogleSignInClient mGoogleSignInClient;
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
+                mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+                mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                        new OnCompleteListener<Void>() { //signout google
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    mAuth.getInstance().signOut(); //signout firebase
+                                    Toast.makeText(SignInActivity.this, "Sign Out! Google", Toast.LENGTH_SHORT).show();
+                                } else
+                                    Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } else if (providerId.equals(FacebookAuthProvider.PROVIDER_ID)) {
+                LoginManager.getInstance().logOut();
+                mAuth.getInstance().signOut(); //signout firebase
+                Toast.makeText(SignInActivity.this, "Sign Out! Facebook", Toast.LENGTH_SHORT).show();
+            } else {
+                mAuth.getInstance().signOut();
+                Toast.makeText(SignInActivity.this, "Sign Out! Email and Password", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @OnClick({R.id.signIn_forget_password_text_view, R.id.signIn_button, R.id.signIn_signUp_text_view, R.id.signIn_google_button, R.id.signIn_facebook_button})
@@ -356,7 +355,7 @@ public class SignInActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
                 break;
             case R.id.signIn_facebook_button:
-                loginButton.performClick();
+                //loginButton.performClick();
         }
     }
 }

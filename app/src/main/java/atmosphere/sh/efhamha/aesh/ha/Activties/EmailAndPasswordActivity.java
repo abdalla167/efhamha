@@ -1,8 +1,11 @@
 package atmosphere.sh.efhamha.aesh.ha.Activties;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -17,12 +20,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import atmosphere.sh.efhamha.aesh.ha.Helpers.InputValidator;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EmailAndPasswordActivity extends AppCompatActivity {
 
@@ -34,15 +41,17 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
     Button signUpButton;
     @BindView(R.id.signUp_confirm_password_editText)
     EditText signUpConfirmPasswordEditText;
+    @BindView(R.id.profile_image)
+    CircleImageView profileImage;
 
     private String email, password;
     private ProgressDialog progressDialog;
     private AlertDialog.Builder alertDialog;
     private static final String TAG = "signUp";
+    private Uri photoPath;
 
     //Firebase
     private FirebaseAuth mAuth;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +59,46 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_email_and_password);
         ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
+
+        profileImage.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+                        .setAspectRatio(1,1)
+                        .start(EmailAndPasswordActivity.this);
+            }
+        });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
+        {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == Activity.RESULT_OK)
+            {
+                if (result != null)
+                {
+                    photoPath = result.getUri();
+
+                    Picasso.get()
+                            .load(photoPath)
+                            .placeholder(R.drawable.user)
+                            .error(R.drawable.user)
+                            .into(profileImage);
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
+            {
+                Exception error = result.getError();
+            }
+        }
+    }
 
     @OnClick({R.id.signUp_button})
     public void onViewClicked(View view) {
