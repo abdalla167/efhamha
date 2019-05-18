@@ -3,17 +3,17 @@ package atmosphere.sh.efhamha.aesh.ha.Activties;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MotionEvent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import atmosphere.sh.efhamha.aesh.ha.Adapter.CommentAdapter;
+import atmosphere.sh.efhamha.aesh.ha.Adapter.CommentAdatpterrecycle;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.UsercommentModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
@@ -29,9 +29,12 @@ public class ArticleActivity extends AppCompatActivity
     ArticleModel aricle_obj;
 
     // for comments
-    CommentAdapter commentAdapter;
-    ListView commentlistview;
-    ArrayList<UsercommentModel> commentlist;
+    //for comments
+    private RecyclerView recyclerView;
+    private CommentAdatpterrecycle adapter;
+    private ArrayList<UsercommentModel> commentmodellist;
+    RecyclerView.LayoutManager layoutManager;
+
 
 
     @Override
@@ -65,20 +68,17 @@ public class ArticleActivity extends AppCompatActivity
         imagecomment = findViewById(R.id.comment_btn_full);
         imageshare = findViewById(R.id.share_btn_full);
         imageArchi = findViewById(R.id.article_image_full);
-        commentlistview = findViewById(R.id.list_comments);
+
         commenttext = findViewById(R.id.comment_text);
 
+        //define recycleview for comments
+        recyclerView = findViewById(R.id.list_comments);
+        layoutManager= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
 
-        commentlistview.setOnTouchListener(
-                new View.OnTouchListener() {
-                    // Setting on Touch Listener for handling the touch inside ScrollView
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        // Disallow the touch request for parent scroll on touch of child view
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        return false;
-                    }
-                });
+        //recyclerView.setNestedScrollingEnabled(false);
+
+
 
 
         // get article which saved
@@ -101,7 +101,7 @@ public class ArticleActivity extends AppCompatActivity
 
     private void fakedataforcomment() {
 
-        commentlist = new ArrayList<>();
+        commentmodellist = new ArrayList<>();
         HashMap<Integer, ArrayList<String>> hashMap = new HashMap<>();
         hashMap = aricle_obj.getUser_comments();
 
@@ -109,12 +109,15 @@ public class ArticleActivity extends AppCompatActivity
             for (int j = 0; j < hashMap.get(1).size(); j++) {
                 UsercommentModel usercommentModel = new UsercommentModel(null, "محمد عادل" + i, aricle_obj.getUser_comments().get(1).get(j));
                 ;
-                commentlist.add(usercommentModel);
+                commentmodellist.add(usercommentModel);
             }
 
         }
-        commentAdapter = new CommentAdapter(this, R.layout.comment_item, commentlist);
-        commentlistview.setAdapter(commentAdapter);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        adapter = new CommentAdatpterrecycle(commentmodellist);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
     }
 
@@ -123,9 +126,10 @@ public class ArticleActivity extends AppCompatActivity
         if (commenttext.getText() != null) {
             UsercommentModel usercommentModel = new UsercommentModel(null, "محمد عادل", commenttext.getText().toString());
             ;
-            commentlist.add(usercommentModel);
-            commentAdapter = new CommentAdapter(this, R.layout.comment_item, commentlist);
-            commentlistview.setAdapter(commentAdapter);
+            commentmodellist.add(usercommentModel);
+            adapter = new CommentAdatpterrecycle(commentmodellist);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(adapter);
             commenttext.setText("");
         }
 
