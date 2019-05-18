@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -23,10 +24,12 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
 
     private OnItemClickListener mListener;
 
-    public interface OnItemClickListener {
-
-         void  open_content(int position);
-
+    public interface OnItemClickListener
+    {
+        void open_content(int position);
+        void  like_article(int position);
+        void  comment_article(int position);
+        void  share_article(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -38,11 +41,11 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
 
         TextView title;
         TextView content, source, numlikes, numviews, numcomments, numshare;
-        ImageView imageArchi, imagelike, imagecomment, imageshare;
+        ImageView imageArchi;
+        MaterialRippleLayout imagelike, imagecomment, imageshare , article_mrl;
 
 
-        public ViewHolde(@NonNull View itemView, final OnItemClickListener Listener)
-        {
+        public ViewHolde(@NonNull View itemView, final OnItemClickListener Listener) {
             super(itemView);
 
             title = itemView.findViewById(R.id.article_title);
@@ -57,22 +60,71 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
             imagecomment = itemView.findViewById(R.id.comment_btn);
             imageshare = itemView.findViewById(R.id.share_btn);
             imageArchi = itemView.findViewById(R.id.article_image);
+            article_mrl = itemView.findViewById(R.id.article_mrl);
 
-
-            content.setOnClickListener(new View.OnClickListener() {
+            article_mrl.setOnClickListener(new View.OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
-
-                    if (Listener != null) {
+                public void onClick(View v)
+                {
+                    if (Listener != null)
+                    {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
+                        if (position != RecyclerView.NO_POSITION)
+                        {
                             Listener.open_content(position);
                         }
                     }
                 }
             });
 
+            imagelike.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (Listener != null)
+                    {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                        {
+                            Listener.like_article(position);
+                        }
+                    }
+                }
+            });
 
+            imagecomment.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (Listener != null)
+                    {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                        {
+                            Listener.comment_article(position);
+                        }
+                    }
+                }
+            });
+
+            imageshare.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (Listener != null)
+                    {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION)
+                        {
+                            Listener.share_article(position);
+                        }
+                    }
+                }
+            });
         }
     }
 

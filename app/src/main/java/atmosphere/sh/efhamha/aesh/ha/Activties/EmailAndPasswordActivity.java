@@ -42,8 +42,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EmailAndPasswordActivity extends AppCompatActivity {
-
+public class EmailAndPasswordActivity extends AppCompatActivity
+{
     @BindView(R.id.signUp_email_editText)
     EditText signUpEmailEditText;
     @BindView(R.id.signUp_password_editText)

@@ -21,8 +21,8 @@ import atmosphere.sh.efhamha.aesh.ha.R;
 public class ArticleActivity extends AppCompatActivity
 {
     TextView title;
-    TextView content, source, numlikes, numviews, numcomments, numshare;
-    ImageView imageArchi, imagelike, imagecomment, imageshare;
+    TextView content, source;
+    ImageView imageArchi;
     EditText commenttext;
 
     //for all view
@@ -35,23 +35,16 @@ public class ArticleActivity extends AppCompatActivity
     private ArrayList<UsercommentModel> commentmodellist;
     RecyclerView.LayoutManager layoutManager;
 
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
         definetools();
-
         add_data_to_layout();
-
         fakedataforcomment();
-
-
         //  Toast.makeText(ArticleActivity.this, "dd"+aricle_obj.getUser_comments().get(1).get(0), Toast.LENGTH_SHORT).show();
-
-
     }
 
 
@@ -59,79 +52,61 @@ public class ArticleActivity extends AppCompatActivity
         title = findViewById(R.id.article_title_full);
         content = findViewById(R.id.article_content_full);
         source = findViewById(R.id.article_by_full);
-        numlikes = findViewById(R.id.numlikes_full);
-        numviews = findViewById(R.id.numviews_full);
-        numcomments = findViewById(R.id.numcomments_full);
-        numshare = findViewById(R.id.numshare_full);
         imageArchi = findViewById(R.id.article_image_full);
-        imagelike = findViewById(R.id.like_btn_full);
-        imagecomment = findViewById(R.id.comment_btn_full);
-        imageshare = findViewById(R.id.share_btn_full);
         imageArchi = findViewById(R.id.article_image_full);
 
         commenttext = findViewById(R.id.comment_text);
 
         //define recycleview for comments
         recyclerView = findViewById(R.id.list_comments);
-        layoutManager= new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         //recyclerView.setNestedScrollingEnabled(false);
-
-
-
-
         // get article which saved
-
-
         Intent intent = getIntent();
         aricle_obj = intent.getParcelableExtra("article object");
-
     }
 
-    private void add_data_to_layout() {
+    private void add_data_to_layout()
+    {
         title.setText(aricle_obj.getTitle());
         source.setText(aricle_obj.getSource());
         content.setText(aricle_obj.getContent());
-        numlikes.setText(String.valueOf(aricle_obj.getUser_likes().size()));
-        numcomments.setText(String.valueOf(aricle_obj.getUser_comments().size()));
-        numshare.setText(String.valueOf(aricle_obj.getUser_share().size()));
-        numviews.setText(String.valueOf(aricle_obj.getUser_view().size()));
     }
 
-    private void fakedataforcomment() {
-
+    private void fakedataforcomment()
+    {
         commentmodellist = new ArrayList<>();
         HashMap<Integer, ArrayList<String>> hashMap = new HashMap<>();
         hashMap = aricle_obj.getUser_comments();
 
-        for (int i = 0; i < hashMap.size(); i++) {
-            for (int j = 0; j < hashMap.get(1).size(); j++) {
+        for (int i = 0; i < hashMap.size(); i++)
+        {
+            for (int j = 0; j < hashMap.get(1).size(); j++)
+            {
                 UsercommentModel usercommentModel = new UsercommentModel(null, "محمد عادل" + i, aricle_obj.getUser_comments().get(1).get(j));
-                ;
                 commentmodellist.add(usercommentModel);
             }
-
         }
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         adapter = new CommentAdatpterrecycle(commentmodellist);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-
     }
 
-    public void send_comment(View view) {
-
-        if (commenttext.getText() != null) {
+    public void send_comment(View view)
+    {
+        if (commenttext.getText() != null)
+        {
             UsercommentModel usercommentModel = new UsercommentModel(null, "محمد عادل", commenttext.getText().toString());
-            ;
+
             commentmodellist.add(usercommentModel);
             adapter = new CommentAdatpterrecycle(commentmodellist);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setAdapter(adapter);
             commenttext.setText("");
         }
-
     }
 }

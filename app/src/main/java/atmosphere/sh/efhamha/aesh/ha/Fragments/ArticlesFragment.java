@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -76,11 +77,30 @@ public class ArticlesFragment extends Fragment
         adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener()
         {
             @Override
-            public void open_content(int position) {
-
+            public void open_content(int position)
+            {
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 intent.putExtra("article object", articleModels.get(position));
                 startActivity(intent);
+            }
+
+            @Override
+            public void like_article(int position)
+            {
+                Toast.makeText(getContext(), "Like Clicked : " + position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void comment_article(int position)
+            {
+                Toast.makeText(getContext(), "Comment Clicked : " + position, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void share_article(int position)
+            {
+                Toast.makeText(getContext(), "Share Clicked : " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -47,49 +47,60 @@
                 android:layout_height="1dp"
                 android:background="@android:color/darker_gray"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                />
-
-            <TextView
-                android:id="@+id/article_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="الصائمون الأوائل"
-                android:textSize="20dp"
-                android:textColor="@android:color/black"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                />
-
-            <TextView
-                android:id="@+id/article_by"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=" بواسطة : محمد أحمد"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginBottom="10dp"
                 />
 
             <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/article_mrl"
+                style="@style/RippleStyleGrey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginBottom="10dp"
                 >
 
-                <TextView
-                    android:id="@+id/article_content"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="الحمد لله رب العالمين, والعاقبة للمتقين, ولا عدوان إلا على الظالمين, والصلاة والسلام على نبيه الأمين, وعلى آله الغر الميامين, وعلى صحابته الكرام أجمعين, وعلى التابعين لهم بإحسان إلى يوم الدين..أما بعد: حتى نحصل على  الثمرة المرجوة من الصيام لابد أن يكون صيامنا كما كان عليه حال سلفنا الصالح, تنافساً في الطاعات, وتزوداً من النوافل والقربات, ومن أهمها أداء الفرائض مع جماعة المسلمين, والحرص على أداء صلاة التراويح والقيام, وبذل الصدقات للمحتاجين, وتجنب كل ما يطعن ويفسد الصيام من الأقوال والأفعال."
-                    android:textSize="16sp"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    />
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/article_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="الصائمون الأوائل"
+                        android:textSize="20dp"
+                        android:textColor="@android:color/black"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="10dp"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:id="@+id/article_by"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=" بواسطة : محمد أحمد"
+                        android:textSize="14sp"
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginBottom="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/article_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="الحمد لله رب العالمين, والعاقبة للمتقين, ولا عدوان إلا على الظالمين, والصلاة والسلام على نبيه الأمين, وعلى آله الغر الميامين, وعلى صحابته الكرام أجمعين, وعلى التابعين لهم بإحسان إلى يوم الدين..أما بعد: حتى نحصل على  الثمرة المرجوة من الصيام لابد أن يكون صيامنا كما كان عليه حال سلفنا الصالح, تنافساً في الطاعات, وتزوداً من النوافل والقربات, ومن أهمها أداء الفرائض مع جماعة المسلمين, والحرص على أداء صلاة التراويح والقيام, وبذل الصدقات للمحتاجين, وتجنب كل ما يطعن ويفسد الصيام من الأقوال والأفعال."
+                        android:textSize="16sp"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginBottom="10dp"
+                        />
+
+                </LinearLayout>
 
             </com.balysv.materialripple.MaterialRippleLayout>
 
@@ -100,6 +111,7 @@
                 >
 
                 <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/like_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -112,8 +124,6 @@
                         >
 
                         <ImageView
-                            android:id="@+id/like_btn"
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
@@ -136,6 +146,7 @@
                 </com.balysv.materialripple.MaterialRippleLayout>
 
                 <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/comment_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -148,7 +159,6 @@
                         >
 
                         <ImageView
-                            android:id="@+id/comment_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_chat"
@@ -183,7 +193,6 @@
                         >
 
                         <ImageView
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_eye"
@@ -207,6 +216,7 @@
                 </com.balysv.materialripple.MaterialRippleLayout>
 
                 <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/share_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -219,7 +229,6 @@
                         >
 
                         <ImageView
-                            android:id="@+id/share_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_share_option"
