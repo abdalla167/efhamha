@@ -1,6 +1,5 @@
-package atmosphere.sh.efhamha.aesh.ha.Fragments;
+package atmosphere.sh.efhamha.aesh.ha.AdminApp;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,19 +16,19 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
 import atmosphere.sh.efhamha.aesh.ha.Adapter.ArchicleAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
-public class ArticlesFragment extends Fragment
+public class AdminFragment extends Fragment
 {
     View view;
 
     private RecyclerView recyclerView;
     private ArchicleAdapter adapter;
     private ArrayList<ArticleModel> articleModels;
+    FloatingActionButton add_new_article;
 
     // define some lists for get likes comments shares views
 
@@ -44,7 +43,7 @@ public class ArticlesFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        view = inflater.inflate(R.layout.article_fragment, container, false);
+        view = inflater.inflate(R.layout.admin_fragment, container, false);
 
         return view;
     }
@@ -55,6 +54,17 @@ public class ArticlesFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
 
         recyclerView = view.findViewById(R.id.recyclerview);
+        add_new_article = view.findViewById(R.id.add_new_article);
+
+        add_new_article.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(getContext(), AddArticleActivity.class);
+                startActivity(intent);
+            }
+        });
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -83,6 +93,7 @@ public class ArticlesFragment extends Fragment
             {
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 intent.putExtra("article object", articleModels.get(position));
+                intent.putExtra("admin",1);
                 startActivity(intent);
             }
 

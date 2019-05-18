@@ -44,17 +44,42 @@
             android:layout_marginBottom="10dp"
             android:background="@android:color/darker_gray" />
 
-        <TextView
-            android:id="@+id/article_title_full"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:text="الصائمون الأوائل"
-            android:textColor="@android:color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            />
+            android:orientation="horizontal"
+            >
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/edit_article_mrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/RippleStyleGrey"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_more_horiz_black_24dp"
+                    android:tint="@android:color/black"
+                    />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+            <TextView
+                android:id="@+id/article_title_full"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="الصائمون الأوائل"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/article_by_full"
@@ -91,7 +116,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
-            android:layout_marginBottom="10dp"
             android:text="التعليقات"
             android:textColor="@android:color/black"
             android:textSize="18sp"

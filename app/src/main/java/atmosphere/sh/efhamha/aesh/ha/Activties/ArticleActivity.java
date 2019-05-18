@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,6 +26,7 @@ public class ArticleActivity extends AppCompatActivity
     TextView content, source;
     ImageView imageArchi;
     EditText commenttext;
+    MaterialRippleLayout edit_article_mrl;
 
     //for all view
     ArticleModel aricle_obj;
@@ -41,10 +44,20 @@ public class ArticleActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
+        int admin = getIntent().getIntExtra("admin",0);
+
         definetools();
         add_data_to_layout();
         fakedataforcomment();
         //  Toast.makeText(ArticleActivity.this, "dd"+aricle_obj.getUser_comments().get(1).get(0), Toast.LENGTH_SHORT).show();
+
+        if (admin == 1)
+        {
+            edit_article_mrl.setVisibility(View.VISIBLE);
+        } else
+        {
+            edit_article_mrl.setVisibility(View.GONE);
+        }
     }
 
 
@@ -54,6 +67,7 @@ public class ArticleActivity extends AppCompatActivity
         source = findViewById(R.id.article_by_full);
         imageArchi = findViewById(R.id.article_image_full);
         imageArchi = findViewById(R.id.article_image_full);
+        edit_article_mrl = findViewById(R.id.edit_article_mrl);
 
         commenttext = findViewById(R.id.comment_text);
 

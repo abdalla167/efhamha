@@ -42,6 +42,7 @@ import com.google.firebase.auth.UserInfo;
 
 import java.util.List;
 
+import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
 import atmosphere.sh.efhamha.aesh.ha.Helpers.InputValidator;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import butterknife.BindView;
@@ -135,7 +136,8 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -157,8 +159,8 @@ public class SignInActivity extends AppCompatActivity {
 
     //Google Method
     //Firebase Authentication With Google
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct)
+    {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -216,25 +218,30 @@ public class SignInActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful())
+                        {
                             progressDialog.dismiss();
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG1, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            if (!user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com"))) {
+                            if (!user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com")))
+                            {
                                 alertDialog = new AlertDialog.Builder(SignInActivity.this);
                                 alertDialog.setCancelable(false);
                                 alertDialog.setTitle("الرجاء تأكيد الايميل");
                                 alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
-                                alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener() {
+                                alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener()
+                                {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                                    public void onClick(DialogInterface dialog, int which)
+                                    {
 
                                     }
                                 });
                                 alertDialog.show();
                             } else {
-                                updateUI();
+                                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                startActivity(intent);
                             }
                         } else {
                             progressDialog.dismiss();
@@ -247,7 +254,8 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private boolean getInputData() {
-        if (!(InputValidator.signInValidation(signInEmailEditText, signInPasswordEditText))) {
+        if (!(InputValidator.signInValidation(signInEmailEditText, signInPasswordEditText)))
+        {
             return false;
         }
         email = signInEmailEditText.getText().toString().trim();
@@ -257,8 +265,8 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     // Sign Out Method
-    public void signOut() {
-
+    public void signOut()
+    {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         List<? extends UserInfo> infos = user.getProviderData();
 
@@ -316,7 +324,8 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
-    public void updateUI() {
+    public void updateUI()
+    {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }

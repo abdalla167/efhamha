@@ -11,16 +11,15 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.InfoFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.NotificationsFragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.ProfileFragment;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
 public class MainActivity extends AppCompatActivity
@@ -28,6 +27,8 @@ public class MainActivity extends AppCompatActivity
     BottomNavigationView navigation;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+
+    int check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -66,8 +67,10 @@ public class MainActivity extends AppCompatActivity
 
                         if (user != null)
                         {
-                            Fragment profileFragment = new ProfileFragment();
-                            loadFragment(profileFragment);
+                            /*Fragment profileFragment = new ProfileFragment();
+                            loadFragment(profileFragment);*/
+                            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                            startActivity(intent);
                         } else
                             {
                                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
