@@ -5,13 +5,17 @@ import android.widget.EditText;
 
 public class InputValidator {
 
-    public static boolean signUpValidation(EditText emailET, EditText passwordET, EditText confirmPasswordET) {
+    public static boolean signUpValidation(EditText userName, EditText emailET, EditText passwordET, EditText confirmPasswordET) {
 
+        String name = userName.getText().toString().trim();
         String email = emailET.getText().toString().trim();
         String password = passwordET.getText().toString().trim();
         String confirmPassword = confirmPasswordET.getText().toString().trim();
 
-        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isEmpty()  || confirmPassword.isEmpty() || password.length() < 6 || !password.equals(confirmPassword)) {
+        if (name.isEmpty() || email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isEmpty()  || confirmPassword.isEmpty() || password.length() < 6 || !password.equals(confirmPassword)) {
+
+            if(name.isEmpty())
+                userName.setError("يرجي كتابة اسم المستخدم");
 
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
                 emailET.setError("البريد الألكتروني غير صالح");

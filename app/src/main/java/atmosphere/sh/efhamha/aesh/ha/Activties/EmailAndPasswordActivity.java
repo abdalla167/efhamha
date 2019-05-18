@@ -18,15 +18,24 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.UUID;
+
 import atmosphere.sh.efhamha.aesh.ha.Helpers.InputValidator;
+import atmosphere.sh.efhamha.aesh.ha.Models.UserModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,8 +54,10 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
     EditText signUpConfirmPasswordEditText;
     @BindView(R.id.profile_image)
     CircleImageView profileImage;
+    @BindView(R.id.username_field)
+    EditText usernameField;
 
-    private String email, password;
+    private String userName, email, password;
     private ProgressDialog progressDialog;
     private AlertDialog.Builder alertDialog;
     private static final String TAG = "signUp";
@@ -54,6 +65,13 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
 
     //Firebase
     private FirebaseAuth mAuth;
+
+    //Firebase Database
+    FirebaseDatabase database;
+    DatabaseReference ref;
+
+    FirebaseStorage firebaseStorage;
+    StorageReference mainRef, userImagesRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,47 +81,45 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
 
+        firebaseStorage = FirebaseStorage.getInstance();
+        database = FirebaseDatabase.getInstance();
+        mainRef = firebaseStorage.getReference();
+        userImagesRef = mainRef.child("images/users");
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white_24dp);
         getSupportActionBar().setTitle("");
 
-        profileImage.setOnClickListener(new View.OnClickListener()
-        {
+        profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-                        .setAspectRatio(1,1)
+                        .setAspectRatio(1, 1)
                         .start(EmailAndPasswordActivity.this);
             }
         });
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-        {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == Activity.RESULT_OK)
-            {
-                if (result != null)
-                {
+            if (resultCode == Activity.RESULT_OK) {
+                if (result != null) {
                     photoPath = result.getUri();
-
                     Picasso.get()
                             .load(photoPath)
                             .placeholder(R.drawable.user)
                             .error(R.drawable.user)
                             .into(profileImage);
                 }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
-            {
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
         }
@@ -113,13 +129,13 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.signUp_button:
-                if(getInputData())
+                if (getInputData())
                     signUp(email, password);
                 break;
         }
     }
 
-    private void signUp(String email, String password) {
+    private void signUp(final String email, String password) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("رجاء الأنتظار....");
         progressDialog.show();
@@ -129,28 +145,29 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Log.d(TAG, "createUserWithEmail:success");
                             progressDialog.dismiss();
 
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             emialAddressVerification(user);
                             alertDialog = new AlertDialog.Builder(EmailAndPasswordActivity.this);
                             alertDialog.setCancelable(false);
                             alertDialog.setTitle("الرجاء تأكيد الايميل");
                             alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
-                            alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener()
-                            {
+                            alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which)
-                                {
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                                     startActivity(intent);
+                                    finish();
                                 }
                             });
                             alertDialog.show();
-                            //startActivity(new Intent(getApplicationContext(), SignInActivity.class));
-                            //finish();
+
+                            //Upload Image To Firebase Storage
+                            saveUser(photoPath, user.getUid());
+
                         } else {
                             progressDialog.dismiss();
 
@@ -163,23 +180,23 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
     }
 
     private boolean getInputData() {
-        if (!(InputValidator.signUpValidation(signUpEmailEditText, signUpPasswordEditText, signUpConfirmPasswordEditText))) {
+        if (!(InputValidator.signUpValidation(usernameField, signUpEmailEditText, signUpPasswordEditText, signUpConfirmPasswordEditText))) {
             return false;
         }
+
+        userName = usernameField.getText().toString();
         email = signUpEmailEditText.getText().toString().trim();
         password = signUpPasswordEditText.getText().toString().trim();
 
         return true;
     }
 
-    private void emialAddressVerification(FirebaseUser user)
-    {
+    private void emialAddressVerification(FirebaseUser user) {
         user.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful())
-                        {
+                        if (task.isSuccessful()) {
                             Log.e(TAG, "Verification email sent to ");
                         } else {
                             Log.e(TAG, "sendEmailVerification failed!", task.getException());
@@ -188,12 +205,33 @@ public class EmailAndPasswordActivity extends AppCompatActivity {
                 });
     }
 
+    private void saveUser(Uri uri, String id) {
+
+        final String imageName = UUID.randomUUID().toString() + ".jpg";
+        final String userId = id;
+
+        userImagesRef.child(userId + "/" + imageName).putFile(uri)
+                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                        if (task.isSuccessful()) {
+                            String url = String.valueOf(task.getResult().getStorage().getDownloadUrl());
+                            UserModel userModel = new UserModel(userId, userName, email, url);
+                            ref = database.getReference();
+                            ref.child("Users").push().setValue(userModel);
+
+                        } else {
+                            Log.d("UploadImage", "upload Failed " + task.getException().getLocalizedMessage());
+                        }
+                    }
+                });
+    }
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
-            case android.R.id.home :
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
                 onBackPressed();
                 return true;
         }
