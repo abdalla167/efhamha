@@ -239,9 +239,11 @@ public class SignInActivity extends AppCompatActivity {
                                     }
                                 });
                                 alertDialog.show();
-                            } else {
+                            } else if (user.getEmail().equals("admin@admin.com")) {
                                 Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                                 startActivity(intent);
+                            } else if (user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com"))){
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             }
                         } else {
                             progressDialog.dismiss();
