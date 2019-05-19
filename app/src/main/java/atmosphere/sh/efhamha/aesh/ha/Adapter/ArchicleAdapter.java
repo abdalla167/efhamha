@@ -129,8 +129,9 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
     }
 
 
-    public ArchicleAdapter(ArrayList<ArticleModel> modellist) {
+    public ArchicleAdapter(Context applicationContext,ArrayList<ArticleModel> modellist) {
         articleModel_list = modellist;
+        context=applicationContext;
     }
 
     @NonNull
@@ -148,9 +149,25 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
         viewHolde.title.setText(currentItem.getTitle());
         viewHolde.source.setText(currentItem.getSource());
         viewHolde.content.setText(currentItem.getContent());
+        if (currentItem.getUser_likes()==null)
+            viewHolde.numlikes.setText(String.valueOf(0));
+        else
         viewHolde.numlikes.setText(String.valueOf(currentItem.getUser_likes().size()));
+
+        if (currentItem.getUser_comments()==null)
+            viewHolde.numcomments.setText(String.valueOf(0));
+        else
         viewHolde.numcomments.setText(String.valueOf(currentItem.getUser_comments().size()));
+
+        if (currentItem.getUser_share()==null)
+            viewHolde.numshare.setText(String.valueOf(0));
+        else
+
         viewHolde.numshare.setText(String.valueOf(currentItem.getUser_share().size()));
+
+        if (currentItem.getUser_view()==null)
+            viewHolde.numviews.setText(String.valueOf(0));
+        else
         viewHolde.numviews.setText(String.valueOf(currentItem.getUser_view().size()));
 
 

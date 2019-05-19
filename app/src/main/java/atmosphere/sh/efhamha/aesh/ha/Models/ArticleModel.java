@@ -20,6 +20,10 @@ public class ArticleModel implements Parcelable {
     private HashMap user_comments;
 
 
+    public ArticleModel()
+    {
+
+    }
     public ArticleModel(String image_url, String title, String content, String source, String arch_id, ArrayList<Integer> user_likes, ArrayList<Integer> user_share, ArrayList<Integer> user_view,HashMap<Integer,ArrayList<String>> user_comments){
         this.image_url = image_url;
         this.title = title;

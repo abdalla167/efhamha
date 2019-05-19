@@ -1,6 +1,7 @@
 package atmosphere.sh.efhamha.aesh.ha.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -25,11 +32,17 @@ import atmosphere.sh.efhamha.aesh.ha.R;
 
 public class ArticlesFragment extends Fragment
 {
+    // firebase
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+    private ProgressDialog prog;
+
     View view;
 
     private RecyclerView recyclerView;
     private ArchicleAdapter adapter;
     private ArrayList<ArticleModel> articleModels;
+    RecyclerView.LayoutManager layoutManager;
 
     // define some lists for get likes comments shares views
 
@@ -50,32 +63,20 @@ public class ArticlesFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         recyclerView = view.findViewById(R.id.recyclerview);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        articleModels = new ArrayList<>();
+        load_all_articles();
 
-        addfakedata();
-
-        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
-        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
-        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
-        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
-
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getContext());
-        adapter = new ArchicleAdapter(articleModels);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
 
         // when click on item save object to another activity
 
+        /*
         adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener()
         {
             @Override
@@ -107,7 +108,7 @@ public class ArticlesFragment extends Fragment
         });
     }
 
-    private void addfakedata()
+   /* private void addfakedata()
     {
         for (int i = 0; i < 3; i++)
         {
@@ -118,5 +119,46 @@ public class ArticlesFragment extends Fragment
         }
         usercomments = new HashMap<>();
         usercomments.put(1, comments);
+    }
+*/
+
+
+    }
+    private void load_all_articles()
+    {
+        prog =new ProgressDialog(getActivity());
+        prog.setMessage("Loading");
+        prog.setCanceledOnTouchOutside(false);
+        prog.show();
+
+        articleModels = new ArrayList<>();
+
+
+        ref.child("Articles").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    articleModels.add(dataSnapshot1.getValue(ArticleModel.class));
+                  //  Toast.makeText(getActivity(), ""+articleModels.get(0).getImage_url(), Toast.LENGTH_SHORT).show();
+
+                }
+                //        Toast.makeText(getActivity(), "size" + all_books.size(), Toast.LENGTH_SHORT).show();
+
+                recyclerView.setHasFixedSize(true);
+                layoutManager = new LinearLayoutManager(getContext());
+                adapter = new ArchicleAdapter(getActivity(),articleModels);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(adapter);
+
+                prog.dismiss();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                prog.dismiss();
+            }
+        });
     }
 }

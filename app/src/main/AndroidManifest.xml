@@ -33,8 +33,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+
         </activity>
-        <activity android:name=".Activties.MainActivity" />
+        <activity android:name=".Activties.MainActivity" >
+
+
+        </activity>
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

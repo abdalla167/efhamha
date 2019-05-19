@@ -100,7 +100,7 @@ public class AddArticleActivity extends AppCompatActivity {
                 im.setBackground(null);
 
     }
-    }
+        }
 
 
     public void upload_article(View view) {
@@ -110,6 +110,12 @@ public class AddArticleActivity extends AppCompatActivity {
         }
 
         else {
+
+
+            final String title =arc_title.getText().toString();
+            final String source =arc_source.getText().toString();
+            final String content =arc_content.getText().toString();
+
             prog.show();
             if (uri_image != null) {
                 final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(uri_image));
@@ -126,7 +132,7 @@ public class AddArticleActivity extends AppCompatActivity {
 
                                 // get link of image and add data in child
                                 image_url = uri.toString();
-                                ArticleModel obj = new ArticleModel(image_url,arc_title.getText().toString(),arc_content.getText().toString(),arc_source.getText().toString(),ID,null,null,null,null);
+                                ArticleModel obj = new ArticleModel(image_url,title,content,source,ID,null,null,null,null);
                                 mdatarefre.child("Articles").child(ID).setValue(obj);
 
 
@@ -141,9 +147,11 @@ public class AddArticleActivity extends AppCompatActivity {
                         //return defualt view to the layout
                         prog.dismiss();
                         Toast.makeText(AddArticleActivity.this, "Data Successfully Uploaded", Toast.LENGTH_SHORT).show();
+
                         arc_title.setText("");
                         arc_content.setText("");
                         arc_source.setText("");
+
 
                         im.setBackgroundColor(getResources().getColor(R.color.backgroundimage));
                         im.setImageURI(null);

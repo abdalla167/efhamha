@@ -80,7 +80,7 @@ public class AdminFragment extends Fragment
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
-        adapter = new ArchicleAdapter(articleModels);
+        adapter = new ArchicleAdapter(getActivity(),articleModels);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 

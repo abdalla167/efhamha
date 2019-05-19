@@ -128,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:padding="10dp"
                             android:src="@drawable/ic_thumbs_up_hand_symbol"
-                            android:tint="@color/colorAccent" />
+                            android:tint="@android:color/darker_gray" />
 
                         <TextView
                             android:id="@+id/numlikes"
