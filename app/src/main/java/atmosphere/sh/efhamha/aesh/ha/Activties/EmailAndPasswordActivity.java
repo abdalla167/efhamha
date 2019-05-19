@@ -211,19 +211,18 @@ public class EmailAndPasswordActivity extends AppCompatActivity
         final String userId = id;
 
         userImagesRef.child(userId + "/" + imageName).putFile(uri)
-                .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
-                        if (task.isSuccessful()) {
-                            String url = String.valueOf(task.getResult().getStorage().getDownloadUrl());
-                            UserModel userModel = new UserModel(userId, userName, email, url);
-                            ref = database.getReference();
-                            ref.child("Users").push().setValue(userModel);
-
-                        } else {
-                            Log.d("UploadImage", "upload Failed " + task.getException().getLocalizedMessage());
-                        }
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        userImagesRef.child(userId + "/" + imageName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String downUri = uri.toString();
+                                ref = database.getReference();
+                                UserModel userModel = new UserModel(userId, userName, email, downUri);
+                                ref.child("Users").push().setValue(userModel);
+                            }
+                        });
                     }
                 });
     }
