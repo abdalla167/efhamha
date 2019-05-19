@@ -30,11 +30,12 @@
                 >
 
                 <ImageView
-                    android:id="@+id/article_image"
+                    android:id="@+id/add_article_image"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="@android:color/holo_green_light"
                     android:src="@drawable/ic_add_a_photo_black_24dp"
+                    android:onClick="chooseimageformgallery"
                     android:padding="30dp"
                     />
 
@@ -43,7 +44,7 @@
         </android.support.v7.widget.CardView>
 
         <EditText
-            android:id="@+id/article_title"
+            android:id="@+id/add_article_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -57,7 +58,7 @@
             />
 
         <EditText
-            android:id="@+id/article_by"
+            android:id="@+id/add_article_by"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="بواسطة"
@@ -72,7 +73,7 @@
             />
 
         <EditText
-            android:id="@+id/article_content"
+            android:id="@+id/add_article_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="المقال"
@@ -106,6 +107,7 @@
                     android:text="اضافة المقال"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"
+                    android:onClick="upload_article"
                     />
 
             </com.balysv.materialripple.MaterialRippleLayout>

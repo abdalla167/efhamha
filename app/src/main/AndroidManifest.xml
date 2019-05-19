@@ -12,8 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminApp.AddArticleActivity"></activity>
-        <activity android:name=".AdminApp.AdminActivity" />
+        <activity android:name=".AdminApp.AddArticleActivity">
+
+        </activity>
+        <activity android:name=".AdminApp.AdminActivity" >
+
+        </activity>
         <activity android:name=".Activties.ForgetPasswordActivity" />
         <activity android:name=".Activties.EmailAndPasswordActivity" />
         <activity android:name=".Activties.SignInActivity" />
@@ -28,6 +32,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".Activties.MainActivity" />
 

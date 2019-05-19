@@ -8,10 +8,10 @@ import java.util.HashMap;
 
 
 public class ArticleModel implements Parcelable {
-    private String image_url, title, content, source;
+    private String image_url, title, content, source, arch_id;
 
 
-    private int arch_id;
+
 
     private ArrayList user_likes;
     private ArrayList user_share;
@@ -20,7 +20,7 @@ public class ArticleModel implements Parcelable {
     private HashMap user_comments;
 
 
-    public ArticleModel(String image_url, String title, String content, String source, int arch_id, ArrayList<Integer> user_likes, ArrayList<Integer> user_share, ArrayList<Integer> user_view,HashMap<Integer,ArrayList<String>> user_comments){
+    public ArticleModel(String image_url, String title, String content, String source, String arch_id, ArrayList<Integer> user_likes, ArrayList<Integer> user_share, ArrayList<Integer> user_view,HashMap<Integer,ArrayList<String>> user_comments){
         this.image_url = image_url;
         this.title = title;
         this.content = content;
@@ -37,7 +37,7 @@ public class ArticleModel implements Parcelable {
         title = in.readString();
         content = in.readString();
         source = in.readString();
-        arch_id = in.readInt();
+        arch_id = in.readString();
         user_likes = in.readArrayList(null);
         user_share = in.readArrayList(null);
         user_view = in.readArrayList(null);
@@ -77,7 +77,7 @@ public class ArticleModel implements Parcelable {
         return source;
     }
 
-    public int getArch_id() {
+    public String getArch_id() {
         return arch_id;
     }
 
@@ -118,7 +118,7 @@ public class ArticleModel implements Parcelable {
         this.source = source;
     }
 
-    public void setArch_id(int arch_id) {
+    public void setArch_id(String arch_id) {
         this.arch_id = arch_id;
     }
 
@@ -145,7 +145,7 @@ public class ArticleModel implements Parcelable {
         dest.writeString(title);
         dest.writeString(content);
         dest.writeString(source);
-        dest.writeInt(arch_id);
+        dest.writeString(arch_id);
         dest.writeList(user_likes);
         dest.writeList(user_view);
         dest.writeList(user_share);

@@ -73,10 +73,10 @@ public class AdminFragment extends Fragment
 
         addfakedata();
 
-        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", 1, like_list, share_list, view_list, usercomments));
-        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", 1, like_list, share_list, view_list, usercomments));
-        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", 1, like_list, share_list, view_list, usercomments));
-        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", 1, like_list, share_list, view_list, usercomments));
+        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
+        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
+        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
+        articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
 
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
