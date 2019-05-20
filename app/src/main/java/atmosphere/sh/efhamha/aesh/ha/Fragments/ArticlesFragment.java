@@ -74,6 +74,7 @@ public class ArticlesFragment extends Fragment
 
         load_all_articles();
 
+        ref.keepSynced(true);
 
         // when click on item save object to another activity
 

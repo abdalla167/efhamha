@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.firebase:firebase-database:17.0.0'
     implementation 'com.google.firebase:firebase-storage:17.0.0'
+    implementation 'com.firebaseui:firebase-ui-database:4.3.0'
 
     // ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
@@ -62,7 +63,5 @@ dependencies {
 
     //Curricle
     implementation 'de.hdodenhof:circleimageview:3.0.0'
-
-
 }
 apply plugin: 'com.google.gms.google-services'

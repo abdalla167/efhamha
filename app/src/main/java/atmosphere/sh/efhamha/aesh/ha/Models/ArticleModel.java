@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class ArticleModel implements Parcelable {
+public class ArticleModel implements Parcelable
+{
     private String image_url, title, content, source, arch_id;
-
-
-
 
     private ArrayList user_likes;
     private ArrayList user_share;
@@ -20,11 +18,11 @@ public class ArticleModel implements Parcelable {
     private HashMap user_comments;
 
 
-    public ArticleModel()
-    {
+    public ArticleModel() {
 
     }
-    public ArticleModel(String image_url, String title, String content, String source, String arch_id, ArrayList<Integer> user_likes, ArrayList<Integer> user_share, ArrayList<Integer> user_view,HashMap<Integer,ArrayList<String>> user_comments){
+
+    public ArticleModel(String image_url, String title, String content, String source, String arch_id, ArrayList<Integer> user_likes, ArrayList<Integer> user_share, ArrayList<Integer> user_view, HashMap<Integer, ArrayList<String>> user_comments) {
         this.image_url = image_url;
         this.title = title;
         this.content = content;
@@ -45,11 +43,7 @@ public class ArticleModel implements Parcelable {
         user_likes = in.readArrayList(null);
         user_share = in.readArrayList(null);
         user_view = in.readArrayList(null);
-        user_comments =in.readHashMap(HashMap.class.getClassLoader());
-
-
-
-
+        user_comments = in.readHashMap(HashMap.class.getClassLoader());
     }
 
     public static final Creator<ArticleModel> CREATOR = new Creator<ArticleModel>() {

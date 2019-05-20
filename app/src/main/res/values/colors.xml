@@ -8,4 +8,6 @@
     <color name="colorGoogle">#DB4437</color>
     <color name="colorFacebook">#3B5998</color>
     <color name="backgroundimage">#ff99cc00</color>
+
+    <color name="red">#F03925</color>
 </resources>

@@ -27,9 +27,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.Random;
 
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
+import atmosphere.sh.efhamha.aesh.ha.Models.NotificationModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
 import static atmosphere.sh.efhamha.aesh.ha.R.drawable.ic_add_a_photo_black_24dp;
@@ -47,6 +49,8 @@ public class AddArticleActivity extends AppCompatActivity
 
     private ProgressDialog prog;
 
+    String day_txt,month_txt,year_txt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -60,9 +64,56 @@ public class AddArticleActivity extends AppCompatActivity
 
         prog = new ProgressDialog(this);
 
-        prog.setTitle("Uploading Data");
-        prog.setMessage("Loading");
+        prog.setMessage("برجاء الانتظار ...");
         prog.setCanceledOnTouchOutside(false);
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        switch (month)
+        {
+            case Calendar.JANUARY:
+                month_txt = "يناير";
+                break;
+            case Calendar.FEBRUARY:
+                month_txt = "فبراير";
+                break;
+            case Calendar.MARCH:
+                month_txt = "مارس";
+                break;
+            case Calendar.APRIL:
+                month_txt = "أبريل";
+                break;
+            case Calendar.MAY:
+                month_txt = "مايو";
+                break;
+            case Calendar.JUNE:
+                month_txt = "يونيو";
+                break;
+            case Calendar.JULY:
+                month_txt = "يوليو";
+                break;
+            case Calendar.AUGUST:
+                month_txt = "أغسطس";
+                break;
+            case Calendar.SEPTEMBER:
+                month_txt = "سبتمبر";
+                break;
+            case Calendar.OCTOBER:
+                month_txt = "أكتوبر";
+                break;
+            case Calendar.NOVEMBER:
+                month_txt = "نوفمبر";
+                break;
+            case Calendar.DECEMBER:
+                month_txt = "ديسمبر";
+                break;
+        }
+
+        day_txt = Integer.toString(day);
+        year_txt = Integer.toString(year);
     }
 
     //get the extention of image
@@ -99,59 +150,60 @@ public class AddArticleActivity extends AppCompatActivity
 
     public void upload_article(View view)
     {
-        if (arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("")|| arc_content.getText() .toString().equals(""))
+        if (uri_image == null || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("")|| arc_content.getText() .toString().equals(""))
         {
-            Toast.makeText(this, "Please Enter The Article Data", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
         } else {
             final String title =arc_title.getText().toString();
             final String source =arc_source.getText().toString();
             final String content =arc_content.getText().toString();
 
             prog.show();
-            if (uri_image != null)
+
+            final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(uri_image));
+            filereference.putFile(uri_image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
             {
-                final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(uri_image));
-                filereference.putFile(uri_image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+                @Override
+                public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot)
                 {
-                    @Override
-                    public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot)
+                    filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
                     {
-                        filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                        @Override
+                        public void onSuccess(Uri uri)
                         {
-                            @Override
-                            public void onSuccess(Uri uri)
-                            {
-                                //get id of article before add
-                                String ID =mdatarefre.push().getKey();
+                            //get id of article before add
+                            String ID = mdatarefre.push().getKey();
 
-                                // get link of image and add data in child
-                                image_url = uri.toString();
-                                ArticleModel obj = new ArticleModel(image_url,title,content,source,ID,null,null,null,null);
-                                mdatarefre.child("Articles").child(ID).setValue(obj);
-                            }
-                        });
+                            // get link of image and add data in child
+                            image_url = uri.toString();
+                            ArticleModel obj = new ArticleModel(image_url,title,content,source,ID,null,null,null,null);
+                            NotificationModel notificationModel = new NotificationModel(image_url,title,day_txt,month_txt,year_txt);
 
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>()
+                            mdatarefre.child("Articles").child(ID).setValue(obj);
+                            mdatarefre.child("Notifications").child(ID).setValue(notificationModel);
+                        }
+                    });
+
+                }
+            }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
                 {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
-                    {
-                        Toast.makeText(AddArticleActivity.this, "Data Successfully Uploaded", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                        startActivity(intent);
-                    }
-                }).addOnFailureListener(new OnFailureListener()
+                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                    startActivity(intent);
+                }
+            }).addOnFailureListener(new OnFailureListener()
+            {
+                @Override
+                public void onFailure(@NonNull Exception e)
                 {
-                    @Override
-                    public void onFailure(@NonNull Exception e)
-                    {
-                        prog.hide();
-                        Toast.makeText(AddArticleActivity.this, "Error Connection", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+                    prog.hide();
+                    Toast.makeText(AddArticleActivity.this, "Error Connection", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }
