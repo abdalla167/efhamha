@@ -41,15 +41,20 @@ public class SplashScreenActivity extends AppCompatActivity
                     startActivity(new Intent(SplashScreenActivity.this, AdminActivity.class));
                     finish();
                 }
-                else if (user != null && user.isEmailVerified()) {
+                else if (user != null && user.isEmailVerified())
+                {
                     // go to the main activity
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     // kill current activity
                     finish();
                 }
-                else if (user == null || !user.isEmailVerified()){
-                    startActivity(new Intent(SplashScreenActivity.this, SignInActivity.class));
+                else if (user == null || !user.isEmailVerified())
+                {
+                    // go to the main activity
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+                    // kill current activity
                     finish();
                 }
             }

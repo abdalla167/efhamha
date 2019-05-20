@@ -13,10 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
+import atmosphere.sh.efhamha.aesh.ha.Activties.MainActivity;
 import atmosphere.sh.efhamha.aesh.ha.Adapter.ArchicleAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
@@ -28,7 +31,7 @@ public class AdminFragment extends Fragment
     private RecyclerView recyclerView;
     private ArchicleAdapter adapter;
     private ArrayList<ArticleModel> articleModels;
-    FloatingActionButton add_new_article;
+    FloatingActionButton add_new_article,signout;
 
     // define some lists for get likes comments shares views
 
@@ -55,6 +58,7 @@ public class AdminFragment extends Fragment
 
         recyclerView = view.findViewById(R.id.recyclerview);
         add_new_article = view.findViewById(R.id.add_new_article);
+        signout = view.findViewById(R.id.signout_fab);
 
         add_new_article.setOnClickListener(new View.OnClickListener()
         {
@@ -62,6 +66,17 @@ public class AdminFragment extends Fragment
             public void onClick(View v)
             {
                 Intent intent = new Intent(getContext(), AddArticleActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        signout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);
             }
         });

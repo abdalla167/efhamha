@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.victor.loading.rotate.RotateLoading;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,13 +36,12 @@ public class ArticlesFragment extends Fragment
     // firebase
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-    private ProgressDialog prog;
-
     View view;
 
     private RecyclerView recyclerView;
     private ArchicleAdapter adapter;
     private ArrayList<ArticleModel> articleModels;
+    private RotateLoading rotateLoading;
     RecyclerView.LayoutManager layoutManager;
 
     // define some lists for get likes comments shares views
@@ -67,6 +67,7 @@ public class ArticlesFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
 
         recyclerView = view.findViewById(R.id.recyclerview);
+        rotateLoading = view.findViewById(R.id.rotateloading);
 
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -126,10 +127,7 @@ public class ArticlesFragment extends Fragment
     }
     private void load_all_articles()
     {
-        prog =new ProgressDialog(getActivity());
-        prog.setMessage("Loading");
-        prog.setCanceledOnTouchOutside(false);
-        prog.show();
+        rotateLoading.start();
 
         articleModels = new ArrayList<>();
 
@@ -138,7 +136,8 @@ public class ArticlesFragment extends Fragment
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
+                {
                     articleModels.add(dataSnapshot1.getValue(ArticleModel.class));
                   //  Toast.makeText(getActivity(), ""+articleModels.get(0).getImage_url(), Toast.LENGTH_SHORT).show();
 
@@ -151,13 +150,13 @@ public class ArticlesFragment extends Fragment
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
 
-                prog.dismiss();
-
+                rotateLoading.stop();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                prog.dismiss();
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+                rotateLoading.stop();
             }
         });
     }

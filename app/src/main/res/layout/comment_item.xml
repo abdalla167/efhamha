@@ -29,6 +29,7 @@
                 android:text="عبدالله منصور"
                 android:textStyle="bold"
                 android:textSize="14sp"
+                android:padding="5dp"
                 />
 
             <TextView
@@ -38,6 +39,7 @@
                 android:text="التعليق"
                 android:textStyle="bold"
                 android:textSize="12sp"
+                android:padding="5dp"
                 />
 
         </LinearLayout>

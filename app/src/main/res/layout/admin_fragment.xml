@@ -46,4 +46,15 @@
         android:src="@drawable/ic_add_black_24dp"
         />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/signout_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        app:rippleColor="@android:color/white"
+        android:src="@drawable/ic_keyboard_arrow_left_white_24dp"
+        />
+
 </RelativeLayout>

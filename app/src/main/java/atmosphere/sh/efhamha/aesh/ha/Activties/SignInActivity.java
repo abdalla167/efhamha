@@ -211,7 +211,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private void signIn(String email, String password) {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("رجاء الأنتظار....");
+        progressDialog.setMessage("رجاء الأنتظار ....");
         progressDialog.show();
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -239,10 +239,12 @@ public class SignInActivity extends AppCompatActivity {
                                     }
                                 });
                                 alertDialog.show();
-                            } else if (user.getEmail().equals("admin@admin.com")) {
+                            } else if (user.getEmail().equals("admin@admin.com"))
+                            {
                                 Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                                 startActivity(intent);
-                            } else if (user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com"))){
+                            } else if (user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com")))
+                            {
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             }
                         } else {
@@ -327,6 +329,13 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void updateUI()
+    {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed()
     {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);

@@ -137,14 +137,15 @@ public class EmailAndPasswordActivity extends AppCompatActivity
 
     private void signUp(final String email, String password) {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("رجاء الأنتظار....");
+        progressDialog.setMessage("رجاء الأنتظار ....");
         progressDialog.show();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful())
+                        {
                             Log.d(TAG, "createUserWithEmail:success");
                             progressDialog.dismiss();
 
@@ -155,19 +156,19 @@ public class EmailAndPasswordActivity extends AppCompatActivity
                             alertDialog.setCancelable(false);
                             alertDialog.setTitle("الرجاء تأكيد الايميل");
                             alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
-                            alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener() {
+                            alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener()
+                            {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                public void onClick(DialogInterface dialog, int which)
+                                {
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
                             });
                             alertDialog.show();
-
                             //Upload Image To Firebase Storage
                             saveUser(photoPath, user.getUid());
-
                         } else {
                             progressDialog.dismiss();
 
@@ -228,8 +229,10 @@ public class EmailAndPasswordActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case android.R.id.home:
                 onBackPressed();
                 return true;

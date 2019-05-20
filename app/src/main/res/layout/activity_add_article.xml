@@ -33,7 +33,7 @@
                     android:id="@+id/add_article_image"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:background="@android:color/holo_green_light"
+                    android:background="@android:color/darker_gray"
                     android:src="@drawable/ic_add_a_photo_black_24dp"
                     android:onClick="chooseimageformgallery"
                     android:padding="30dp"

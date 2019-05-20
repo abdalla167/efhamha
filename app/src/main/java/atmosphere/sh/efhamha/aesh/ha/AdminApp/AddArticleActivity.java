@@ -34,7 +34,8 @@ import atmosphere.sh.efhamha.aesh.ha.R;
 
 import static atmosphere.sh.efhamha.aesh.ha.R.drawable.ic_add_a_photo_black_24dp;
 
-public class AddArticleActivity extends AppCompatActivity {
+public class AddArticleActivity extends AppCompatActivity
+{
     private static final int img_id = 1;
     private Uri uri_image;
     private String image_url;
@@ -46,9 +47,9 @@ public class AddArticleActivity extends AppCompatActivity {
 
     private ProgressDialog prog;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_article);
 
@@ -62,71 +63,64 @@ public class AddArticleActivity extends AppCompatActivity {
         prog.setTitle("Uploading Data");
         prog.setMessage("Loading");
         prog.setCanceledOnTouchOutside(false);
-
-
     }
 
-
-
-
     //get the extention of image
-    private String getfileextention(Uri ur) {
+    private String getfileextention(Uri ur)
+    {
         ContentResolver resolver = getContentResolver();
         MimeTypeMap typeMap = MimeTypeMap.getSingleton();
         return typeMap.getExtensionFromMimeType(resolver.getType(ur));
-
     }
 
-    public void chooseimageformgallery(View view) {
-
+    public void chooseimageformgallery(View view)
+    {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         //   startActivityForResult(intent, img_id);
         startActivityForResult(Intent.createChooser(intent, "select"), img_id);
-
-
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                uri_image = data.getData();
-                im.setImageURI(uri_image);
-                Glide.with(this).load(uri_image).into(im);
-                im.setImageURI(uri_image);
-                im.setBackground(null);
-
+        if (resultCode == RESULT_OK && data != null && data.getData() != null)
+        {
+            uri_image = data.getData();
+            im.setImageURI(uri_image);
+            Glide.with(this).load(uri_image).into(im);
+            im.setImageURI(uri_image);
+            im.setBackground(null);
+        }
     }
-        }
 
-
-    public void upload_article(View view) {
-
-        if (arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("")|| arc_content.getText() .toString().equals("")) {
+    public void upload_article(View view)
+    {
+        if (arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("")|| arc_content.getText() .toString().equals(""))
+        {
             Toast.makeText(this, "Please Enter The Article Data", Toast.LENGTH_LONG).show();
-        }
-
-        else {
-
-
+        } else {
             final String title =arc_title.getText().toString();
             final String source =arc_source.getText().toString();
             final String content =arc_content.getText().toString();
 
             prog.show();
-            if (uri_image != null) {
+            if (uri_image != null)
+            {
                 final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(uri_image));
-                filereference.putFile(uri_image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                filereference.putFile(uri_image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+                {
                     @Override
-                    public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
-
-                        filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot)
+                    {
+                        filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                        {
                             @Override
-                            public void onSuccess(Uri uri) {
-
+                            public void onSuccess(Uri uri)
+                            {
                                 //get id of article before add
                                 String ID =mdatarefre.push().getKey();
 
@@ -134,42 +128,31 @@ public class AddArticleActivity extends AppCompatActivity {
                                 image_url = uri.toString();
                                 ArticleModel obj = new ArticleModel(image_url,title,content,source,ID,null,null,null,null);
                                 mdatarefre.child("Articles").child(ID).setValue(obj);
-
-
                             }
                         });
 
                     }
-                }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>()
+                {
                     @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
-                        //return defualt view to the layout
-                        prog.dismiss();
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
+                    {
                         Toast.makeText(AddArticleActivity.this, "Data Successfully Uploaded", Toast.LENGTH_SHORT).show();
 
-                        arc_title.setText("");
-                        arc_content.setText("");
-                        arc_source.setText("");
-
-
-                        im.setBackgroundColor(getResources().getColor(R.color.backgroundimage));
-                        im.setImageURI(null);
-                        im.setImageResource(R.drawable.ic_add_a_photo_black_24dp);
+                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                        startActivity(intent);
                     }
-                }).addOnFailureListener(new OnFailureListener() {
+                }).addOnFailureListener(new OnFailureListener()
+                {
                     @Override
-                    public void onFailure(@NonNull Exception e) {
+                    public void onFailure(@NonNull Exception e)
+                    {
                         prog.hide();
                         Toast.makeText(AddArticleActivity.this, "Error Connection", Toast.LENGTH_SHORT).show();
-
                     }
                 });
-
             }
-
         }
-
     }
-    }
+}
 

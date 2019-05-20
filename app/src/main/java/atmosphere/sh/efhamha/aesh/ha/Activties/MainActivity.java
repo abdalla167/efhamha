@@ -20,6 +20,7 @@ import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.InfoFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.NotificationsFragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.ProfileFragment;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
 public class MainActivity extends AppCompatActivity
@@ -67,10 +68,8 @@ public class MainActivity extends AppCompatActivity
 
                         if (user != null)
                         {
-                            /*Fragment profileFragment = new ProfileFragment();
-                            loadFragment(profileFragment);*/
-                            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                            startActivity(intent);
+                            Fragment profileFragment = new ProfileFragment();
+                            loadFragment(profileFragment);
                         } else
                             {
                                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
