@@ -41,23 +41,21 @@ import atmosphere.sh.efhamha.aesh.ha.Models.NotificationModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
 
-
-
 public class ArticlesFragment extends Fragment {
     // firebase
 
     ///////////////fagment notificaton
 //****************************************/////
 
-    public static View view_notification;
+    /*public static View view_notification;
     private RecyclerView mRecyclerView;
     private NotificationAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     public static ArrayList<NotificationModel> list = new ArrayList<>();
     public static final String mypreference = "mypref";
-    public static final String size_list="size";
-    public static int  check_size;
-    SharedPreferences sharedpreferences;
+    public static final String size_list = "size";
+    public static int check_size;
+    SharedPreferences sharedpreferences;*/
 
     //////****************************************/////
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -80,21 +78,24 @@ public class ArticlesFragment extends Fragment {
     private HashMap<Integer, ArrayList<String>> usercomments;
     ArrayList<String> comments = new ArrayList<>();
 
+    FirebaseUser user;
+
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
         view = inflater.inflate(R.layout.article_fragment, container, false);
-        //****************************************/////
-        view_notification=inflater.inflate(R.layout.notifications_fragment, container, false);
 
-        //****************************************/////
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState)
+    {
         super.onActivityCreated(savedInstanceState);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerView = view.findViewById(R.id.recyclerview);
         rotateLoading = view.findViewById(R.id.rotateloading);
@@ -104,13 +105,8 @@ public class ArticlesFragment extends Fragment {
         load_all_articles();
 
         ref.keepSynced(true);
-
         // when click on item save object to another activity
-
-
     }
-
-
    /* private void addfakedata()
     {
         for (int i = 0; i < 3; i++)
@@ -124,56 +120,48 @@ public class ArticlesFragment extends Fragment {
         usercomments.put(1, comments);
     }
 */
-
-
-    private void load_all_articles() {
+    private void load_all_articles()
+    {
         rotateLoading.start();
-
 
         articleModels = new ArrayList<>();
 
-        ref.child("Articles").addValueEventListener(new ValueEventListener() {
+        ref.child("Articles").addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
                 articleModels.clear();
 
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
+                {
                     articleModels.add(dataSnapshot1.getValue(ArticleModel.class));
 
                     //  Toast.makeText(getActivity(), ""+articleModels.get(0).getImage_url(), Toast.LENGTH_SHORT).show();
-
                 }
                 //        Toast.makeText(getActivity(), "size" + all_books.size(), Toast.LENGTH_SHORT).show();
-
+/*
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 check_size = preferences.getInt("size", 0);
-                if(check_size<articleModels.size()) {
+                if (check_size < articleModels.size()) {
                     int t;
-                    if(check_size==0){
-                        t=0;
 
-                    }
-                    else {
-                        t = articleModels.size()-check_size;
-                        Toast.makeText(getActivity(), ""+t ,Toast.LENGTH_LONG).show();
-                    }
-
-                    for(int i=check_size;i<=articleModels.size();i++){
-                        String title= articleModels.get(check_size).getTitle();
-                        String url=  articleModels.get(check_size).getImage_url();
-                        list.add(new NotificationModel(url,title,"","",""));
-                        Toast.makeText(getActivity(), ""+list.size(), Toast.LENGTH_LONG).show();
+                    for (int i = check_size; i <= articleModels.size(); i++) {
+                        String title = articleModels.get(check_size).getTitle();
+                        String url = articleModels.get(check_size).getImage_url();
+                        list.add(new NotificationModel(url, title, "", "", ""));
+                        Toast.makeText(getActivity(), "" + list.size(), Toast.LENGTH_LONG).show();
                     }
 
                     SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     SharedPreferences.Editor editor = preferences1.edit();
-                    editor.putInt("size",articleModels.size());
+                    editor.putInt("size", articleModels.size());
                     editor.apply();
 
                 }
 
                 mRecyclerView = view_notification.findViewById(R.id.recyclerview_notifaection);
-                mAdapter = new NotificationAdapter (getActivity(), list);
+                mAdapter = new NotificationAdapter(getActivity(), list);
                 recyclerView.setHasFixedSize(true);
                 layoutManager = new LinearLayoutManager(getContext());
                 LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -181,64 +169,81 @@ public class ArticlesFragment extends Fragment {
                 mRecyclerView.setAdapter(mAdapter);
 
 
-
-
                 ///////
-
+*/
                 // adapter.notifyDataSetChanged();
-                adapter=new ArchicleAdapter( getActivity(),articleModels);
+                adapter = new ArchicleAdapter(getActivity(), articleModels);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
 
-                adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener() {
+                adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener()
+                {
                     @Override
-                    public void open_content(int position) {
-
-                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                        if (user != null) {
+                    public void open_content(int position)
+                    {
+                        if (user != null)
+                        {
                             if (articleModels.get(position).getUser_view() != null)
                                 view_list.addAll(articleModels.get(position).getUser_view());
 
-                            if (!view_list.contains(user.getUid())) {
+                            if (!view_list.contains(user.getUid()))
+                            {
                                 view_list.add(user.getUid());
 
                                 ref.child("Articles").child(articleModels.get(position).getArch_id()).child("user_view").setValue(view_list);
                             }
-                                Intent intent = new Intent(getActivity(), ArticleActivity.class);
-                                intent.putExtra("article object", articleModels.get(position));
-                                startActivity(intent);
 
+                            Intent intent = new Intent(getActivity(), ArticleActivity.class);
+                            intent.putExtra("article object", articleModels.get(position));
+                            startActivity(intent);
                         } else
                             Toast.makeText(getContext(), "Please sign in first", Toast.LENGTH_SHORT).show();
-
                     }
 
                     @Override
-                    public void like_article(int position) {
-                        Toast.makeText(getContext(), "Like Clicked : " + position, Toast.LENGTH_SHORT).show();
+                    public void like_article(int position, ImageView like_btn)
+                    {
+                        if (user != null)
+                        {
+                            Toast.makeText(getContext(), "Like Clicked : " + position, Toast.LENGTH_SHORT).show();
+                        } else
+                            {
+                                Toast.makeText(getContext(), "Please Sign In First", Toast.LENGTH_SHORT).show();
+                            }
                     }
-                    @Override
-                    public void comment_article(int position) {
-                        Toast.makeText(getContext(), "Comment Clicked : " + position, Toast.LENGTH_SHORT).show();
 
-                    }
                     @Override
-                    public void share_article(int position) {
-                        Toast.makeText(getContext(), "Share Clicked : " + position, Toast.LENGTH_SHORT).show();
+                    public void comment_article(int position)
+                    {
+                        if (user != null)
+                        {
+                            Toast.makeText(getContext(), "Comment Clicked : " + position, Toast.LENGTH_SHORT).show();
+                        } else
+                        {
+                            Toast.makeText(getContext(), "Please Sign In First", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void share_article(int position)
+                    {
+                        if (user != null)
+                        {
+                            Toast.makeText(getContext(), "Share Clicked : " + position, Toast.LENGTH_SHORT).show();
+                        } else
+                        {
+                            Toast.makeText(getContext(), "Please Sign In First", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
-
                 rotateLoading.stop();
-
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
                 rotateLoading.stop();
             }
         });
-
-
     }
 }

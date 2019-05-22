@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -59,5 +60,36 @@
         app:loading_color="@color/colorAccent"
         android:layout_centerInParent="true"
         />
+
+    <LinearLayout
+        android:id="@+id/no_notifications_lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_notifications_off_black_24dp"
+            android:padding="30dp"
+            android:tint="@android:color/darker_gray"
+            android:alpha=".7"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="لا توجد اشعارات"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textColor="@android:color/darker_gray"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:alpha=".7"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

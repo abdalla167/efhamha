@@ -32,6 +32,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import java.util.List;
+
+import atmosphere.sh.efhamha.aesh.ha.Activties.MainActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.SignInActivity;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
@@ -184,7 +186,7 @@ public class ProfileFragment extends Fragment
         }
     }
     public void updateUI(){
-        startActivity(new Intent(getActivity(), SignInActivity.class));
+        startActivity(new Intent(getActivity(), MainActivity.class));
         getActivity().finish();
     }
 }

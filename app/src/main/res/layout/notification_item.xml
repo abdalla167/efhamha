@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <LinearLayout
     android:id="@+id/linear_notification"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shadow"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <com.balysv.materialripple.MaterialRippleLayout
         android:id="@+id/notification_mrl"
@@ -48,13 +46,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="الصائمون الأوائل"
+                android:text=""
                 android:textSize="16sp"
                 android:textColor="@android:color/black"
                 android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
                 android:textStyle="bold"
                 android:padding="5dp"
+                android:gravity="right"
                 />
 
             <de.hdodenhof.circleimageview.CircleImageView

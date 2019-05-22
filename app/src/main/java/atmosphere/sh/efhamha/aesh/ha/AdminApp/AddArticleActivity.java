@@ -177,7 +177,9 @@ public class AddArticleActivity extends AppCompatActivity
                             // get link of image and add data in child
                             image_url = uri.toString();
                             ArticleModel obj = new ArticleModel(image_url,title,content,source,ID,null,null,null,null);
+                            NotificationModel notificationModel = new NotificationModel(image_url,title,day_txt,month_txt,year_txt);
                             mdatarefre.child("Articles").child(ID).setValue(obj);
+                            mdatarefre.child("Notifications").child(ID).setValue(notificationModel);
                         }
                     });
 

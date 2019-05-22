@@ -15,15 +15,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.rotate.RotateLoading;
 
@@ -35,37 +39,41 @@ import atmosphere.sh.efhamha.aesh.ha.Models.NotificationModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.view.View.GONE;
+
 public class NotificationsFragment extends Fragment
 {
-
-    /*
+    View view;
     RecyclerView recyclerView;
     RotateLoading rotateLoading;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     RecyclerView.LayoutManager layoutManager;
-   // FirebaseRecyclerAdapter<NotificationModel, notificationsViewHolder> firebaseRecyclerAdapter;
-   */
+    FirebaseRecyclerAdapter<NotificationModel, notificationsViewHolder> firebaseRecyclerAdapter;
 
-    ////
-    RecyclerView recyclerView;
+    LinearLayout linearLayout;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        return ArticlesFragment.view_notification;
+        view = inflater.inflate(R.layout.notifications_fragment, container, false);
+
+        return view;
     }
 
-
-    /*
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.recyclerview);
+        recyclerView = view.findViewById(R.id.recyclerview_notifaection);
         rotateLoading = view.findViewById(R.id.rotateloading);
+        linearLayout = view.findViewById(R.id.no_notifications_lin);
+
         rotateLoading.start();
+        linearLayout.setVisibility(View.GONE);
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
         databaseReference.keepSynced(true);
@@ -95,6 +103,26 @@ public class NotificationsFragment extends Fragment
             {
                 rotateLoading.stop();
 
+                databaseReference.addValueEventListener(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+                        int count = (int) dataSnapshot.child("Notifications").getChildrenCount();
+
+                        if (count > 0)
+                        {
+                            linearLayout.setVisibility(View.GONE );
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError)
+                    {
+
+                    }
+                });
+
                 final String key = getRef(position).getKey();
 
                 holder.BindPlaces(model);
@@ -119,6 +147,7 @@ public class NotificationsFragment extends Fragment
         };
         recyclerView.setAdapter(firebaseRecyclerAdapter);
         rotateLoading.stop();
+        linearLayout.setVisibility(View.VISIBLE );
     }
 
     public static class notificationsViewHolder extends RecyclerView.ViewHolder
@@ -167,5 +196,5 @@ public class NotificationsFragment extends Fragment
         {
             firebaseRecyclerAdapter.stopListening();
         }
-    }*/
+    }
 }

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) navigation.getChildAt(0);
         BottomNavigationItemView itemView = (BottomNavigationItemView) menuView.getChildAt(1);
 
-        View notificationBadge = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_notification_badge, menuView, false);
+        final View notificationBadge = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_notification_badge, menuView, false);
 
         final ImageView imageView = notificationBadge.findViewById(R.id.badge);
 
@@ -125,7 +126,8 @@ public class MainActivity extends AppCompatActivity
                 switch (count)
                 {
                     case 0:
-                        imageView.setImageResource(R.drawable.notification_badge);
+                        //imageView.setImageResource(R.drawable.notification_badge);
+                        notificationBadge.setVisibility(GONE );
                         break;
                     case 1:
                         imageView.setImageResource(R.drawable.ic_one3);
