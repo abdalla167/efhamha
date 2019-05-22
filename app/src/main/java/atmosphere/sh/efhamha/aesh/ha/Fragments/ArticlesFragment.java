@@ -13,6 +13,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,7 +49,7 @@ public class ArticlesFragment extends Fragment {
 
     // define some lists for get likes comments shares views
 
-    ArrayList<Integer> like_list = new ArrayList<>();
+    ArrayList<String> like_list = new ArrayList<>();
     ArrayList<Integer> share_list = new ArrayList<>();
     ArrayList<String> view_list = new ArrayList<>();
 
@@ -116,13 +118,18 @@ public class ArticlesFragment extends Fragment {
                 }
                 //        Toast.makeText(getActivity(), "size" + all_books.size(), Toast.LENGTH_SHORT).show();
 
-                recyclerView.setHasFixedSize(true);
-                layoutManager = new LinearLayoutManager(getContext());
-                adapter = new ArchicleAdapter(getActivity(), articleModels);
-               // adapter.notifyDataSetChanged();
+                if (adapter==null) {
+                    recyclerView.setHasFixedSize(true);
+                    layoutManager = new LinearLayoutManager(getContext());
+                    adapter = new ArchicleAdapter(getActivity(), articleModels);
+                    // adapter.notifyDataSetChanged();
 
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.setAdapter(adapter);
+
+                }
+                else
+                    adapter.notifyDataSetChanged();
 
                 adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener() {
                     @Override
@@ -139,9 +146,9 @@ public class ArticlesFragment extends Fragment {
 
                                 ref.child("Articles").child(articleModels.get(position).getArch_id()).child("user_view").setValue(view_list);
                             }
-                                Intent intent = new Intent(getActivity(), ArticleActivity.class);
-                                intent.putExtra("article object", articleModels.get(position));
-                                startActivity(intent);
+                            Intent intent = new Intent(getActivity(), ArticleActivity.class);
+                            intent.putExtra("article object", articleModels.get(position));
+                            startActivity(intent);
 
                         } else
                             Toast.makeText(getContext(), "Please sign in first", Toast.LENGTH_SHORT).show();
@@ -149,9 +156,38 @@ public class ArticlesFragment extends Fragment {
                     }
 
                     @Override
-                    public void like_article(int position) {
-                        Toast.makeText(getContext(), "Like Clicked : " + position, Toast.LENGTH_SHORT).show();
+                    public void like_article(int position, ImageView likebtn) {
+
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        if (articleModels.get(position).getUser_likes()!=null)
+                            like_list.addAll(articleModels.get(position).getUser_likes());
+
+                        if (user != null) {
+                            int cuur = (int) likebtn.getTag();
+
+
+                            if (cuur == R.drawable.liked) {
+
+                                like_list.remove(user.getUid());
+                                likebtn.setImageResource(R.drawable.not_like);
+                                likebtn.setTag(R.drawable.not_like);
+                            } else {
+
+                                if (!like_list.contains(user.getUid()))
+                                like_list.add(user.getUid());
+                                likebtn.setImageResource(R.drawable.liked);
+                                likebtn.setTag(R.drawable.liked);
+                            }
+
+                            ref.child("Articles").child(articleModels.get(position).getArch_id()).child("user_likes").setValue(like_list);
+                                like_list.clear();
+
+                        } else {
+                            Toast.makeText(getActivity(), "Please sign in first", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
+
 
                     @Override
                     public void comment_article(int position) {
@@ -174,6 +210,7 @@ public class ArticlesFragment extends Fragment {
                 rotateLoading.stop();
             }
         });
+
 
 
     }

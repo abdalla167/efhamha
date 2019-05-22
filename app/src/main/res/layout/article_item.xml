@@ -128,11 +128,14 @@
                         >
 
                         <ImageView
+                            android:id="@+id/like"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="10dp"
-                            android:src="@drawable/ic_thumbs_up_hand_symbol"
-                            android:tint="@android:color/darker_gray" />
+                            android:src="@drawable/not_like"
+
+
+                             />
 
                         <TextView
                             android:id="@+id/numlikes"

@@ -6,11 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -24,12 +28,14 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
 
     private OnItemClickListener mListener;
 
-    public interface OnItemClickListener
-    {
+    public interface OnItemClickListener {
         void open_content(int position);
-        void  like_article(int position);
-        void  comment_article(int position);
-        void  share_article(int position);
+
+        void like_article(int position , ImageView like_btn);
+
+        void comment_article(int position);
+
+        void share_article(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -41,8 +47,8 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
 
         TextView title;
         TextView content, source, numlikes, numviews, numcomments, numshare;
-        ImageView imageArchi;
-        MaterialRippleLayout imagelike, imagecomment, imageshare , article_mrl;
+        ImageView imageArchi ,likeimage;
+        MaterialRippleLayout imagelike, imagecomment, imageshare, article_mrl;
 
 
         public ViewHolde(@NonNull View itemView, final OnItemClickListener Listener) {
@@ -61,65 +67,50 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
             imageshare = itemView.findViewById(R.id.share_btn);
             imageArchi = itemView.findViewById(R.id.article_image);
             article_mrl = itemView.findViewById(R.id.article_mrl);
+            likeimage=itemView.findViewById(R.id.like);
 
-            article_mrl.setOnClickListener(new View.OnClickListener()
-            {
+            article_mrl.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (Listener != null)
-                    {
+                public void onClick(View v) {
+                    if (Listener != null) {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION)
-                        {
+                        if (position != RecyclerView.NO_POSITION) {
                             Listener.open_content(position);
                         }
                     }
                 }
             });
 
-            imagelike.setOnClickListener(new View.OnClickListener()
-            {
+            imagelike.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (Listener != null)
-                    {
+                public void onClick(View v) {
+                    if (Listener != null) {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION)
-                        {
-                            Listener.like_article(position);
+                        if (position != RecyclerView.NO_POSITION) {
+                            Listener.like_article(position,likeimage);
                         }
                     }
                 }
             });
 
-            imagecomment.setOnClickListener(new View.OnClickListener()
-            {
+            imagecomment.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (Listener != null)
-                    {
+                public void onClick(View v) {
+                    if (Listener != null) {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION)
-                        {
+                        if (position != RecyclerView.NO_POSITION) {
                             Listener.comment_article(position);
                         }
                     }
                 }
             });
 
-            imageshare.setOnClickListener(new View.OnClickListener()
-            {
+            imageshare.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (Listener != null)
-                    {
+                public void onClick(View v) {
+                    if (Listener != null) {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION)
-                        {
+                        if (position != RecyclerView.NO_POSITION) {
                             Listener.share_article(position);
                         }
                     }
@@ -129,9 +120,9 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
     }
 
 
-    public ArchicleAdapter(Context applicationContext,ArrayList<ArticleModel> modellist) {
+    public ArchicleAdapter(Context applicationContext, ArrayList<ArticleModel> modellist) {
         articleModel_list = modellist;
-        context=applicationContext;
+        context = applicationContext;
     }
 
     @NonNull
@@ -149,32 +140,32 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
         viewHolde.title.setText(currentItem.getTitle());
         viewHolde.source.setText(currentItem.getSource());
         viewHolde.content.setText(currentItem.getContent());
-        if (currentItem.getUser_likes()==null)
+        if (currentItem.getUser_likes() == null)
             viewHolde.numlikes.setText(String.valueOf(0));
         else
-        viewHolde.numlikes.setText(String.valueOf(currentItem.getUser_likes().size()));
+            viewHolde.numlikes.setText(String.valueOf(currentItem.getUser_likes().size()));
 
-        if (currentItem.getUser_comments()==null)
+        if (currentItem.getUser_comments() == null)
             viewHolde.numcomments.setText(String.valueOf(0));
         else {
-            int c=0;
+            int c = 0;
 
-            for (final String name :  currentItem.getUser_comments().keySet()) {
+            for (final String name : currentItem.getUser_comments().keySet()) {
                 // search  for value
                 c += currentItem.getUser_comments().get(name).size();
                 viewHolde.numcomments.setText(String.valueOf(c));
             }
         }
-        if (currentItem.getUser_share()==null)
+        if (currentItem.getUser_share() == null)
             viewHolde.numshare.setText(String.valueOf(0));
         else
 
-        viewHolde.numshare.setText(String.valueOf(currentItem.getUser_share().size()));
+            viewHolde.numshare.setText(String.valueOf(currentItem.getUser_share().size()));
 
-        if (currentItem.getUser_view()==null)
+        if (currentItem.getUser_view() == null)
             viewHolde.numviews.setText(String.valueOf(0));
         else
-        viewHolde.numviews.setText(String.valueOf(currentItem.getUser_view().size()));
+            viewHolde.numviews.setText(String.valueOf(currentItem.getUser_view().size()));
 
 
         //Add image of architichles in library Glide
@@ -187,6 +178,33 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
 
             // remove the placeholder (optional); read comments below
             viewHolde.imageArchi.setImageDrawable(null);
+        }
+
+        // set likes of this user
+
+
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        viewHolde.likeimage.setTag(0);
+        if (user !=null)
+        {
+            if (currentItem.getUser_likes()!=null) {
+                if (currentItem.getUser_likes().contains(user.getUid())) {
+                    {
+                        viewHolde.likeimage.setImageResource(R.drawable.liked);
+                        viewHolde.likeimage.setTag(R.drawable.liked);
+                    }
+                }
+
+                else
+                    {
+
+                        viewHolde.likeimage.setImageResource(R.drawable.not_like);
+                        viewHolde.likeimage.setTag(0);
+                }
+
+                currentItem.getUser_likes().clear();
+
+            }
         }
 
     }
