@@ -1,7 +1,10 @@
 package atmosphere.sh.efhamha.aesh.ha.Helpers;
 
+import android.content.Context;
+import android.net.Uri;
 import android.util.Patterns;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class InputValidator {
 
@@ -11,7 +14,6 @@ public class InputValidator {
         String email = emailET.getText().toString().trim();
         String password = passwordET.getText().toString().trim();
         String confirmPassword = confirmPasswordET.getText().toString().trim();
-
         if (name.isEmpty() || email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isEmpty()  || confirmPassword.isEmpty() || password.length() < 6 || !password.equals(confirmPassword)) {
 
             if(name.isEmpty())

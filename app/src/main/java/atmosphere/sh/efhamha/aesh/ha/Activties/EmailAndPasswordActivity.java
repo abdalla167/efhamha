@@ -161,9 +161,7 @@ public class EmailAndPasswordActivity extends AppCompatActivity
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
                                 {
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    //لازم يفعل الأيميل عشان يدخل
                                 }
                             });
                             alertDialog.show();
@@ -181,6 +179,10 @@ public class EmailAndPasswordActivity extends AppCompatActivity
     }
 
     private boolean getInputData() {
+        if (photoPath == null || Uri.EMPTY.equals(photoPath)) {
+            Toast.makeText(this, "يرجي أختيار صوره", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if (!(InputValidator.signUpValidation(usernameField, signUpEmailEditText, signUpPasswordEditText, signUpConfirmPasswordEditText))) {
             return false;
         }
@@ -221,10 +223,8 @@ public class EmailAndPasswordActivity extends AppCompatActivity
                                 String downUri = uri.toString();
                                 ref = database.getReference();
                                 UserModel userModel = new UserModel(userId, userName, email, downUri);
-
+                                //ref.child("Users").push().setValue(userModel);
                                 ref.child("Users").child(userId).setValue(userModel);
-
-                                //  ref.child("Users").push().setValue(userModel);
                             }
                         });
                     }
