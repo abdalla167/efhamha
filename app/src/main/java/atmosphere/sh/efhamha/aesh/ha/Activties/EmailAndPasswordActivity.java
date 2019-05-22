@@ -221,7 +221,10 @@ public class EmailAndPasswordActivity extends AppCompatActivity
                                 String downUri = uri.toString();
                                 ref = database.getReference();
                                 UserModel userModel = new UserModel(userId, userName, email, downUri);
-                                ref.child("Users").push().setValue(userModel);
+
+                                ref.child("Users").child(userId).setValue(userModel);
+
+                                //  ref.child("Users").push().setValue(userModel);
                             }
                         });
                     }

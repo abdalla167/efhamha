@@ -87,13 +87,13 @@ public class AdminFragment extends Fragment
         articleModels = new ArrayList<>();
 
         addfakedata();
-
+/*
         articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
         articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
         articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
         articleModels.add(new ArticleModel(null, getResources().getString(R.string.title), getResources().getString(R.string.content), "محمد عادل", "a", like_list, share_list, view_list, usercomments));
 
-        recyclerView.setHasFixedSize(true);
+  */      recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         adapter = new ArchicleAdapter(getActivity(),articleModels);
         recyclerView.setLayoutManager(layoutManager);
@@ -106,6 +106,8 @@ public class AdminFragment extends Fragment
             @Override
             public void open_content(int position)
             {
+
+
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 intent.putExtra("article object", articleModels.get(position));
                 intent.putExtra("admin",1);

@@ -86,7 +86,8 @@ public class MainActivity extends AppCompatActivity
                         {
                             Fragment profileFragment = new ProfileFragment();
                             loadFragment(profileFragment);
-                        } else
+                        }
+                        else
                             {
                                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                                 startActivity(intent);

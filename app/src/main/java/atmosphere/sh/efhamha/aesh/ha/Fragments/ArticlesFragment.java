@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,8 +33,7 @@ import atmosphere.sh.efhamha.aesh.ha.Adapter.ArchicleAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
-public class ArticlesFragment extends Fragment
-{
+public class ArticlesFragment extends Fragment {
     // firebase
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
@@ -48,15 +49,15 @@ public class ArticlesFragment extends Fragment
 
     ArrayList<Integer> like_list = new ArrayList<>();
     ArrayList<Integer> share_list = new ArrayList<>();
-    ArrayList<Integer> view_list = new ArrayList<>();
+    ArrayList<String> view_list = new ArrayList<>();
 
     private HashMap<Integer, ArrayList<String>> usercomments;
     ArrayList<String> comments = new ArrayList<>();
 
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.article_fragment, container, false);
 
         return view;
@@ -78,37 +79,9 @@ public class ArticlesFragment extends Fragment
 
         // when click on item save object to another activity
 
-        /*
-        adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener()
-        {
-            @Override
-            public void open_content(int position)
-            {
-                Intent intent = new Intent(getActivity(), ArticleActivity.class);
-                intent.putExtra("article object", articleModels.get(position));
-                startActivity(intent);
-            }
 
-            @Override
-            public void like_article(int position)
-            {
-                Toast.makeText(getContext(), "Like Clicked : " + position, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void comment_article(int position)
-            {
-                Toast.makeText(getContext(), "Comment Clicked : " + position, Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void share_article(int position)
-            {
-                Toast.makeText(getContext(), "Share Clicked : " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
+
 
    /* private void addfakedata()
     {
@@ -125,40 +98,83 @@ public class ArticlesFragment extends Fragment
 */
 
 
-    }
-    private void load_all_articles()
-    {
+    private void load_all_articles() {
         rotateLoading.start();
 
-        articleModels = new ArrayList<>();
 
+        articleModels = new ArrayList<>();
 
         ref.child("Articles").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                articleModels.clear();
 
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
-                {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     articleModels.add(dataSnapshot1.getValue(ArticleModel.class));
-                  //  Toast.makeText(getActivity(), ""+articleModels.get(0).getImage_url(), Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(getActivity(), ""+articleModels.get(0).getImage_url(), Toast.LENGTH_SHORT).show();
 
                 }
                 //        Toast.makeText(getActivity(), "size" + all_books.size(), Toast.LENGTH_SHORT).show();
 
                 recyclerView.setHasFixedSize(true);
                 layoutManager = new LinearLayoutManager(getContext());
-                adapter = new ArchicleAdapter(getActivity(),articleModels);
+                adapter = new ArchicleAdapter(getActivity(), articleModels);
+               // adapter.notifyDataSetChanged();
+
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
 
+                adapter.setOnItemClickListener(new ArchicleAdapter.OnItemClickListener() {
+                    @Override
+                    public void open_content(int position) {
+
+                        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        if (user != null) {
+                            if (articleModels.get(position).getUser_view() != null)
+                                view_list.addAll(articleModels.get(position).getUser_view());
+
+                            if (!view_list.contains(user.getUid())) {
+                                view_list.add(user.getUid());
+
+                                ref.child("Articles").child(articleModels.get(position).getArch_id()).child("user_view").setValue(view_list);
+                            }
+                                Intent intent = new Intent(getActivity(), ArticleActivity.class);
+                                intent.putExtra("article object", articleModels.get(position));
+                                startActivity(intent);
+
+                        } else
+                            Toast.makeText(getContext(), "Please sign in first", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void like_article(int position) {
+                        Toast.makeText(getContext(), "Like Clicked : " + position, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void comment_article(int position) {
+                        Toast.makeText(getContext(), "Comment Clicked : " + position, Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void share_article(int position) {
+                        Toast.makeText(getContext(), "Share Clicked : " + position, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 rotateLoading.stop();
+
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError)
-            {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 rotateLoading.stop();
             }
         });
+
+
     }
 }

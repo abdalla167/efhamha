@@ -9,6 +9,10 @@ public class UserModel {
         this.email = email;
         this.imageUrl = imageUrl;
     }
+    public UserModel()
+    {
+
+    }
 
     public String getUserId() {
         return userId;

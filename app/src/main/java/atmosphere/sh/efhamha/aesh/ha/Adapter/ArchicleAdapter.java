@@ -156,9 +156,15 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
 
         if (currentItem.getUser_comments()==null)
             viewHolde.numcomments.setText(String.valueOf(0));
-        else
-        viewHolde.numcomments.setText(String.valueOf(currentItem.getUser_comments().size()));
+        else {
+            int c=0;
 
+            for (final String name :  currentItem.getUser_comments().keySet()) {
+                // search  for value
+                c += currentItem.getUser_comments().get(name).size();
+                viewHolde.numcomments.setText(String.valueOf(c));
+            }
+        }
         if (currentItem.getUser_share()==null)
             viewHolde.numshare.setText(String.valueOf(0));
         else
@@ -187,6 +193,7 @@ public class ArchicleAdapter extends RecyclerView.Adapter<ArchicleAdapter.ViewHo
 
     @Override
     public int getItemCount() {
+
         return articleModel_list.size();
     }
 }

@@ -50,8 +50,9 @@ public class CommentAdatpterrecycle extends RecyclerView.Adapter<CommentAdatpter
     }
 
 
-    public CommentAdatpterrecycle(ArrayList<UsercommentModel> modellist) {
+    public CommentAdatpterrecycle(Context applicationContext,ArrayList<UsercommentModel> modellist) {
         usercommentModels = modellist;
+        context=applicationContext;
     }
 
     @NonNull

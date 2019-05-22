@@ -22,7 +22,7 @@ public class ArticleModel implements Parcelable
 
     }
 
-    public ArticleModel(String image_url, String title, String content, String source, String arch_id, ArrayList<Integer> user_likes, ArrayList<Integer> user_share, ArrayList<Integer> user_view, HashMap<Integer, ArrayList<String>> user_comments) {
+    public ArticleModel(String image_url, String title, String content, String source, String arch_id, ArrayList<String> user_likes, ArrayList<String> user_share, ArrayList<String> user_view, HashMap<String, ArrayList<String>> user_comments) {
         this.image_url = image_url;
         this.title = title;
         this.content = content;
@@ -79,20 +79,20 @@ public class ArticleModel implements Parcelable
         return arch_id;
     }
 
-    public ArrayList<Integer> getUser_likes() {
+    public ArrayList<String> getUser_likes() {
         return user_likes;
     }
 
-    public ArrayList<Integer> getUser_share() {
+    public ArrayList<String> getUser_share() {
         return user_share;
     }
 
-    public ArrayList<Integer> getUser_view() {
+    public ArrayList<String> getUser_view() {
         return user_view;
     }
 
 
-    public void setUser_comments(HashMap<Integer, ArrayList<String>> user_comments) {
+    public void setUser_comments(HashMap<String, ArrayList<String>> user_comments) {
         this.user_comments = user_comments;
     }
 
@@ -108,7 +108,7 @@ public class ArticleModel implements Parcelable
         this.content = content;
     }
 
-    public HashMap<Integer, ArrayList<String>> getUser_comments() {
+    public HashMap<String, ArrayList<String>> getUser_comments() {
         return user_comments;
     }
 
@@ -120,15 +120,15 @@ public class ArticleModel implements Parcelable
         this.arch_id = arch_id;
     }
 
-    public void setUser_likes(ArrayList<Integer> user_likes) {
+    public void setUser_likes(ArrayList<String> user_likes) {
         this.user_likes = user_likes;
     }
 
-    public void setUser_share(ArrayList<Integer> user_share) {
+    public void setUser_share(ArrayList<String> user_share) {
         this.user_share = user_share;
     }
 
-    public void setUser_view(ArrayList<Integer> user_view) {
+    public void setUser_view(ArrayList<String> user_view) {
         this.user_view = user_view;
     }
 
