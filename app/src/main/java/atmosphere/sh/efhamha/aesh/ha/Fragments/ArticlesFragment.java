@@ -182,6 +182,9 @@ public class ArticlesFragment extends Fragment {
 
 
 
+
+                ///////
+
                 // adapter.notifyDataSetChanged();
                 adapter=new ArchicleAdapter( getActivity(),articleModels);
                 recyclerView.setLayoutManager(layoutManager);
