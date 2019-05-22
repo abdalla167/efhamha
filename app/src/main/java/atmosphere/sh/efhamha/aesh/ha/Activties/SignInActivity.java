@@ -113,7 +113,7 @@ public class SignInActivity extends AppCompatActivity {
                 .build();
         ////////////////////////////////////// Facebook SignIn ///////////////////////////////////////////////////////////////////////////////////
         callbackManager = CallbackManager.Factory.create();
-        loginButton.setReadPermissions("email");
+        loginButton.setReadPermissions("email", "public_profile", "user_friends");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
