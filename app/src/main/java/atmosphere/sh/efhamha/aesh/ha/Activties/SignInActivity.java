@@ -113,7 +113,7 @@ public class SignInActivity extends AppCompatActivity {
                 .build();
         ////////////////////////////////////// Facebook SignIn ///////////////////////////////////////////////////////////////////////////////////
         callbackManager = CallbackManager.Factory.create();
-        loginButton.setReadPermissions("email");
+        loginButton.setReadPermissions("email", "public_profile", "user_friends");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -170,10 +170,6 @@ public class SignInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getApplicationContext(), "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                            //startActivity(new Intent(getApplicationContext(), ArticleActivity.class));
-                            //finish();
                             updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -197,8 +193,6 @@ public class SignInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(SignInActivity.this, "Welcome " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                             updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -266,43 +260,6 @@ public class SignInActivity extends AppCompatActivity {
         password = signInPasswordEditText.getText().toString().trim();
 
         return true;
-    }
-
-    // Sign Out Method
-    public void signOut()
-    {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        List<? extends UserInfo> infos = user.getProviderData();
-
-        for (UserInfo ui : infos) {
-            String providerId = ui.getProviderId();
-            if (providerId.equals(GoogleAuthProvider.PROVIDER_ID)) {
-                GoogleSignInClient mGoogleSignInClient;
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestIdToken(getString(R.string.default_web_client_id))
-                        .requestEmail()
-                        .build();
-                mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-                mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                        new OnCompleteListener<Void>() { //signout google
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    mAuth.getInstance().signOut(); //signout firebase
-                                    Toast.makeText(SignInActivity.this, "Sign Out! Google", Toast.LENGTH_SHORT).show();
-                                } else
-                                    Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            } else if (providerId.equals(FacebookAuthProvider.PROVIDER_ID)) {
-                LoginManager.getInstance().logOut();
-                mAuth.getInstance().signOut(); //signout firebase
-                Toast.makeText(SignInActivity.this, "Sign Out! Facebook", Toast.LENGTH_SHORT).show();
-            } else {
-                mAuth.getInstance().signOut();
-                Toast.makeText(SignInActivity.this, "Sign Out! Email and Password", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     @OnClick({R.id.signIn_forget_password_text_view, R.id.signIn_button, R.id.signIn_signUp_text_view, R.id.signIn_google_button, R.id.signIn_facebook_button})
