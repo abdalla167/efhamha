@@ -41,6 +41,12 @@ public class SplashScreenActivity extends AppCompatActivity
                     startActivity(new Intent(SplashScreenActivity.this, AdminActivity.class));
                     finish();
                 }
+
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
+                // kill current activity
+                finish();
+                /*
                 else if (user != null && user.isEmailVerified())
                 {
                     // go to the main activity
@@ -56,7 +62,7 @@ public class SplashScreenActivity extends AppCompatActivity
                     startActivity(i);
                     // kill current activity
                     finish();
-                }
+                }*/
             }
         };
         // Show splash screen for 3 seconds

@@ -1,9 +1,13 @@
 package atmosphere.sh.efhamha.aesh.ha.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,23 +35,44 @@ import java.util.HashMap;
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
 import atmosphere.sh.efhamha.aesh.ha.Adapter.ArchicleAdapter;
+import atmosphere.sh.efhamha.aesh.ha.Adapter.NotificationAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
+import atmosphere.sh.efhamha.aesh.ha.Models.NotificationModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
+
+
+
 
 public class ArticlesFragment extends Fragment {
     // firebase
+
+    ///////////////fagment notificaton
+//****************************************/////
+
+    public static View view_notification;
+    private RecyclerView mRecyclerView;
+    private NotificationAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    public static ArrayList<NotificationModel> list = new ArrayList<>();
+    public static final String mypreference = "mypref";
+    public static final String size_list="size";
+    public static int  check_size;
+    SharedPreferences sharedpreferences;
+
+    //////****************************************/////
     DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-
     View view;
-
     private RecyclerView recyclerView;
     private ArchicleAdapter adapter;
     private ArrayList<ArticleModel> articleModels;
     private RotateLoading rotateLoading;
+    //////////////////////
+    /////////////
     RecyclerView.LayoutManager layoutManager;
-
     // define some lists for get likes comments shares views
+///////////////
 
+    //////////
     ArrayList<Integer> like_list = new ArrayList<>();
     ArrayList<Integer> share_list = new ArrayList<>();
     ArrayList<String> view_list = new ArrayList<>();
@@ -59,7 +85,10 @@ public class ArticlesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.article_fragment, container, false);
+        //****************************************/////
+        view_notification=inflater.inflate(R.layout.notifications_fragment, container, false);
 
+        //****************************************/////
         return view;
     }
 
@@ -69,7 +98,6 @@ public class ArticlesFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerview);
         rotateLoading = view.findViewById(R.id.rotateloading);
-
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -111,16 +139,51 @@ public class ArticlesFragment extends Fragment {
 
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     articleModels.add(dataSnapshot1.getValue(ArticleModel.class));
+
                     //  Toast.makeText(getActivity(), ""+articleModels.get(0).getImage_url(), Toast.LENGTH_SHORT).show();
 
                 }
                 //        Toast.makeText(getActivity(), "size" + all_books.size(), Toast.LENGTH_SHORT).show();
 
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                check_size = preferences.getInt("size", 0);
+                if(check_size<articleModels.size()) {
+                    int t;
+                    if(check_size==0){
+                        t=0;
+
+                    }
+                    else {
+                        t = articleModels.size()-check_size;
+                        Toast.makeText(getActivity(), ""+t ,Toast.LENGTH_LONG).show();
+                    }
+
+                    for(int i=check_size;i<=articleModels.size();i++){
+                        String title= articleModels.get(check_size).getTitle();
+                        String url=  articleModels.get(check_size).getImage_url();
+                        list.add(new NotificationModel(url,title,"","",""));
+                        Toast.makeText(getActivity(), ""+list.size(), Toast.LENGTH_LONG).show();
+                    }
+
+                    SharedPreferences preferences1 = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    SharedPreferences.Editor editor = preferences1.edit();
+                    editor.putInt("size",articleModels.size());
+                    editor.apply();
+
+                }
+
+                mRecyclerView = view_notification.findViewById(R.id.recyclerview_notifaection);
+                mAdapter = new NotificationAdapter (getActivity(), list);
                 recyclerView.setHasFixedSize(true);
                 layoutManager = new LinearLayoutManager(getContext());
-                adapter = new ArchicleAdapter(getActivity(), articleModels);
-               // adapter.notifyDataSetChanged();
+                LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+                mRecyclerView.setLayoutManager(manager);
+                mRecyclerView.setAdapter(mAdapter);
 
+
+
+                // adapter.notifyDataSetChanged();
+                adapter=new ArchicleAdapter( getActivity(),articleModels);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(adapter);
 
@@ -152,13 +215,11 @@ public class ArticlesFragment extends Fragment {
                     public void like_article(int position) {
                         Toast.makeText(getContext(), "Like Clicked : " + position, Toast.LENGTH_SHORT).show();
                     }
-
                     @Override
                     public void comment_article(int position) {
                         Toast.makeText(getContext(), "Comment Clicked : " + position, Toast.LENGTH_SHORT).show();
 
                     }
-
                     @Override
                     public void share_article(int position) {
                         Toast.makeText(getContext(), "Share Clicked : " + position, Toast.LENGTH_SHORT).show();

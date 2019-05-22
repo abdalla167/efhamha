@@ -15,6 +15,7 @@ public class NotificationModel
         this.article_year = article_year;
     }
 
+
     public String getArticle_image() {
         return article_image;
     }

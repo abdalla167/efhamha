@@ -27,33 +27,37 @@ import com.google.firebase.database.Query;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.rotate.RotateLoading;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
+import atmosphere.sh.efhamha.aesh.ha.Adapter.NotificationAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.NotificationModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NotificationsFragment extends Fragment
 {
-    View view;
 
+    /*
     RecyclerView recyclerView;
     RotateLoading rotateLoading;
-
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     RecyclerView.LayoutManager layoutManager;
-    FirebaseRecyclerAdapter<NotificationModel, notificationsViewHolder> firebaseRecyclerAdapter;
+   // FirebaseRecyclerAdapter<NotificationModel, notificationsViewHolder> firebaseRecyclerAdapter;
+   */
 
+    ////
+    RecyclerView recyclerView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        view = inflater.inflate(R.layout.notifications_fragment, container, false);
-
-        return view;
+        return ArticlesFragment.view_notification;
     }
 
+
+    /*
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
@@ -61,15 +65,12 @@ public class NotificationsFragment extends Fragment
 
         recyclerView = view.findViewById(R.id.recyclerview);
         rotateLoading = view.findViewById(R.id.rotateloading);
-
         rotateLoading.start();
-
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
         databaseReference.keepSynced(true);
 
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-
         recyclerView.setLayoutManager(layoutManager);
 
         displayNotifications();
@@ -135,15 +136,11 @@ public class NotificationsFragment extends Fragment
             image = itemView.findViewById(R.id.article_image);
             mrl = itemView.findViewById(R.id.notification_mrl);
         }
-
         void BindPlaces(final NotificationModel notificationModel)
         {
             title.setText(notificationModel.getArticle_title());
-
             String time_txt = notificationModel.getArticle_day() + " " + notificationModel.getArticle_month() + " " + notificationModel.getArticle_year();
-
             time.setText(time_txt);
-
             Picasso.get()
                     .load(notificationModel.getArticle_image())
                     .placeholder(R.drawable.ic_darkgrey)
@@ -151,12 +148,10 @@ public class NotificationsFragment extends Fragment
                     .into(image);
         }
     }
-
     @Override
     public void onStart()
     {
         super.onStart();
-
         if (firebaseRecyclerAdapter != null)
         {
             firebaseRecyclerAdapter.startListening();
@@ -172,5 +167,5 @@ public class NotificationsFragment extends Fragment
         {
             firebaseRecyclerAdapter.stopListening();
         }
-    }
+    }*/
 }
