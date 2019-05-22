@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -115,8 +117,9 @@ public class AdminFragment extends Fragment
             }
 
             @Override
-            public void like_article(int position)
+            public void like_article(int position, ImageView like_btn)
             {
+
                 Toast.makeText(getContext(), "Like Clicked : " + position, Toast.LENGTH_SHORT).show();
             }
 

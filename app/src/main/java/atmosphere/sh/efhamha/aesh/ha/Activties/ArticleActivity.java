@@ -135,10 +135,10 @@ public class ArticleActivity extends AppCompatActivity {
 
                             UserModel us = new UserModel();
                             us = dataSnapshot.getValue(UserModel.class);
-
+                              if(us!=null){
                             UsercommentModel usercommentModel = new UsercommentModel(us.getImageUrl(), us.getUserName(), comments.get(finalI));
                             commentmodellist.add(usercommentModel);
-                        }
+                        }}
 
 
                         @Override
@@ -149,12 +149,18 @@ public class ArticleActivity extends AppCompatActivity {
                 }
 
 
-                recyclerView.setHasFixedSize(true);
-                layoutManager = new LinearLayoutManager(this);
-                adapter = new CommentAdatpterrecycle(this, commentmodellist);
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(adapter);
+                if (adapter==null) {
+                    recyclerView.setHasFixedSize(true);
+                    layoutManager = new LinearLayoutManager(this);
+                    ((LinearLayoutManager) layoutManager).setReverseLayout(true);
 
+                    adapter = new CommentAdatpterrecycle(this, commentmodellist);
+                    recyclerView.setLayoutManager(layoutManager);
+                    recyclerView.setAdapter(adapter);
+
+                }
+                else
+                    adapter.notifyDataSetChanged();
             }
         }
 
@@ -198,6 +204,8 @@ public class ArticleActivity extends AppCompatActivity {
 
                             UsercommentModel usercommentModel = new UsercommentModel(us.getImageUrl(), us.getUserName(), commenttext.getText().toString());
                             commentmodellist.add(usercommentModel);
+                            commenttext.setText("");
+
 
 
                         }
@@ -212,7 +220,7 @@ public class ArticleActivity extends AppCompatActivity {
                     adapter = new CommentAdatpterrecycle(this, commentmodellist);
                     recyclerView.setLayoutManager(layoutManager);
                     recyclerView.setAdapter(adapter);
-                    commenttext.setText("");
+
 
 
                 }
