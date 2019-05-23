@@ -67,6 +67,7 @@ public class ProfileFragment extends Fragment
 
         database = FirebaseDatabase.getInstance();
         ref = database.getReference();
+        ref.keepSynced(true);
 
         loadUserData();
         return view;
@@ -92,7 +93,7 @@ public class ProfileFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                Toast.makeText(getContext(), "Edit Button Cliced", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "انت دوست تعديل", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -185,7 +186,8 @@ public class ProfileFragment extends Fragment
             count++;
         }
     }
-    public void updateUI(){
+    public void updateUI()
+    {
         startActivity(new Intent(getActivity(), MainActivity.class));
         getActivity().finish();
     }

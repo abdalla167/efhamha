@@ -3,152 +3,89 @@ package atmosphere.sh.efhamha.aesh.ha.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class ArticleModel implements Parcelable
+public class ArticleModel implements Serializable
 {
-    private String image_url, title, content, source, arch_id;
+    private String image_url,title,content,source,article_time,article_day,article_month,article_year;
 
-    private ArrayList user_likes;
-    private ArrayList user_share;
-    private ArrayList user_view;
-    //private ArrayList user_comments;
-    private HashMap user_comments;
+    public ArticleModel() { }
 
-
-    public ArticleModel() {
-
-    }
-
-    public ArticleModel(String image_url, String title, String content, String source, String arch_id, ArrayList<String> user_likes, ArrayList<String> user_share, ArrayList<String> user_view, HashMap<String, ArrayList<String>> user_comments) {
+    public ArticleModel(String image_url, String title, String content, String source, String article_time, String article_day, String article_month, String article_year) {
         this.image_url = image_url;
         this.title = title;
         this.content = content;
         this.source = source;
-        this.arch_id = arch_id;
-        this.user_likes = user_likes;
-        this.user_share = user_share;
-        this.user_view = user_view;
-        this.user_comments = user_comments;
+        this.article_time = article_time;
+        this.article_day = article_day;
+        this.article_month = article_month;
+        this.article_year = article_year;
     }
-
-    protected ArticleModel(Parcel in) {
-        image_url = in.readString();
-        title = in.readString();
-        content = in.readString();
-        source = in.readString();
-        arch_id = in.readString();
-        user_likes = in.readArrayList(null);
-        user_share = in.readArrayList(null);
-        user_view = in.readArrayList(null);
-        user_comments = in.readHashMap(HashMap.class.getClassLoader());
-    }
-
-    public static final Creator<ArticleModel> CREATOR = new Creator<ArticleModel>() {
-        @Override
-        public ArticleModel createFromParcel(Parcel in) {
-            return new ArticleModel(in);
-        }
-
-        @Override
-        public ArticleModel[] newArray(int size) {
-            return new ArticleModel[size];
-        }
-
-    };
 
     public String getImage_url() {
         return image_url;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public String getArch_id() {
-        return arch_id;
-    }
-
-    public ArrayList<String> getUser_likes() {
-        return user_likes;
-    }
-
-    public ArrayList<String> getUser_share() {
-        return user_share;
-    }
-
-    public ArrayList<String> getUser_view() {
-        return user_view;
-    }
-
-
-    public void setUser_comments(HashMap<String, ArrayList<String>> user_comments) {
-        this.user_comments = user_comments;
     }
 
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public void setContent(String content) {
         this.content = content;
     }
 
-    public HashMap<String, ArrayList<String>> getUser_comments() {
-        return user_comments;
+    public String getSource() {
+        return source;
     }
 
     public void setSource(String source) {
         this.source = source;
     }
 
-    public void setArch_id(String arch_id) {
-        this.arch_id = arch_id;
+    public String getArticle_time() {
+        return article_time;
     }
 
-    public void setUser_likes(ArrayList<String> user_likes) {
-        this.user_likes = user_likes;
+    public void setArticle_time(String article_time) {
+        this.article_time = article_time;
     }
 
-    public void setUser_share(ArrayList<String> user_share) {
-        this.user_share = user_share;
+    public String getArticle_day() {
+        return article_day;
     }
 
-    public void setUser_view(ArrayList<String> user_view) {
-        this.user_view = user_view;
+    public void setArticle_day(String article_day) {
+        this.article_day = article_day;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getArticle_month() {
+        return article_month;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(image_url);
-        dest.writeString(title);
-        dest.writeString(content);
-        dest.writeString(source);
-        dest.writeString(arch_id);
-        dest.writeList(user_likes);
-        dest.writeList(user_view);
-        dest.writeList(user_share);
+    public void setArticle_month(String article_month) {
+        this.article_month = article_month;
+    }
 
-        dest.writeMap(user_comments);
+    public String getArticle_year() {
+        return article_year;
+    }
 
+    public void setArticle_year(String article_year) {
+        this.article_year = article_year;
     }
 }

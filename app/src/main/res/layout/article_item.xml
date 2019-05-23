@@ -32,6 +32,7 @@
                 />
 
             <TextView
+                android:id="@+id/article_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="منذ 15 دقيقه"
@@ -41,6 +42,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginLeft="15dp"
                 android:padding="5dp"
+                android:gravity="right"
                 />
 
             <View
@@ -75,6 +77,7 @@
                         android:layout_marginTop="10dp"
                         android:textStyle="bold"
                         android:padding="5dp"
+                        android:gravity="right"
                         />
 
                     <TextView
@@ -88,6 +91,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginBottom="10dp"
                         android:padding="5dp"
+                        android:gravity="right"
                         />
 
                     <TextView
@@ -102,6 +106,7 @@
                         android:layout_marginLeft="15dp"
                         android:layout_marginBottom="10dp"
                         android:padding="5dp"
+                        android:gravity="right"
                         />
 
                 </LinearLayout>
@@ -140,7 +145,7 @@
                             android:id="@+id/numlikes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="5"
+                            android:text="0"
                             android:gravity="center"
                             android:textStyle="bold"
                             android:textColor="@android:color/darker_gray"
@@ -165,6 +170,7 @@
                         >
 
                         <ImageView
+                            android:id="@+id/comment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_chat"
@@ -190,6 +196,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="false"
                     >
 
                     <LinearLayout
@@ -199,6 +206,7 @@
                         >
 
                         <ImageView
+                            android:id="@+id/view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_eye"
@@ -210,7 +218,7 @@
                             android:id="@+id/numviews"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="12"
+                            android:text="0"
                             android:gravity="center"
                             android:textStyle="bold"
                             android:textColor="@android:color/darker_gray"
@@ -235,6 +243,7 @@
                         >
 
                         <ImageView
+                            android:id="@+id/share"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_share_option"
@@ -246,7 +255,7 @@
                             android:id="@+id/numshare"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="3"
+                            android:text="0"
                             android:gravity="center"
                             android:textStyle="bold"
                             android:textColor="@android:color/darker_gray"

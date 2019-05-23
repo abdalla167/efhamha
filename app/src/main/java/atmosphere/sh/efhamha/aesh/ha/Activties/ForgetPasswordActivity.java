@@ -50,7 +50,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         }
     }
 
-    private void resetPassowrd(String email) {
+    private void resetPassowrd(String email)
+    {
         progressDialog = new ProgressDialog(getApplicationContext());
         progressDialog.setMessage("رجاء الأنتظار....");
         progressDialog.show();

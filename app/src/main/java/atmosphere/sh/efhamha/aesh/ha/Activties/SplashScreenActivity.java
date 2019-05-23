@@ -18,7 +18,6 @@ import atmosphere.sh.efhamha.aesh.ha.R;
 
 public class SplashScreenActivity extends AppCompatActivity
 {
-
     private FirebaseUser user;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -37,38 +36,22 @@ public class SplashScreenActivity extends AppCompatActivity
             @Override
             public void run()
             {
-                if(user != null && user.getEmail().equals("admin@admin.com")){
+                if(user != null && user.getEmail().equals("admin@admin.com"))
+                {
                     startActivity(new Intent(SplashScreenActivity.this, AdminActivity.class));
                     finish();
-                }
-
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
-                // kill current activity
-                finish();
-                /*
-                else if (user != null && user.isEmailVerified())
-                {
-                    // go to the main activity
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(i);
-                    // kill current activity
-                    finish();
-                }
-                else if (user == null || !user.isEmailVerified())
-                {
-                    // go to the main activity
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(i);
-                    // kill current activity
-                    finish();
-                }*/
+                } else
+                    {
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(i);
+                        // kill current activity
+                        finish();
+                    }
             }
         };
         // Show splash screen for 3 seconds
         new Timer().schedule(task, 3000);
     }
-
 
     @Override
     protected void onStart() {

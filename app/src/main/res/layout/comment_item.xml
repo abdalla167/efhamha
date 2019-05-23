@@ -21,16 +21,41 @@
             android:layout_marginLeft="15dp"
             >
 
-            <TextView
-                android:id="@+id/username_comment"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@android:color/black"
-                android:text="عبدالله منصور"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:padding="5dp"
-                />
+                android:orientation="horizontal"
+                >
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/edit_mrl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    style="@style/RippleStyleGrey"
+                    >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_more_horiz_black_24dp"
+                        android:tint="@android:color/black"
+                        />
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <TextView
+                    android:id="@+id/username_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@android:color/black"
+                    android:text="عبدالله منصور"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:padding="5dp"
+                    android:gravity="right"
+                    />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/content_comment"
@@ -40,6 +65,7 @@
                 android:textStyle="bold"
                 android:textSize="12sp"
                 android:padding="5dp"
+                android:gravity="right"
                 />
 
         </LinearLayout>

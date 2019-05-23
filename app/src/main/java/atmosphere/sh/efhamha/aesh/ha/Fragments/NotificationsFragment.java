@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +36,8 @@ import com.victor.loading.rotate.RotateLoading;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import atmosphere.sh.efhamha.aesh.ha.Adapter.NotificationAdapter;
+import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
+import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.NotificationModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,7 +52,7 @@ public class NotificationsFragment extends Fragment
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     RecyclerView.LayoutManager layoutManager;
-    FirebaseRecyclerAdapter<NotificationModel, notificationsViewHolder> firebaseRecyclerAdapter;
+    FirebaseRecyclerAdapter<ArticleModel, notificationsViewHolder> firebaseRecyclerAdapter;
 
     LinearLayout linearLayout;
 
@@ -91,15 +94,15 @@ public class NotificationsFragment extends Fragment
                 .child("Notifications")
                 .limitToLast(50);
 
-        FirebaseRecyclerOptions<NotificationModel> options =
-                new FirebaseRecyclerOptions.Builder<NotificationModel>()
-                        .setQuery(query, NotificationModel.class)
+        FirebaseRecyclerOptions<ArticleModel> options =
+                new FirebaseRecyclerOptions.Builder<ArticleModel>()
+                        .setQuery(query, ArticleModel.class)
                         .build();
 
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<NotificationModel, notificationsViewHolder>(options)
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ArticleModel, notificationsViewHolder>(options)
         {
             @Override
-            protected void onBindViewHolder(@NonNull final notificationsViewHolder holder, int position, @NonNull final NotificationModel model)
+            protected void onBindViewHolder(@NonNull final notificationsViewHolder holder, int position, @NonNull final ArticleModel model)
             {
                 rotateLoading.stop();
 
@@ -132,7 +135,19 @@ public class NotificationsFragment extends Fragment
                     @Override
                     public void onClick(View v)
                     {
-                        databaseReference.child("Notifications").child(key).removeValue();
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                        if (user != null)
+                        {
+                            databaseReference.child("Notifications").child(key).removeValue();
+                            Intent intent = new Intent(getContext(), ArticleActivity.class);
+                            intent.putExtra("ar", model);
+                            intent.putExtra("ar2", key);
+                            startActivity(intent);
+                        } else
+                            {
+                                Toast.makeText(getContext(), "لو سمحت سجل دخولك الأول", Toast.LENGTH_SHORT).show();
+                            }
                     }
                 });
             }
@@ -165,13 +180,14 @@ public class NotificationsFragment extends Fragment
             image = itemView.findViewById(R.id.article_image);
             mrl = itemView.findViewById(R.id.notification_mrl);
         }
-        void BindPlaces(final NotificationModel notificationModel)
+
+        void BindPlaces(final ArticleModel notificationModel)
         {
-            title.setText(notificationModel.getArticle_title());
+            title.setText(notificationModel.getTitle());
             String time_txt = notificationModel.getArticle_day() + " " + notificationModel.getArticle_month() + " " + notificationModel.getArticle_year();
             time.setText(time_txt);
             Picasso.get()
-                    .load(notificationModel.getArticle_image())
+                    .load(notificationModel.getImage_url())
                     .placeholder(R.drawable.ic_darkgrey)
                     .error(R.drawable.ic_darkgrey)
                     .into(image);
@@ -181,6 +197,7 @@ public class NotificationsFragment extends Fragment
     public void onStart()
     {
         super.onStart();
+
         if (firebaseRecyclerAdapter != null)
         {
             firebaseRecyclerAdapter.startListening();

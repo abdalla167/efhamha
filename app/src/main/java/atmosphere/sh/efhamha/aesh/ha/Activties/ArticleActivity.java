@@ -3,233 +3,350 @@ package atmosphere.sh.efhamha.aesh.ha.Activties;
 import android.content.Intent;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.bumptech.glide.Glide;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+import com.victor.loading.rotate.RotateLoading;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-
-import atmosphere.sh.efhamha.aesh.ha.Adapter.CommentAdatpterrecycle;
-
+import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
+import atmosphere.sh.efhamha.aesh.ha.Models.CommentModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.UserModel;
-import atmosphere.sh.efhamha.aesh.ha.Models.UsercommentModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ArticleActivity extends AppCompatActivity {
-    TextView title;
-    TextView content, source;
+import static android.view.View.GONE;
+
+public class ArticleActivity extends AppCompatActivity
+{
+    TextView title,time;
+    TextView content, source,comments_count;
     ImageView imageArchi;
-    EditText commenttext;
     MaterialRippleLayout edit_article_mrl;
+    EditText commenttext;
+    FloatingActionButton add_comment_btn;
+    RotateLoading rotateLoading;
 
+    RecyclerView recyclerView;
+    LinearLayoutManager layoutManager;
+    FirebaseRecyclerAdapter<CommentModel, commentsViewHolder> firebaseRecyclerAdapter;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
 
-    //firebase
-    private DatabaseReference mdatarefre = FirebaseDatabase.getInstance().getReference();
-
-
-    //for all view
-    ArticleModel aricle_obj;
-
-
-    ArrayList<String> comm = new ArrayList<>();
-
-    //for comments
-    private RecyclerView recyclerView;
-    private CommentAdatpterrecycle adapter;
-    private ArrayList<UsercommentModel> commentmodellist;
-    RecyclerView.LayoutManager layoutManager;
-    ArrayList<String> commentscurrentuser;
-    ArrayList<String> comments;
-
-
-    private HashMap<String, ArrayList<String>> usercomment;
-
+    String KEY,name,imageurl;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
-        int admin = getIntent().getIntExtra("admin", 0);
-
-        definetools();
-        add_data_to_layout();
-        get_comments_article();
-
-        // fakedataforcomment();
-        //  Toast.makeText(ArticleActivity.this, "dd"+aricle_obj.getUser_comments().get(1).get(0), Toast.LENGTH_SHORT).show();
-
-        if (admin == 1) {
-            edit_article_mrl.setVisibility(View.VISIBLE);
-        } else {
-            edit_article_mrl.setVisibility(View.GONE);
-        }
-
+        init();
+        addData();
+        displayComments(KEY);
     }
 
-    private void definetools() {
+    public void init ()
+    {
         title = findViewById(R.id.article_title_full);
+        time = findViewById(R.id.article_time_full);
         content = findViewById(R.id.article_content_full);
         source = findViewById(R.id.article_by_full);
         imageArchi = findViewById(R.id.article_image_full);
         edit_article_mrl = findViewById(R.id.edit_article_mrl);
-
+        comments_count = findViewById(R.id.comments_count);
         commenttext = findViewById(R.id.comment_text);
+        add_comment_btn = findViewById(R.id.add_comment_btn);
+        rotateLoading = findViewById(R.id.rotateloading);
 
-        //define recycleview for comments
-        recyclerView = findViewById(R.id.list_comments);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rotateLoading.start();
+
+        recyclerView = findViewById(R.id.recyclerview);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+        databaseReference.keepSynced(true);
+
+        layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        //recyclerView.setNestedScrollingEnabled(false);
-        // get article which saved
-        Intent intent = getIntent();
-        aricle_obj = intent.getParcelableExtra("article object");
-    }
+        returnData(getUid());
 
-    private void add_data_to_layout() {
-        Glide.with(this).load(aricle_obj.getImage_url()).into(imageArchi);
-        title.setText(aricle_obj.getTitle());
-        source.setText(aricle_obj.getSource());
-        content.setText(aricle_obj.getContent());
-    }
-
-
-    private void get_comments_article() {
-        commentmodellist = new ArrayList<>();
-        if (aricle_obj.getUser_comments() != null) {
-
-            for (final String name : aricle_obj.getUser_comments().keySet()) {
-                // search  for value
-                comments = aricle_obj.getUser_comments().get(name);
-                // Toast.makeText(ArticleActivity.this, "" + name, Toast.LENGTH_SHORT).show();
-
-
-                for (int i = 0; i < comments.size(); i++) {
-
-                    final int finalI = i;
-                    mdatarefre.child("Users").child(name).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            UserModel us = new UserModel();
-                            us = dataSnapshot.getValue(UserModel.class);
-                              if(us!=null){
-                            UsercommentModel usercommentModel = new UsercommentModel(us.getImageUrl(), us.getUserName(), comments.get(finalI));
-                            commentmodellist.add(usercommentModel);
-                        }}
-
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-
-
-                if (adapter==null) {
-                    recyclerView.setHasFixedSize(true);
-                    layoutManager = new LinearLayoutManager(this);
-                    ((LinearLayoutManager) layoutManager).setReverseLayout(true);
-
-                    adapter = new CommentAdatpterrecycle(this, commentmodellist);
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setAdapter(adapter);
-
-                }
-                else
-                    adapter.notifyDataSetChanged();
-            }
-        }
-
-    }
-
-
-    public void sned_comment(View view) {
-
-        // first get old user comments
-        commentscurrentuser = new ArrayList<>();
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (aricle_obj.getUser_comments()!=null)
+        add_comment_btn.setOnClickListener(new View.OnClickListener()
         {
-            if (aricle_obj.getUser_comments().get(user.getUid())!=null)
+            @Override
+            public void onClick(View v)
             {
-                commentscurrentuser.addAll(aricle_obj.getUser_comments().get(user.getUid()));
+                String content = commenttext.getText().toString();
+
+                if (TextUtils.isEmpty(content))
+                {
+                    Toast.makeText(getApplicationContext(), "من فضلك اضف تعليقا", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                addComment(name,imageurl,content,KEY);
             }
+        });
+    }
 
+    private void addComment(String name, String imageurl, String content,String key)
+    {
+        CommentModel commentModel = new CommentModel(imageurl,name,content);
+        String comment_key = databaseReference.child("Comments").push().getKey();
+        databaseReference.child("Comments").child(key).child(comment_key).setValue(commentModel);
 
+        Toast.makeText(getApplicationContext(), "تم اضافة تعليق بنجاح", Toast.LENGTH_SHORT).show();
+        commenttext.setText("");
+    }
+
+    public void addData ()
+    {
+        int admin = getIntent().getIntExtra("admin", 0);
+        ArticleModel articleModel = (ArticleModel) getIntent().getSerializableExtra("ar");
+        KEY = getIntent().getStringExtra("ar2");
+
+        if (admin == 1)
+        {
+            edit_article_mrl.setVisibility(View.VISIBLE);
+        } else
+        {
+            edit_article_mrl.setVisibility(View.GONE);
         }
-        if (user != null) {
-            if (commenttext.getText() != null) {
 
-                commentscurrentuser.add(commenttext.getText().toString());
-                mdatarefre.child("Articles").child(aricle_obj.getArch_id()).child("user_comments").child(user.getUid()).setValue(commentscurrentuser);
+        title.setText(articleModel.getTitle());
+        String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
+        time.setText(time_txt);
+        source.setText(articleModel.getSource());
+        content.setText(articleModel.getContent());
 
+        Picasso.get()
+                .load(articleModel.getImage_url())
+                .placeholder(R.drawable.ic_darkgrey)
+                .error(R.drawable.ic_darkgrey)
+                .into(imageArchi);
+    }
 
-                if (aricle_obj.getUser_comments() != null) {
-                    if (aricle_obj.getUser_comments().get(user.getUid()) != null) {
-                        commentscurrentuser.addAll(aricle_obj.getUser_comments().get(user.getUid()));
+    private void displayComments(String key)
+    {
+        Query query = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Comments")
+                .child(key)
+                .limitToLast(50);
+
+        FirebaseRecyclerOptions<CommentModel> options =
+                new FirebaseRecyclerOptions.Builder<CommentModel>()
+                        .setQuery(query, CommentModel.class)
+                        .build();
+
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<CommentModel, commentsViewHolder>(options)
+        {
+            @Override
+            protected void onBindViewHolder(@NonNull final commentsViewHolder holder, int position, @NonNull final CommentModel model)
+            {
+                rotateLoading.stop();
+
+                final String key = getRef(position).getKey();
+
+                holder.materialRippleLayout.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        PopupMenu popup = new PopupMenu(ArticleActivity.this, holder.materialRippleLayout);
+                        //Inflating the Popup using xml file
+                        popup.getMenuInflater()
+                                .inflate(R.menu.edit_comment, popup.getMenu());
+
+                        //registering popup with OnMenuItemClickListener
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                        {
+                            public boolean onMenuItemClick(MenuItem item)
+                            {
+                                switch (item.getItemId())
+                                {
+                                    case R.id.delete:
+                                        databaseReference.child("Comments").child(KEY).child(key).removeValue();
+                                        Toast.makeText(getApplicationContext(), "تم حذف التعليق", Toast.LENGTH_SHORT).show();
+                                        return true;
+                                    default:
+                                        return true;
+                                }
+                            }});
+                        popup.show(); //showing popup menu
+                    }
+                });
+
+                databaseReference.addValueEventListener(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+                        int count = (int) dataSnapshot.child("Comments").child(KEY).getChildrenCount();
+
+                        comments_count.setText("التعليقات (" + count + ")");
+                        rotateLoading.stop();
                     }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError)
+                    {
+                        Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-                    mdatarefre.child("Users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            UserModel us = new UserModel();
-                            us = dataSnapshot.getValue(UserModel.class);
-
-                            UsercommentModel usercommentModel = new UsercommentModel(us.getImageUrl(), us.getUserName(), commenttext.getText().toString());
-                            commentmodellist.add(usercommentModel);
-                            commenttext.setText("");
-
-
-
-                        }
-
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-
-                    adapter = new CommentAdatpterrecycle(this, commentmodellist);
-                    recyclerView.setLayoutManager(layoutManager);
-                    recyclerView.setAdapter(adapter);
-
-
-
-                }
-
+                holder.BindPlaces(model);
             }
+
+            @NonNull
+            @Override
+            public commentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+            {
+                View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.comment_item, parent, false);
+                return new commentsViewHolder(view);
+            }
+        };
+
+        firebaseRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver()
+        {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount)
+            {
+                super.onItemRangeInserted(positionStart, itemCount);
+                int friendlyMessageCount = firebaseRecyclerAdapter.getItemCount();
+                int lastVisiblePosition =
+                        layoutManager.findLastCompletelyVisibleItemPosition();
+                // If the recycler view is initially being loaded or the
+                // user is at the bottom of the list, scroll to the bottom
+                // of the list to show the newly added message.
+                if (lastVisiblePosition == -1 ||
+                        (positionStart >= (friendlyMessageCount - 1) &&
+                                lastVisiblePosition == (positionStart - 1)))
+                {
+                    recyclerView.scrollToPosition(positionStart);
+                }
+            }
+        });
+
+        recyclerView.setAdapter(firebaseRecyclerAdapter);
+        rotateLoading.stop();
+    }
+
+    public static class commentsViewHolder extends RecyclerView.ViewHolder
+    {
+        TextView username,content;
+        CircleImageView image;
+        MaterialRippleLayout materialRippleLayout;
+
+        commentsViewHolder(View itemView)
+        {
+            super(itemView);
+
+            username = itemView.findViewById(R.id.username_comment);
+            content = itemView.findViewById(R.id.content_comment);
+            image = itemView.findViewById(R.id.user_image);
+            materialRippleLayout = itemView.findViewById(R.id.edit_mrl);
         }
 
+        void BindPlaces(CommentModel commentModel)
+        {
+            username.setText(commentModel.getUsername());
+            content.setText(commentModel.getContentcomment());
 
-        // get user comments
+            Picasso.get()
+                    .load(commentModel.getImage_url())
+                    .placeholder(R.drawable.ic_user1)
+                    .error(R.drawable.ic_user1)
+                    .into(image);
+        }
+    }
 
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        if (firebaseRecyclerAdapter != null)
+        {
+            firebaseRecyclerAdapter.startListening();
+        }
+    }
 
-    }}
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+
+        if (firebaseRecyclerAdapter != null)
+        {
+            firebaseRecyclerAdapter.stopListening();
+        }
+    }
+
+    public static String getUid()
+    {
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    public void returnData (String uid)
+    {
+        databaseReference.child("Users").child(uid).addListenerForSingleValueEvent(
+                new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+                        // Get user value
+                        UserModel userModel = dataSnapshot.getValue(UserModel.class);
+
+                        if (userModel != null)
+                        {
+                            name = userModel.getUserName();
+                            imageurl = userModel.getImageUrl();
+                        } else
+                            {
+                                Toast.makeText(getApplicationContext(), "Can't Get User ..", Toast.LENGTH_SHORT).show();
+                            }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError)
+                    {
+                        Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+    }
+}

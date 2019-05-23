@@ -1,5 +1,6 @@
 package atmosphere.sh.efhamha.aesh.ha.AdminApp;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -26,10 +27,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.Calendar;
 import java.util.Random;
 
+import atmosphere.sh.efhamha.aesh.ha.Activties.EmailAndPasswordActivity;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.NotificationModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
@@ -49,7 +53,7 @@ public class AddArticleActivity extends AppCompatActivity
 
     private ProgressDialog prog;
 
-    String day_txt,month_txt,year_txt;
+    String time_txt,day_txt,month_txt,year_txt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -71,6 +75,8 @@ public class AddArticleActivity extends AppCompatActivity
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
+        int time = calendar.get(Calendar.HOUR_OF_DAY);
+        int time2 = calendar.get(Calendar.MINUTE);
 
         switch (month)
         {
@@ -114,9 +120,12 @@ public class AddArticleActivity extends AppCompatActivity
 
         day_txt = Integer.toString(day);
         year_txt = Integer.toString(year);
+        String t1 = Integer.toString(time);
+        String t2 = Integer.toString(time2);
+
+        time_txt = t1 + ":" + t2;
     }
 
-    //get the extention of image
     private String getfileextention(Uri ur)
     {
         ContentResolver resolver = getContentResolver();
@@ -126,11 +135,10 @@ public class AddArticleActivity extends AppCompatActivity
 
     public void chooseimageformgallery(View view)
     {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        //   startActivityForResult(intent, img_id);
-        startActivityForResult(Intent.createChooser(intent, "select"), img_id);
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+                .setAspectRatio(1, 1)
+                .start(AddArticleActivity.this);
     }
 
     @Override
@@ -138,13 +146,25 @@ public class AddArticleActivity extends AppCompatActivity
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK && data != null && data.getData() != null)
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
         {
-            uri_image = data.getData();
-            im.setImageURI(uri_image);
-            Glide.with(this).load(uri_image).into(im);
-            im.setImageURI(uri_image);
-            im.setBackground(null);
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == Activity.RESULT_OK)
+            {
+                if (result != null)
+                {
+                    uri_image = result.getUri();
+                    Picasso.get()
+                            .load(uri_image)
+                            .placeholder(R.drawable.ic_add_a_photo_black_24dp)
+                            .error(R.drawable.ic_add_a_photo_black_24dp)
+                            .into(im);
+                    im.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
+            {
+                Exception error = result.getError();
+            }
         }
     }
 
@@ -171,15 +191,12 @@ public class AddArticleActivity extends AppCompatActivity
                         @Override
                         public void onSuccess(Uri uri)
                         {
-                            //get id of article before add
                             String ID = mdatarefre.push().getKey();
 
-                            // get link of image and add data in child
                             image_url = uri.toString();
-                            ArticleModel obj = new ArticleModel(image_url,title,content,source,ID,null,null,null,null);
-                            NotificationModel notificationModel = new NotificationModel(image_url,title,day_txt,month_txt,year_txt);
+                            ArticleModel obj = new ArticleModel(image_url,title,content,source,time_txt,day_txt,month_txt,year_txt);
                             mdatarefre.child("Articles").child(ID).setValue(obj);
-                            mdatarefre.child("Notifications").child(ID).setValue(notificationModel);
+                            mdatarefre.child("Notifications").child(ID).setValue(obj);
                         }
                     });
 
