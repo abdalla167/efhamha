@@ -49,7 +49,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignInActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity
+{
     @BindView(R.id.signIn_email_editText)
     EditText signInEmailEditText;
     @BindView(R.id.signIn_password_editText)
@@ -76,7 +77,6 @@ public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentFirebaseUser;
 
-
     //Google
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_GOOGLE_SIGN_IN = 1;
@@ -85,7 +85,6 @@ public class SignInActivity extends AppCompatActivity {
     //Facebook
     private CallbackManager callbackManager;
     private static final String TAG2 = "FacebookLogin";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,10 +163,13 @@ public class SignInActivity extends AppCompatActivity {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>()
+                {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        if (task.isSuccessful())
+                        {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             updateUI();
@@ -176,7 +178,6 @@ public class SignInActivity extends AppCompatActivity {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(SignInActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
     }

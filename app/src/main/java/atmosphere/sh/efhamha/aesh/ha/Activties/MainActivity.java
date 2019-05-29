@@ -7,17 +7,19 @@ import android.support.annotation.RequiresApi;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,10 +30,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Calendar;
-
-import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D10Fragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D1Fragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D2Fragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D3Fragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D4Fragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D5Fragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D6Fragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D7Fragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D8Fragment;
+import atmosphere.sh.efhamha.aesh.ha.Fragments.D9Fragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.InfoFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.NotificationsFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ProfileFragment;
@@ -46,6 +55,9 @@ public class MainActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
 
+    DrawerLayout mDrawerLayout;
+    NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -54,10 +66,18 @@ public class MainActivity extends AppCompatActivity
 
         navigation = findViewById(R.id.navigation);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+
+        drawer();
+
         fragmentManager = getSupportFragmentManager();
 
         Fragment articlesFragment = new ArticlesFragment();
         loadFragment(articlesFragment);
+        getSupportActionBar().setTitle("أجدد المقالات");
 
         addBadgeView();
 
@@ -69,16 +89,19 @@ public class MainActivity extends AppCompatActivity
                 switch (item.getItemId())
                 {
                     case R.id.articles:
-                        Fragment articlesFragment = new ArticlesFragment();
-                        loadFragment(articlesFragment);
+                        Fragment articlesFragment1 = new ArticlesFragment();
+                        loadFragment(articlesFragment1);
+                        getSupportActionBar().setTitle("أجدد المقالات");
                         return true;
                     case R.id.notification:
                         Fragment notificationsFragment = new NotificationsFragment();
                         loadFragment(notificationsFragment);
+                        getSupportActionBar().setTitle("الاشعارات");
                         return true;
                     case R.id.info:
                         Fragment infoFragment = new InfoFragment();
                         loadFragment(infoFragment);
+                        getSupportActionBar().setTitle("عن المجلة");
                         return true;
                     case R.id.profile:
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -87,6 +110,7 @@ public class MainActivity extends AppCompatActivity
                         {
                             Fragment profileFragment = new ProfileFragment();
                             loadFragment(profileFragment);
+                            getSupportActionBar().setTitle("المعلومات الشخصية");
                         }
                         else
                             {
@@ -98,6 +122,107 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+    }
+
+    public void drawer()
+    {
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener()
+                {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem)
+                    {
+                        switch (menuItem.getItemId())
+                        {
+                            case R.id.d1 :
+                                Fragment d1Fragment = new D1Fragment();
+                                loadFragment(d1Fragment);
+                                getSupportActionBar().setTitle("كبسولات السعاده");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                            case R.id.d2 :
+                                Fragment d2Fragment = new D2Fragment();
+                                loadFragment(d2Fragment);
+                                getSupportActionBar().setTitle("أنت حر");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                            case R.id.d3 :
+                                Fragment d3Fragment = new D3Fragment();
+                                loadFragment(d3Fragment);
+                                getSupportActionBar().setTitle("هن");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                            case R.id.d4 :
+                                Fragment d4Fragment = new D4Fragment();
+                                loadFragment(d4Fragment);
+                                getSupportActionBar().setTitle("أنت و مزاجك");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                            case R.id.d5 :
+                                Fragment d5Fragment = new D5Fragment();
+                                loadFragment(d5Fragment);
+                                getSupportActionBar().setTitle("اسمع غيرك");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                            case R.id.d6 :
+                                Fragment d6Fragment = new D6Fragment();
+                                loadFragment(d6Fragment);
+                                getSupportActionBar().setTitle("اختلاف مش خلاف");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                            case R.id.d7 :
+                                Fragment d7Fragment = new D7Fragment();
+                                loadFragment(d7Fragment);
+                                getSupportActionBar().setTitle("رؤي");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                            case R.id.d8 :
+                                Fragment d8Fragment = new D8Fragment();
+                                loadFragment(d8Fragment);
+                                getSupportActionBar().setTitle("ملف العدد");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                            case R.id.d9 :
+                                Fragment d9Fragment = new D9Fragment();
+                                loadFragment(d9Fragment);
+                                getSupportActionBar().setTitle("حوار العدد");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                            case R.id.d10 :
+                                Fragment d10Fragment = new D10Fragment();
+                                loadFragment(d10Fragment);
+                                getSupportActionBar().setTitle("زقزوقة");
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+                        }
+                        return true;
+                    }
+                });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.END);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void addBadgeView()

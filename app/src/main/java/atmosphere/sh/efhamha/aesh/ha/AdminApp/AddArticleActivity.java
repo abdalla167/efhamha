@@ -11,7 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +38,6 @@ import java.util.Random;
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.EmailAndPasswordActivity;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
-import atmosphere.sh.efhamha.aesh.ha.Models.NotificationModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
 import static atmosphere.sh.efhamha.aesh.ha.R.drawable.ic_add_a_photo_black_24dp;
@@ -47,6 +49,8 @@ public class AddArticleActivity extends AppCompatActivity
     private String image_url;
     private ImageView im;
     private TextView arc_title,arc_source,arc_content;
+    private Spinner spinner;
+    String category;
 
     private StorageReference mstorageref = FirebaseStorage.getInstance().getReference("ArticlesImages");
     private DatabaseReference mdatarefre = FirebaseDatabase.getInstance().getReference();
@@ -65,6 +69,29 @@ public class AddArticleActivity extends AppCompatActivity
         arc_title=findViewById(R.id.add_article_title);
         arc_source=findViewById(R.id.add_article_by);
         arc_content=findViewById(R.id.add_article_content);
+        spinner = findViewById(R.id.categ_spinner);
+
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getApplicationContext(),
+                R.array.categories, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter1);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                category = String.valueOf(parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
 
         prog = new ProgressDialog(this);
 
@@ -170,7 +197,7 @@ public class AddArticleActivity extends AppCompatActivity
 
     public void upload_article(View view)
     {
-        if (uri_image == null || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("")|| arc_content.getText() .toString().equals(""))
+        if (uri_image == null || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("")|| arc_content.getText() .toString().equals("") || category.equals("اختار موضوع"))
         {
             Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
         } else {
@@ -197,6 +224,7 @@ public class AddArticleActivity extends AppCompatActivity
                             ArticleModel obj = new ArticleModel(image_url,title,content,source,time_txt,day_txt,month_txt,year_txt);
                             mdatarefre.child("Articles").child(ID).setValue(obj);
                             mdatarefre.child("Notifications").child(ID).setValue(obj);
+                            mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
                         }
                     });
 

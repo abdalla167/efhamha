@@ -38,7 +38,6 @@ import java.util.Calendar;
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
-import atmosphere.sh.efhamha.aesh.ha.Models.NotificationModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 

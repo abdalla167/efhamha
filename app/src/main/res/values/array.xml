@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="categories">
+        <item>اختار موضوع</item>
+        <item>كبسولات السعاده</item>
+        <item>أنت حر</item>
+        <item>هن</item>
+        <item>أنت و مزاجك</item>
+        <item>اسمع غيرك</item>
+        <item>اختلاف مش خلاف</item>
+        <item>رؤي</item>
+        <item>ملف العدد</item>
+        <item>حوار العدد</item>
+        <item>زقزوقة</item>
+    </string-array>
+
+</resources>

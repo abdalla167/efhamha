@@ -118,7 +118,7 @@ public class ArticleActivity extends AppCompatActivity
 
     private void addComment(String name, String imageurl, String content,String key)
     {
-        CommentModel commentModel = new CommentModel(imageurl,name,content);
+        CommentModel commentModel = new CommentModel(imageurl,name,content,getUid());
         String comment_key = databaseReference.child("Comments").push().getKey();
         databaseReference.child("Comments").child(key).child(comment_key).setValue(commentModel);
 
@@ -279,6 +279,16 @@ public class ArticleActivity extends AppCompatActivity
         {
             username.setText(commentModel.getUsername());
             content.setText(commentModel.getContentcomment());
+
+            String id = commentModel.getUserid();
+
+            if (id.equals(getUid()))
+            {
+                materialRippleLayout.setVisibility(View.VISIBLE);
+            } else
+                {
+                    materialRippleLayout.setVisibility(View.GONE);
+                }
 
             Picasso.get()
                     .load(commentModel.getImage_url())
