@@ -54,7 +54,6 @@ public class NotificationsFragment extends Fragment
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<ArticleModel, notificationsViewHolder> firebaseRecyclerAdapter;
 
-    LinearLayout linearLayout;
 
     @Nullable
     @Override
@@ -70,12 +69,10 @@ public class NotificationsFragment extends Fragment
     {
         super.onActivityCreated(savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.recyclerview_notifaection);
+        recyclerView = view.findViewById(R.id.recyclerview);
         rotateLoading = view.findViewById(R.id.rotateloading);
-        linearLayout = view.findViewById(R.id.no_notifications_lin);
 
         rotateLoading.start();
-        linearLayout.setVisibility(View.GONE);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -115,7 +112,6 @@ public class NotificationsFragment extends Fragment
 
                         if (count > 0)
                         {
-                            linearLayout.setVisibility(View.GONE );
                         }
                     }
 
@@ -162,7 +158,6 @@ public class NotificationsFragment extends Fragment
         };
         recyclerView.setAdapter(firebaseRecyclerAdapter);
         rotateLoading.stop();
-        linearLayout.setVisibility(View.VISIBLE );
     }
 
     public static class notificationsViewHolder extends RecyclerView.ViewHolder

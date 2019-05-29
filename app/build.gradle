@@ -10,6 +10,14 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    android {
+
+        defaultConfig {
+            applicationId "atmosphere.sh.efhamha.aesh.ha"  // this is the id that your app has
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -44,6 +52,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:17.0.0'
     implementation 'com.google.firebase:firebase-storage:17.0.0'
     implementation 'com.firebaseui:firebase-ui-database:4.3.0'
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-messaging:18.0.0'
+
+
 
     // ButterKnife
     implementation 'com.jakewharton:butterknife:8.8.1'
@@ -66,6 +78,10 @@ dependencies {
 
     //gason
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    //navigation
+    implementation 'com.android.support:design:28.0.0'
+    implementation'com.android.support:customtabs:28.0.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

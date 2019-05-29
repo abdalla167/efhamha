@@ -10,18 +10,7 @@
         android:orientation="vertical"
         >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="أجدد المقالات"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            android:layout_marginLeft="26dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginRight="26dp"
-            android:textColor="@android:color/white"
-            android:padding="5dp"
-            />
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"

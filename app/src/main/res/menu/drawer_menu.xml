@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+
+    >
+
+    <group android:checkableBehavior="single"
+        >
+        <item
+            android:id="@+id/cabsolt_elsa3ada"
+            android:title="كبسولات السعاده"
+            />
+        <item
+            android:id="@+id/enta_7or"
+            android:title="انت حر"
+            />
+        <item
+            android:id="@+id/h_n"
+            android:title="هن"
+            />
+        <item
+            android:id="@+id/enta_wmazageg"
+            android:title="انت و مزجاك" />
+        <item
+            android:id="@+id/esma3_8erk"
+            android:title="ملف العدد" />
+        <item
+            android:id="@+id/e5talf_me4_5laf"
+            android:title="اختلاف مش خلاف" />
+        <item
+            android:id="@+id/ro2a"
+            android:title="رؤي" />
+        <item
+            android:id="@+id/malf_el3add"
+            android:title="ملف العدد" />
+        <item
+            android:id="@+id/howaer_ell3add"
+            android:title="حوار العدد" />
+        <item
+            android:id="@+id/za2ao2a"
+            android:title="زقزوقه" />
+
+
+
+    </group>
+
+
+
+</menu>
