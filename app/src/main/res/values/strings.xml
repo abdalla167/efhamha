@@ -21,4 +21,8 @@
     <string name="fb_login_protocol_scheme">fb1080893165427925</string>
 
     <string name="demo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit ac orci vitae viverra. Aliquam mollis, risus in viverra rhoncus, neque odio iaculis nisl, nec congue erat elit eget mauris. Vestibulum nec risus lorem. Proin ultrices, est eget vestibulum ultrices, dui ligula pellentesque lectus, sed feugiat mi lectus eget ante. Donec congue suscipit massa sit amet mattis. Vivamus ornare, ex eget condimentum fermentum, sapien est scelerisque lorem, non dapibus ipsum purus sit amet velit. Sed facilisis egestas ante quis scelerisque. In hac habitasse platea dictumst. Vestibulum congue luctus sem at semper.</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
