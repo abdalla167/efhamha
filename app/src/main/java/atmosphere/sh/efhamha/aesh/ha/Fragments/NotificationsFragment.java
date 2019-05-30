@@ -183,14 +183,20 @@ public class NotificationsFragment extends Fragment
 
         void BindPlaces(final ArticleModel notificationModel)
         {
+            if (notificationModel.getType() == 1)
+            {
+                Picasso.get()
+                        .load(notificationModel.getImage_url())
+                        .placeholder(R.drawable.ic_darkgrey)
+                        .error(R.drawable.ic_darkgrey)
+                        .into(image);
+            } else
+                {
+                    image.setImageResource(R.drawable.ic_youtube);
+                }
             title.setText(notificationModel.getTitle());
             String time_txt = notificationModel.getArticle_day() + " " + notificationModel.getArticle_month() + " " + notificationModel.getArticle_year();
             time.setText(time_txt);
-            Picasso.get()
-                    .load(notificationModel.getImage_url())
-                    .placeholder(R.drawable.ic_darkgrey)
-                    .error(R.drawable.ic_darkgrey)
-                    .into(image);
         }
     }
     @Override

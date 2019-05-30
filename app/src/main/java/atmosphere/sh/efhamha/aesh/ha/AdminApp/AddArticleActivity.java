@@ -47,10 +47,11 @@ public class AddArticleActivity extends AppCompatActivity
     private static final int img_id = 1;
     private Uri uri_image;
     private String image_url;
-    private ImageView im;
-    private TextView arc_title,arc_source,arc_content;
+    private ImageView im,video;
+    private TextView arc_title,arc_source,arc_content,url_txt;
     private Spinner spinner;
     String category;
+    int type;
 
     private StorageReference mstorageref = FirebaseStorage.getInstance().getReference("ArticlesImages");
     private DatabaseReference mdatarefre = FirebaseDatabase.getInstance().getReference();
@@ -66,6 +67,8 @@ public class AddArticleActivity extends AppCompatActivity
         setContentView(R.layout.activity_add_article);
 
         im = findViewById(R.id.add_article_image);
+        url_txt = findViewById(R.id.url);
+        video = findViewById(R.id.add_article_video);
         arc_title=findViewById(R.id.add_article_title);
         arc_source=findViewById(R.id.add_article_by);
         arc_content=findViewById(R.id.add_article_content);
@@ -162,10 +165,16 @@ public class AddArticleActivity extends AppCompatActivity
 
     public void chooseimageformgallery(View view)
     {
-        CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-                .setAspectRatio(1, 1)
-                .start(AddArticleActivity.this);
+        if (uri_image == null)
+        {
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
+                    .setAspectRatio(1, 1)
+                    .start(AddArticleActivity.this);
+        } else
+            {
+                Toast.makeText(getApplicationContext(), "انت مختار فيديو", Toast.LENGTH_SHORT).show();
+            }
     }
 
     @Override
@@ -180,17 +189,21 @@ public class AddArticleActivity extends AppCompatActivity
             {
                 if (result != null)
                 {
+                    type = 1;
                     uri_image = result.getUri();
-                    Picasso.get()
-                            .load(uri_image)
-                            .placeholder(R.drawable.ic_add_a_photo_black_24dp)
-                            .error(R.drawable.ic_add_a_photo_black_24dp)
-                            .into(im);
-                    im.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    url_txt.setText(uri_image.getLastPathSegment());
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
             {
                 Exception error = result.getError();
+            }
+        } else if (resultCode == RESULT_OK)
+        {
+            if (requestCode == 103)
+            {
+                type = 2;
+                uri_image = data.getData();
+                url_txt.setText(uri_image.getLastPathSegment());
             }
         }
     }
@@ -221,7 +234,7 @@ public class AddArticleActivity extends AppCompatActivity
                             String ID = mdatarefre.push().getKey();
 
                             image_url = uri.toString();
-                            ArticleModel obj = new ArticleModel(image_url,title,content,source,time_txt,day_txt,month_txt,year_txt);
+                            ArticleModel obj = new ArticleModel(image_url,title,content,source,time_txt,day_txt,month_txt,year_txt,type);
                             mdatarefre.child("Articles").child(ID).setValue(obj);
                             mdatarefre.child("Notifications").child(ID).setValue(obj);
                             mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
@@ -249,6 +262,26 @@ public class AddArticleActivity extends AppCompatActivity
                 }
             });
         }
+    }
+
+    public void choosevideo(View view)
+    {
+        if (uri_image == null)
+        {
+            Intent intent = new Intent();
+            intent.setType("video/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent,"Select Video"),103);
+        } else
+            {
+                Toast.makeText(getApplicationContext(), "انت مختار صورة", Toast.LENGTH_SHORT).show();
+            }
+    }
+
+    public void removeuri(View view)
+    {
+        uri_image = null;
+        url_txt.setText("المسار");
     }
 }
 

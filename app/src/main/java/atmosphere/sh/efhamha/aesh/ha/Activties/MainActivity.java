@@ -108,15 +108,9 @@ public class MainActivity extends AppCompatActivity
 
                         if (user != null)
                         {
-                            if (user.isEmailVerified())
-                            {
-                                Fragment profileFragment = new ProfileFragment();
-                                loadFragment(profileFragment);
-                                getSupportActionBar().setTitle("المعلومات الشخصية");
-                            } else
-                                {
-                                    Toast.makeText(getApplicationContext(), "اتأكد انك فعلت ايميلك", Toast.LENGTH_SHORT).show();
-                                }
+                            Fragment profileFragment = new ProfileFragment();
+                            loadFragment(profileFragment);
+                            getSupportActionBar().setTitle("المعلومات الشخصية");
                         }
                         else
                             {

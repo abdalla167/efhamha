@@ -11,10 +11,11 @@ import java.util.HashMap;
 public class ArticleModel implements Serializable
 {
     private String image_url,title,content,source,article_time,article_day,article_month,article_year;
+    int type;
 
     public ArticleModel() { }
 
-    public ArticleModel(String image_url, String title, String content, String source, String article_time, String article_day, String article_month, String article_year) {
+    public ArticleModel(String image_url, String title, String content, String source, String article_time, String article_day, String article_month, String article_year, int type) {
         this.image_url = image_url;
         this.title = title;
         this.content = content;
@@ -23,6 +24,7 @@ public class ArticleModel implements Serializable
         this.article_day = article_day;
         this.article_month = article_month;
         this.article_year = article_year;
+        this.type = type;
     }
 
     public String getImage_url() {
@@ -87,5 +89,13 @@ public class ArticleModel implements Serializable
 
     public void setArticle_year(String article_year) {
         this.article_year = article_year;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }

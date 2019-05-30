@@ -133,7 +133,7 @@ public class ArticleActivity extends AppCompatActivity
     public void addData ()
     {
         admin = getIntent().getIntExtra("admin", 0);
-        ArticleModel articleModel = (ArticleModel) getIntent().getSerializableExtra("ar");
+        final ArticleModel articleModel = (ArticleModel) getIntent().getSerializableExtra("ar");
         KEY = getIntent().getStringExtra("ar2");
 
         if (admin == 1)
@@ -152,15 +152,34 @@ public class ArticleActivity extends AppCompatActivity
         source.setText(articleModel.getSource());
         content.setText(articleModel.getContent());
 
-        Picasso.get()
-                .load(articleModel.getImage_url())
-                .placeholder(R.drawable.ic_darkgrey)
-                .error(R.drawable.ic_darkgrey)
-                .into(imageArchi);
+        if (articleModel.getType() == 1)
+        {
+            Picasso.get()
+                    .load(articleModel.getImage_url())
+                    .placeholder(R.drawable.ic_darkgrey)
+                    .error(R.drawable.ic_darkgrey)
+                    .into(imageArchi);
+        } else
+            {
+                imageArchi.setImageResource(R.drawable.ic_youtube);
 
-        edit_article_mrl.setOnClickListener(new View.OnClickListener() {
+                imageArchi.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        Intent intent = new Intent(getApplicationContext(), VideoActivity.class);
+                        intent.putExtra("url", articleModel.getImage_url());
+                        startActivity(intent);
+                    }
+                });
+            }
+
+        edit_article_mrl.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 PopupMenu popup = new PopupMenu(ArticleActivity.this, edit_article_mrl);
                 //Inflating the Popup using xml file
                 popup.getMenuInflater()

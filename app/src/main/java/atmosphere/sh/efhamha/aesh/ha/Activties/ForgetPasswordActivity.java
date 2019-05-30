@@ -21,13 +21,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ForgetPasswordActivity extends AppCompatActivity {
-
+public class ForgetPasswordActivity extends AppCompatActivity
+{
     @BindView(R.id.reset_email_editText)
     EditText resetEmailEditText;
     @BindView(R.id.btn_reset_password)
     Button btnResetPassword;
-
 
     private String email;
     private ProgressDialog progressDialog;
@@ -36,17 +35,19 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
         ButterKnife.bind(this);
         mAuth = FirebaseAuth.getInstance();
-
     }
 
     @OnClick(R.id.btn_reset_password)
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
+    public void onViewClicked(View view)
+    {
+        switch (view.getId())
+        {
             case R.id.btn_reset_password:
                 if (getInputData())
                     resetPassowrd(email);

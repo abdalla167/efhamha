@@ -1,8 +1,11 @@
 package atmosphere.sh.efhamha.aesh.ha.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,8 +19,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -35,6 +40,7 @@ import com.victor.loading.rotate.RotateLoading;
 
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
+import atmosphere.sh.efhamha.aesh.ha.Activties.VideoActivity;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
@@ -102,7 +108,7 @@ public class ArticlesFragment extends Fragment
 
                 final String key = getRef(position).getKey();
 
-                holder.BindPlaces(model);
+                holder.BindPlaces(model,getContext());
 
                 holder.setlikesstatus(key,getContext(),user);
                 holder.setcommentstatus(key,getContext(),user);
@@ -255,19 +261,49 @@ public class ArticlesFragment extends Fragment
             databaseReference = FirebaseDatabase.getInstance().getReference();
         }
 
-        void BindPlaces(ArticleModel articleModel)
+        void BindPlaces(final ArticleModel articleModel, final Context context)
         {
+            if (articleModel.getType() == 1)
+            {
+                imageArchi.setVisibility(View.VISIBLE);
+
+                Picasso.get()
+                        .load(articleModel.getImage_url())
+                        .placeholder(R.drawable.ic_darkgrey)
+                        .error(R.drawable.ic_darkgrey)
+                        .into(imageArchi);
+
+                imageArchi.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+
+                    }
+                });
+            } else if (articleModel.getType() == 2)
+                {
+                    imageArchi.setImageResource(R.drawable.ic_youtube);
+                    imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
+
+                    imageArchi.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            Intent intent = new Intent(context, VideoActivity.class);
+                            intent.putExtra("url", articleModel.getImage_url());
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+
             title.setText(articleModel.getTitle());
             String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
             time.setText(time_txt);
             source.setText(articleModel.getSource());
             content.setText(articleModel.getContent());
-
-            Picasso.get()
-                    .load(articleModel.getImage_url())
-                    .placeholder(R.drawable.ic_darkgrey)
-                    .error(R.drawable.ic_darkgrey)
-                    .into(imageArchi);
         }
 
         void setlikesstatus(final String articlekey, final Context context, final FirebaseUser user)
