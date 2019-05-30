@@ -230,8 +230,7 @@ public class SignInActivity extends AppCompatActivity
                                     @Override
                                     public void onClick(DialogInterface dialog, int which)
                                     {
-                                        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                                        startActivity(intent);
+                                       dialog.dismiss();
                                     }
                                 });
                                 alertDialog.show();
@@ -254,7 +253,7 @@ public class SignInActivity extends AppCompatActivity
     }
 
     private boolean getInputData() {
-        if (!(InputValidator.signInValidation(getApplicationContext(), signInEmailEditText, signInPasswordEditText)))
+        if (!(InputValidator.signInValidation(getApplicationContext(),signInEmailEditText, signInPasswordEditText)))
         {
             return false;
         }
@@ -269,6 +268,7 @@ public class SignInActivity extends AppCompatActivity
         switch (view.getId()) {
             case R.id.signIn_forget_password_text_view:
                 startActivity(new Intent(getApplicationContext(), ForgetPasswordActivity.class));
+                //signOut();
                 break;
             case R.id.signIn_button:
                 if (getInputData())
@@ -295,9 +295,19 @@ public class SignInActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
         {
+            if (!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
+            {
+                FirebaseAuth.getInstance().signOut();
 
-        }
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        } else
+            {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
     }
 }

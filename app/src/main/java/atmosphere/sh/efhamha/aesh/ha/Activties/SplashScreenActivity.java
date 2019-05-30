@@ -42,15 +42,25 @@ public class SplashScreenActivity extends AppCompatActivity
                     finish();
                 } else
                     {
-                        if (user.isEmailVerified())
+                        if (user != null )
                         {
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(i);
-                            // kill current activity
-                            finish();
+                            if (user.isEmailVerified())
+                            {
+                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(i);
+                                // kill current activity
+                                finish();
+                            } else
+                                {
+                                    FirebaseAuth.getInstance().signOut();
+                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(i);
+                                    // kill current activity
+                                    finish();
+                                }
                         } else
                             {
-                                Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(i);
                                 // kill current activity
                                 finish();

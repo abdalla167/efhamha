@@ -164,6 +164,8 @@ public class EmailAndPasswordActivity extends AppCompatActivity
                                 public void onClick(DialogInterface dialog, int which)
                                 {
                                     //لازم يفعل الأيميل عشان يدخل
+                                    Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                    startActivity(intent);
                                 }
                             });
                             alertDialog.show();
