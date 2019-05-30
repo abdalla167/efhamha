@@ -402,6 +402,7 @@ public class D1Fragment extends Fragment
         }
     }
 
+
     @Override
     public void onStart()
     {
