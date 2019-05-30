@@ -41,7 +41,6 @@ public class ProfileFragment extends Fragment
 {
     private View view;
     private Button signout_btn;
-    private ImageButton edit_btn;
     private TextView emailTV,usernameTV;
     private ImageView circleImageView;
 
@@ -62,7 +61,6 @@ public class ProfileFragment extends Fragment
         signout_btn = view.findViewById(R.id.signout_btn);
         emailTV = view.findViewById(R.id.email_txt);
         usernameTV = view.findViewById(R.id.username_txt);
-        edit_btn = view.findViewById(R.id.edit_profile_btn);
         circleImageView = view.findViewById(R.id.profile_image);
 
         database = FirebaseDatabase.getInstance();
@@ -85,15 +83,6 @@ public class ProfileFragment extends Fragment
             public void onClick(View v)
             {
                 signOut();
-            }
-        });
-
-        edit_btn.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Toast.makeText(getContext(), "انت دوست تعديل", Toast.LENGTH_SHORT).show();
             }
         });
     }

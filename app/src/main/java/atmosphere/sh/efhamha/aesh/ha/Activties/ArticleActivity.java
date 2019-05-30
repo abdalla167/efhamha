@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import com.squareup.picasso.Picasso;
 import com.victor.loading.rotate.RotateLoading;
 
 
+import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.CommentModel;
@@ -52,6 +54,7 @@ public class ArticleActivity extends AppCompatActivity
     EditText commenttext;
     FloatingActionButton add_comment_btn;
     RotateLoading rotateLoading;
+    LinearLayout bottom;
 
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
@@ -60,6 +63,8 @@ public class ArticleActivity extends AppCompatActivity
     DatabaseReference databaseReference;
 
     String KEY,name,imageurl;
+
+    int admin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,6 +89,7 @@ public class ArticleActivity extends AppCompatActivity
         commenttext = findViewById(R.id.comment_text);
         add_comment_btn = findViewById(R.id.add_comment_btn);
         rotateLoading = findViewById(R.id.rotateloading);
+        bottom = findViewById(R.id.bottom);
 
         rotateLoading.start();
 
@@ -95,8 +101,6 @@ public class ArticleActivity extends AppCompatActivity
 
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-
-        returnData(getUid());
 
         add_comment_btn.setOnClickListener(new View.OnClickListener()
         {
@@ -128,16 +132,18 @@ public class ArticleActivity extends AppCompatActivity
 
     public void addData ()
     {
-        int admin = getIntent().getIntExtra("admin", 0);
+        admin = getIntent().getIntExtra("admin", 0);
         ArticleModel articleModel = (ArticleModel) getIntent().getSerializableExtra("ar");
         KEY = getIntent().getStringExtra("ar2");
 
         if (admin == 1)
         {
             edit_article_mrl.setVisibility(View.VISIBLE);
+            bottom.setVisibility(GONE);
         } else
         {
             edit_article_mrl.setVisibility(View.GONE);
+            returnData(getUid());
         }
 
         title.setText(articleModel.getTitle());
@@ -151,6 +157,33 @@ public class ArticleActivity extends AppCompatActivity
                 .placeholder(R.drawable.ic_darkgrey)
                 .error(R.drawable.ic_darkgrey)
                 .into(imageArchi);
+
+        edit_article_mrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(ArticleActivity.this, edit_article_mrl);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater()
+                        .inflate(R.menu.edit_comment, popup.getMenu());
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
+                {
+                    public boolean onMenuItemClick(MenuItem item)
+                    {
+                        switch (item.getItemId())
+                        {
+                            case R.id.delete:
+                                /*databaseReference.child("Comments").child(KEY).child(key).removeValue();
+                                Toast.makeText(getApplicationContext(), "تم حذف التعليق", Toast.LENGTH_SHORT).show();*/
+                                return true;
+                            default:
+                                return true;
+                        }
+                    }});
+                popup.show(); //showing popup menu
+            }
+        });
     }
 
     private void displayComments(String key)
@@ -282,7 +315,7 @@ public class ArticleActivity extends AppCompatActivity
 
             String id = commentModel.getUserid();
 
-            if (id.equals(getUid()))
+            if (id.equals(getUid()) || getUid().equals("CJ4jidhu82acscpjmd7fUjaT39n2"))
             {
                 materialRippleLayout.setVisibility(View.VISIBLE);
             } else
@@ -356,7 +389,14 @@ public class ArticleActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        if (admin == 1)
+        {
+            Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+            startActivity(intent);
+        } else
+        {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+        }
     }
 }

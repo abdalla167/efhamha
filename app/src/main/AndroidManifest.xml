@@ -16,11 +16,15 @@
         <activity
             android:name=".AdminApp.AddArticleActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
         <activity
             android:name=".AdminApp.AdminActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
         <activity
             android:name=".Activties.ForgetPasswordActivity"
             android:screenOrientation="portrait"
@@ -53,7 +57,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
             android:label=""
-            ></activity>
+            >
+
+        </activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

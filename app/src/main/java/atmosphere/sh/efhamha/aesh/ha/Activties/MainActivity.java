@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity
     public void doExitApp() {
         if ((System.currentTimeMillis() - exitTime) > 2000)
         {
-            Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "دوس تاني عشان تخرج", Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
         } else {
             finishAffinity();

@@ -107,15 +107,6 @@ public class D5Fragment extends Fragment
                 holder.setcommentstatus(key,getContext(),user);
                 holder.setviewsstatus(getContext(),key,user);
 
-                holder.imageshare.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        Toast.makeText(getContext(), "انت دوست شير", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
                 holder.article_mrl.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -251,17 +242,14 @@ public class D5Fragment extends Fragment
             numlikes = itemView.findViewById(R.id.numlikes);
             numviews = itemView.findViewById(R.id.numviews);
             numcomments = itemView.findViewById(R.id.numcomments);
-            numshare = itemView.findViewById(R.id.numshare);
             imageArchi = itemView.findViewById(R.id.article_image);
             imagelike = itemView.findViewById(R.id.like_btn);
             imagecomment = itemView.findViewById(R.id.comment_btn);
-            imageshare = itemView.findViewById(R.id.share_btn);
             imageArchi = itemView.findViewById(R.id.article_image);
             article_mrl = itemView.findViewById(R.id.article_mrl);
             likeimage=itemView.findViewById(R.id.like);
             comment_img=itemView.findViewById(R.id.comment);
             view_img=itemView.findViewById(R.id.view);
-            share_img=itemView.findViewById(R.id.share);
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
         }

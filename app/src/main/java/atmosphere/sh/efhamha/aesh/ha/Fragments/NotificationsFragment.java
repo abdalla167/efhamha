@@ -53,6 +53,7 @@ public class NotificationsFragment extends Fragment
     RecyclerView.LayoutManager layoutManager;
     FirebaseRecyclerAdapter<ArticleModel, notificationsViewHolder> firebaseRecyclerAdapter;
 
+    LinearLayout linearLayout;
 
     @Nullable
     @Override
@@ -68,10 +69,12 @@ public class NotificationsFragment extends Fragment
     {
         super.onActivityCreated(savedInstanceState);
 
-        recyclerView = view.findViewById(R.id.recyclerview);
+        recyclerView = view.findViewById(R.id.recyclerview_notifaection);
         rotateLoading = view.findViewById(R.id.rotateloading);
+        linearLayout = view.findViewById(R.id.no_notifications_lin);
 
         rotateLoading.start();
+        linearLayout.setVisibility(View.GONE);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
@@ -111,6 +114,7 @@ public class NotificationsFragment extends Fragment
 
                         if (count > 0)
                         {
+                            linearLayout.setVisibility(View.GONE );
                         }
                     }
 
@@ -139,6 +143,7 @@ public class NotificationsFragment extends Fragment
                             intent.putExtra("ar", model);
                             intent.putExtra("ar2", key);
                             startActivity(intent);
+                            databaseReference.child("Views").child(key).child(user.getUid()).setValue(user.getUid());
                         } else
                             {
                                 Toast.makeText(getContext(), "لو سمحت سجل دخولك الأول", Toast.LENGTH_SHORT).show();
@@ -157,6 +162,7 @@ public class NotificationsFragment extends Fragment
         };
         recyclerView.setAdapter(firebaseRecyclerAdapter);
         rotateLoading.stop();
+        linearLayout.setVisibility(View.VISIBLE );
     }
 
     public static class notificationsViewHolder extends RecyclerView.ViewHolder
