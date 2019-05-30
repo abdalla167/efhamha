@@ -117,6 +117,7 @@ public class ProfileFragment extends Fragment
                             .error(R.drawable.user)
                             .into(circleImageView);
 
+
                     Log.d("UserPhotoURl", "UserPhotoURl: " + user.getPhotoUrl().toString());
                 } else if(providerId.equals(FacebookAuthProvider.PROVIDER_ID)){
                     usernameTV.setText(user.getDisplayName());
