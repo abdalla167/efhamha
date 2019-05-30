@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -36,13 +38,14 @@ import java.util.List;
 import atmosphere.sh.efhamha.aesh.ha.Activties.MainActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.SignInActivity;
 import atmosphere.sh.efhamha.aesh.ha.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment
 {
     private View view;
     private Button signout_btn;
     private TextView emailTV,usernameTV;
-    private ImageView circleImageView;
+    private CircleImageView circleImageView;
 
     //Firebase
     private FirebaseAuth mAuth;
@@ -51,7 +54,6 @@ public class ProfileFragment extends Fragment
     FirebaseDatabase database;
     DatabaseReference ref;
 
-    String userId;
 
     @Nullable
     @Override
@@ -75,8 +77,6 @@ public class ProfileFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
-
-
         signout_btn.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -98,11 +98,33 @@ public class ProfileFragment extends Fragment
         for (UserInfo ui : infos) {
             providerId = ui.getProviderId();
             if (count == 1) {
-                if (providerId.equals(GoogleAuthProvider.PROVIDER_ID) || providerId.equals(FacebookAuthProvider.PROVIDER_ID)) {
+                if (providerId.equals(GoogleAuthProvider.PROVIDER_ID) ) {
                     usernameTV.setText(user.getDisplayName());
                     emailTV.setText(user.getEmail());
+
+                    String originalPieceOfUrl = "s96-c/photo.jpg";
+
+                    String newPieceOfUrlToAdd = "s400-c/photo.jpg";
+
+                    String photoPath = user.getPhotoUrl().toString();
+                    String newPath = photoPath.replace(originalPieceOfUrl, newPieceOfUrlToAdd);
+                    Log.d("PhotoPath:", "PhotoPathOriginal: " + photoPath);
+                    Log.d("PhotoPath:", "PhotoPathOriginal: " + newPath);
+
                     Picasso.get()
-                            .load(user.getPhotoUrl())
+                            .load(newPath)
+                            .placeholder(R.drawable.user)
+                            .error(R.drawable.user)
+                            .into(circleImageView);
+
+                    Log.d("UserPhotoURl", "UserPhotoURl: " + user.getPhotoUrl().toString());
+                } else if(providerId.equals(FacebookAuthProvider.PROVIDER_ID)){
+                    usernameTV.setText(user.getDisplayName());
+                    emailTV.setText(user.getEmail());
+                    String photoPath = user.getPhotoUrl().toString();
+                    Log.d("PhotoPath:", "PhotoPathOriginal: " + photoPath);
+                    Picasso.get()
+                            .load(photoPath)
                             .placeholder(R.drawable.user)
                             .error(R.drawable.user)
                             .into(circleImageView);
@@ -115,6 +137,8 @@ public class ProfileFragment extends Fragment
                             String userName = dataSnapshot.child("userName").getValue(String.class);
                             String email = dataSnapshot.child("email").getValue(String.class);
                             String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
+                            Log.d("UserPhotoURl", "UserPhotoURl: " + imageUrl);
+
                             usernameTV.setText(userName);
                             emailTV.setText(email);
                             Picasso.get()
