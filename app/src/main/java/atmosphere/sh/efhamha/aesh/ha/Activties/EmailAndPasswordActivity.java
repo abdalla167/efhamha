@@ -139,7 +139,7 @@ public class EmailAndPasswordActivity extends AppCompatActivity
 
     private void signUp(final String email, String password) {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("رجاء الأنتظار ....");
+        progressDialog.setMessage("برجاء الانتظار ....");
         progressDialog.show();
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -157,7 +157,7 @@ public class EmailAndPasswordActivity extends AppCompatActivity
                             alertDialog = new AlertDialog.Builder(EmailAndPasswordActivity.this);
                             alertDialog.setCancelable(false);
                             alertDialog.setTitle("الرجاء تأكيد الايميل");
-                            alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
+                            alertDialog.setMessage("افحص بريدك الالكتروني لتأكيد الايميل");
                             alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener()
                             {
                                 @Override

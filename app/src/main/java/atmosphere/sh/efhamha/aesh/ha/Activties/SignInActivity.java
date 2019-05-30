@@ -206,7 +206,7 @@ public class SignInActivity extends AppCompatActivity
 
     private void signIn(String email, String password) {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("رجاء الأنتظار ....");
+        progressDialog.setMessage("برجاء الانتظار ....");
         progressDialog.show();
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -224,13 +224,14 @@ public class SignInActivity extends AppCompatActivity
                                 alertDialog = new AlertDialog.Builder(SignInActivity.this);
                                 alertDialog.setCancelable(false);
                                 alertDialog.setTitle("الرجاء تأكيد الايميل");
-                                alertDialog.setMessage("أفحص بريدك الألكتروني لتأكيد الأيميل");
+                                alertDialog.setMessage("افحص بريدك الالكتروني لتأكيد الايميل");
                                 alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener()
                                 {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which)
                                     {
-
+                                        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+                                        startActivity(intent);
                                     }
                                 });
                                 alertDialog.show();
@@ -295,7 +296,9 @@ public class SignInActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified())
+        {
+
+        }
     }
 }

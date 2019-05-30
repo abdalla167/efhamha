@@ -42,10 +42,19 @@ public class SplashScreenActivity extends AppCompatActivity
                     finish();
                 } else
                     {
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(i);
-                        // kill current activity
-                        finish();
+                        if (user.isEmailVerified())
+                        {
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(i);
+                            // kill current activity
+                            finish();
+                        } else
+                            {
+                                Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                                startActivity(i);
+                                // kill current activity
+                                finish();
+                            }
                     }
             }
         };
