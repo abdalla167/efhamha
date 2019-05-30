@@ -1,6 +1,7 @@
 package atmosphere.sh.efhamha.aesh.ha.Fragments;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,7 +46,7 @@ public class ProfileFragment extends Fragment
     private View view;
     private Button signout_btn;
     private TextView emailTV,usernameTV;
-    private CircleImageView circleImageView;
+    private ImageView circleImageView;
 
     //Firebase
     private FirebaseAuth mAuth;
@@ -89,74 +90,30 @@ public class ProfileFragment extends Fragment
     //Get User Data
     public void loadUserData(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        List<? extends UserInfo> infos = user.getProviderData();
         String userId = user.getUid();
 
-        int count = 0;
-        String providerId;
-        for (UserInfo ui : infos) {
-            providerId = ui.getProviderId();
-            if (count == 1) {
-                if (providerId.equals(GoogleAuthProvider.PROVIDER_ID) ) {
-                    usernameTV.setText(user.getDisplayName());
-                    emailTV.setText(user.getEmail());
+        ref.child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    String originalPieceOfUrl = "s96-c/photo.jpg";
+                String userName = dataSnapshot.child("userName").getValue(String.class);
+                String email = dataSnapshot.child("email").getValue(String.class);
+                String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
 
-                    String newPieceOfUrlToAdd = "s400-c/photo.jpg";
-
-                    String photoPath = user.getPhotoUrl().toString();
-                    String newPath = photoPath.replace(originalPieceOfUrl, newPieceOfUrlToAdd);
-                    Log.d("PhotoPath:", "PhotoPathOriginal: " + photoPath);
-                    Log.d("PhotoPath:", "PhotoPathOriginal: " + newPath);
-
-                    Picasso.get()
-                            .load(newPath)
-                            .placeholder(R.drawable.user)
-                            .error(R.drawable.user)
-                            .into(circleImageView);
-
-
-                    Log.d("UserPhotoURl", "UserPhotoURl: " + user.getPhotoUrl().toString());
-                } else if(providerId.equals(FacebookAuthProvider.PROVIDER_ID)){
-                    usernameTV.setText(user.getDisplayName());
-                    emailTV.setText(user.getEmail());
-                    String photoPath = user.getPhotoUrl().toString();
-                    Log.d("PhotoPath:", "PhotoPathOriginal: " + photoPath);
-                    Picasso.get()
-                            .load(photoPath)
-                            .placeholder(R.drawable.user)
-                            .error(R.drawable.user)
-                            .into(circleImageView);
-                } else {
-
-                    ref.child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            String userName = dataSnapshot.child("userName").getValue(String.class);
-                            String email = dataSnapshot.child("email").getValue(String.class);
-                            String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
-                            Log.d("UserPhotoURl", "UserPhotoURl: " + imageUrl);
-
-                            usernameTV.setText(userName);
-                            emailTV.setText(email);
-                            Picasso.get()
-                                    .load(imageUrl)
-                                    .placeholder(R.drawable.user)
-                                    .error(R.drawable.user)
-                                    .into(circleImageView);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
+                Log.d("imageUrl", imageUrl);
+                usernameTV.setText(userName);
+                emailTV.setText(email);
+                Picasso.get()
+                        .load(imageUrl)
+                        .placeholder(R.drawable.user)
+                        .error(R.drawable.user)
+                        .into(circleImageView);
             }
-            count++;
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
     // Sign Out Method
     public void signOut()

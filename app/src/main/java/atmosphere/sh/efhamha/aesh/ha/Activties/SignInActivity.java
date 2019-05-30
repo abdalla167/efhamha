@@ -39,11 +39,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
 import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
 import atmosphere.sh.efhamha.aesh.ha.Helpers.InputValidator;
+import atmosphere.sh.efhamha.aesh.ha.Models.UserModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,9 +76,12 @@ public class SignInActivity extends AppCompatActivity
     private AlertDialog.Builder alertDialog;
     private static final String TAG1 = "SignInWithEmail";
 
-    //Firebase
+    //Firebase Authentication
     private FirebaseAuth mAuth;
-    private FirebaseUser currentFirebaseUser;
+
+    //Firebase Database
+    FirebaseDatabase database;
+    DatabaseReference ref;
 
     //Google
     private GoogleApiClient mGoogleApiClient;
@@ -172,6 +178,8 @@ public class SignInActivity extends AppCompatActivity
                         {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            saveUser(user);
                             updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -286,6 +294,27 @@ public class SignInActivity extends AppCompatActivity
         }
     }
 
+    public void saveUser(FirebaseUser user){
+
+        //Change Quality of Image Returned by Google
+        String originalPieceOfUrl = "s96-c/photo.jpg";
+        String newPieceOfUrlToAdd = "s400-c/photo.jpg";
+        String photoPath = user.getPhotoUrl().toString();
+        String newPath = photoPath.replace(originalPieceOfUrl, newPieceOfUrlToAdd);
+
+        // Initialize Database
+        database = FirebaseDatabase.getInstance();
+        ref = database.getReference();
+
+        //Create New User
+        UserModel newUser = new UserModel(user.getUid(), user.getDisplayName(), user.getEmail(), newPath);
+
+        //Save User To Database
+        ref.child("Users").child(user.getUid()).setValue(newUser);
+
+        Log.d("saveUser:", "UserIdSaveUser" + user.getUid());
+
+    }
     public void updateUI()
     {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);

@@ -17,22 +17,24 @@ public class InputValidator {
         if (name.isEmpty() || email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isEmpty()  || confirmPassword.isEmpty() || password.length() < 6 || !password.equals(confirmPassword)) {
 
             if(name.isEmpty())
+                //userName.setError("يرجي كتابه أسم المستخدم");
                 Toast.makeText(context, "يرجي كتابة اسم المستخدم", Toast.LENGTH_LONG).show();
-
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-                Toast.makeText(context, "البريد الألكتروني غير صالح", Toast.LENGTH_LONG).show();
 
             if (email.isEmpty())
                 Toast.makeText(context, "يرجي كتابة البريد الألكتروني", Toast.LENGTH_LONG).show();
 
-            if (password.length() < 6)
-                Toast.makeText(context, "يجب ادخال كلمه سر اكبر من 6", Toast.LENGTH_LONG).show();
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                Toast.makeText(context, "البريد الألكتروني غير صالح", Toast.LENGTH_LONG).show();
 
             if (password.isEmpty())
+                //passwordET.setError("يرجي كتابة الباسورد");
                 Toast.makeText(context, "يرجي كتابة الباسورد", Toast.LENGTH_LONG).show();
 
             if (confirmPassword.isEmpty())
                 Toast.makeText(context, "يرجي تأكيد كلمة السر", Toast.LENGTH_LONG).show();
+
+            if (password.length() < 6)
+                Toast.makeText(context, "يجب ادخال كلمه سر اكبر من 6", Toast.LENGTH_LONG).show();
 
             if (!(password.equals(confirmPassword)))
                 Toast.makeText(context, "كلمه السر غير متطابقه", Toast.LENGTH_LONG).show();
@@ -48,15 +50,14 @@ public class InputValidator {
 
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() || password.isEmpty()) {
 
-            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-                Toast.makeText(context, "البريد الألكتروني غير صالح", Toast.LENGTH_LONG).show();
-
             if (email.isEmpty())
                 Toast.makeText(context, "يرجي كتابة البريد الألكتروني", Toast.LENGTH_LONG).show();
 
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
+                Toast.makeText(context, "البريد الألكتروني غير صالح", Toast.LENGTH_LONG).show();
+
             if (password.isEmpty())
                 Toast.makeText(context, "يرجي كتابة الباسورد", Toast.LENGTH_LONG).show();
-
 
             return false;
         }

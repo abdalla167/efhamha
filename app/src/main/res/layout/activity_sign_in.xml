@@ -221,14 +221,15 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:src="@drawable/ic_gmail1"
-                        android:layout_marginRight="20dp"
+                        android:layout_gravity="center"
                         />
 
                     <ImageView
                         android:id="@+id/signIn_facebook_button"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:src="@drawable/ic_facebook1"
+                        android:visibility="invisible"
                         />
 
                 </LinearLayout>
