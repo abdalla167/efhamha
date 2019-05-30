@@ -59,6 +59,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         progressDialog.setMessage("رجاء الأنتظار....");
         progressDialog.show();
 
+
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -76,7 +77,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     }
 
     private boolean getInputData(){
-        if(!InputValidator.emailValidation(resetEmailEditText)) {
+        if(!InputValidator.emailValidation(getApplicationContext(), resetEmailEditText)) {
             return false;
         }
         email = resetEmailEditText.getText().toString().trim();

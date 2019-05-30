@@ -254,7 +254,7 @@ public class SignInActivity extends AppCompatActivity
     }
 
     private boolean getInputData() {
-        if (!(InputValidator.signInValidation(signInEmailEditText, signInPasswordEditText)))
+        if (!(InputValidator.signInValidation(getApplicationContext(), signInEmailEditText, signInPasswordEditText)))
         {
             return false;
         }
@@ -269,7 +269,6 @@ public class SignInActivity extends AppCompatActivity
         switch (view.getId()) {
             case R.id.signIn_forget_password_text_view:
                 startActivity(new Intent(getApplicationContext(), ForgetPasswordActivity.class));
-                //signOut();
                 break;
             case R.id.signIn_button:
                 if (getInputData())

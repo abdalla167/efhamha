@@ -185,7 +185,7 @@ public class EmailAndPasswordActivity extends AppCompatActivity
             Toast.makeText(this, "يرجي أختيار صوره", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (!(InputValidator.signUpValidation(usernameField, signUpEmailEditText, signUpPasswordEditText, signUpConfirmPasswordEditText))) {
+        if (!(InputValidator.signUpValidation(getApplicationContext(), usernameField, signUpEmailEditText, signUpPasswordEditText, signUpConfirmPasswordEditText))) {
             return false;
         }
 
