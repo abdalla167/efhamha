@@ -4,6 +4,7 @@ import android.content.Intent;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ import com.victor.loading.rotate.RotateLoading;
 
 import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
+import atmosphere.sh.efhamha.aesh.ha.Helpers.ViewPagerAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.CommentModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.UserModel;
@@ -47,6 +49,7 @@ import static android.view.View.GONE;
 
 public class ArticleActivity extends AppCompatActivity
 {
+
     TextView title,time;
     TextView content, source,comments_count;
     ImageView imageArchi;
@@ -55,6 +58,8 @@ public class ArticleActivity extends AppCompatActivity
     FloatingActionButton add_comment_btn;
     RotateLoading rotateLoading;
     LinearLayout bottom;
+    ViewPager viewPager;
+
 
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
@@ -90,6 +95,9 @@ public class ArticleActivity extends AppCompatActivity
         add_comment_btn = findViewById(R.id.add_comment_btn);
         rotateLoading = findViewById(R.id.rotateloading);
         bottom = findViewById(R.id.bottom);
+
+        viewPager =findViewById(R.id.article_image_viewpagerfull);
+
 
         rotateLoading.start();
 
@@ -154,6 +162,12 @@ public class ArticleActivity extends AppCompatActivity
 
         if (articleModel.getType() == 1)
         {
+            if (articleModel.getImage_url()!=null) {
+                ViewPagerAdapter adapter = new ViewPagerAdapter(this, articleModel.getImage_url());
+                viewPager.setAdapter(adapter);
+            }
+
+
             /*
             Picasso.get()
                     .load(articleModel.getImage_url())
