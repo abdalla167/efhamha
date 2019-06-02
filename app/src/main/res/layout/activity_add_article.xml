@@ -172,6 +172,7 @@
             android:padding="10dp"
             />
         <Button
+            android:id="@+id/addpdf"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_30sdp"
             android:text="أضافة ملف"

@@ -1,21 +1,19 @@
 package atmosphere.sh.efhamha.aesh.ha.Models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class ArticleModel implements Serializable
 {
-    private String title,content,source,article_time,article_day,article_month,article_year,wordfile;
+    private String title,content,source,article_time,article_day,article_month,article_year,pdf;
     int type;
     private ArrayList<String>image_url;
 
 
     public ArticleModel() { }
+
 
     public ArticleModel(ArrayList<String> image_url, String title, String content, String source, String article_time, String article_day, String article_month, String article_year ,String wordfile, int type) {
         this.image_url = image_url;
@@ -27,7 +25,7 @@ public class ArticleModel implements Serializable
         this.article_month = article_month;
         this.article_year = article_year;
         this.type = type;
-        this.wordfile=wordfile;
+        this.pdf=wordfile;
     }
 
     public ArrayList<String> getImage_url() {
@@ -75,7 +73,7 @@ public class ArticleModel implements Serializable
     }
 
     public void setWordfile(String wordfile) {
-        this.wordfile = wordfile;
+        this.pdf = wordfile;
     }
 
     public void setArticle_day(String article_day) {
@@ -107,6 +105,6 @@ public class ArticleModel implements Serializable
     }
 
     public String getWordfile() {
-        return wordfile;
+        return pdf;
     }
 }

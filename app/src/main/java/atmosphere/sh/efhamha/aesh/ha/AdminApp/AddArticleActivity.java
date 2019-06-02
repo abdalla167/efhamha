@@ -13,6 +13,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -61,6 +62,7 @@ public class AddArticleActivity extends AppCompatActivity
     private Spinner spinner;
     String category;
     int type;
+    private Button addpdffile;
 
     private StorageReference mstorageref = FirebaseStorage.getInstance().getReference("ArticlesImages");
     private DatabaseReference mdatarefre = FirebaseDatabase.getInstance().getReference();
@@ -82,6 +84,8 @@ public class AddArticleActivity extends AppCompatActivity
         arc_source=findViewById(R.id.add_article_by);
         arc_content=findViewById(R.id.add_article_content);
         spinner = findViewById(R.id.categ_spinner);
+        addpdffile=findViewById(R.id.addpdf);
+
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getApplicationContext(),
                 R.array.categories, android.R.layout.simple_spinner_item);
@@ -89,7 +93,6 @@ public class AddArticleActivity extends AppCompatActivity
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter1);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
@@ -226,8 +229,9 @@ public class AddArticleActivity extends AppCompatActivity
             {
                 assert data != null;
                 word_uri = data.getData();
+                addpdffile.setText("تغير ملف");
 
-                Toast.makeText(this, "File successfuly uploaded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "تم ادراج ملف ", Toast.LENGTH_SHORT).show();
                       
             }
         }
@@ -295,7 +299,6 @@ public class AddArticleActivity extends AppCompatActivity
                             @Override
                             public void onSuccess(Uri uri) {
 
-
                                 image_url.add(uri.toString());
 
                             }
@@ -324,6 +327,7 @@ public class AddArticleActivity extends AppCompatActivity
                 mdatarefre.child("Notifications").child(ID).setValue(obj);
                 mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
                 Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
+                prog.dismiss();
                 Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
                 startActivity(intent);
             }
@@ -351,10 +355,9 @@ public class AddArticleActivity extends AppCompatActivity
         public void addwordfile (View view){
 
 
-         Intent intent = new Intent();
+            Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            intent.setType("application/*");
-
+            intent.setType("application/pdf");
             startActivityForResult(Intent.createChooser(intent, "Select word"), word_id);
         }
 

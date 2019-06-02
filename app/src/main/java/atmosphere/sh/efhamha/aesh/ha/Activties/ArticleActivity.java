@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,12 +38,12 @@ import com.victor.loading.rotate.RotateLoading;
 
 
 import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
 import atmosphere.sh.efhamha.aesh.ha.Helpers.ViewPagerAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.CommentModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.UserModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
+import atmosphere.sh.efhamha.aesh.ha.Showfile;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
@@ -59,6 +60,7 @@ public class ArticleActivity extends AppCompatActivity
     RotateLoading rotateLoading;
     LinearLayout bottom;
     ViewPager viewPager;
+    TextView gobdf;
 
 
     RecyclerView recyclerView;
@@ -70,6 +72,8 @@ public class ArticleActivity extends AppCompatActivity
     String KEY,name,imageurl;
 
     int admin;
+
+     ArticleModel articleModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -97,7 +101,7 @@ public class ArticleActivity extends AppCompatActivity
         bottom = findViewById(R.id.bottom);
 
         viewPager =findViewById(R.id.article_image_viewpagerfull);
-
+        gobdf=findViewById(R.id.showpdf);
 
         rotateLoading.start();
 
@@ -141,7 +145,7 @@ public class ArticleActivity extends AppCompatActivity
     public void addData ()
     {
         admin = getIntent().getIntExtra("admin", 0);
-        final ArticleModel articleModel = (ArticleModel) getIntent().getSerializableExtra("ar");
+        articleModel = (ArticleModel) getIntent().getSerializableExtra("ar");
         KEY = getIntent().getStringExtra("ar2");
 
         if (admin == 1)
@@ -153,6 +157,9 @@ public class ArticleActivity extends AppCompatActivity
             edit_article_mrl.setVisibility(View.GONE);
             returnData(getUid());
         }
+
+        if(articleModel.getWordfile()==null)
+            gobdf.setVisibility(GONE);
 
         title.setText(articleModel.getTitle());
         String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
@@ -325,6 +332,14 @@ public class ArticleActivity extends AppCompatActivity
 
         recyclerView.setAdapter(firebaseRecyclerAdapter);
         rotateLoading.stop();
+    }
+
+    public void showfilecontent(View view) {
+
+        Intent intent = new Intent(ArticleActivity.this, Showfile.class);
+        intent.putExtra("title",articleModel.getTitle() );
+        intent.putExtra("pdflink", articleModel.getWordfile());
+        startActivity(intent);
     }
 
     public static class commentsViewHolder extends RecyclerView.ViewHolder
