@@ -186,7 +186,7 @@ public class NotificationsFragment extends Fragment
             if (notificationModel.getType() == 1)
             {
                 Picasso.get()
-                        .load(notificationModel.getImage_url())
+                        .load(notificationModel.getImage_url().get(0))
                         .placeholder(R.drawable.ic_darkgrey)
                         .error(R.drawable.ic_darkgrey)
                         .into(image);

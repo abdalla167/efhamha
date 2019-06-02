@@ -12,6 +12,16 @@
         android:orientation="vertical"
         >
 
+        <EditText
+            android:id="@+id/search_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:drawableLeft="@android:drawable/ic_menu_search"
+            android:drawableTint="@android:color/darker_gray"
+            android:background="@drawable/search_edittext"
+            android:hint="  ابحث باسم الكاتب" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"

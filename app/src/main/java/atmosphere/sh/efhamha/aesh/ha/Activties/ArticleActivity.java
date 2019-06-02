@@ -154,11 +154,13 @@ public class ArticleActivity extends AppCompatActivity
 
         if (articleModel.getType() == 1)
         {
+            /*
             Picasso.get()
                     .load(articleModel.getImage_url())
                     .placeholder(R.drawable.ic_darkgrey)
                     .error(R.drawable.ic_darkgrey)
                     .into(imageArchi);
+                    */
         } else
             {
                 imageArchi.setImageResource(R.drawable.ic_youtube);

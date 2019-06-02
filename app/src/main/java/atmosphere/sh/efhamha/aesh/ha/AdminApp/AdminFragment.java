@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,11 +40,13 @@ import com.victor.loading.rotate.RotateLoading;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.MainActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.VideoActivity;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
+import atmosphere.sh.efhamha.aesh.ha.Helpers.ViewPagerAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
@@ -190,18 +197,19 @@ public class AdminFragment extends Fragment
         rotateLoading.stop();
     }
 
-    public static class articlesViewHolder extends RecyclerView.ViewHolder
-    {
-        TextView title,time;
+    public static class articlesViewHolder extends RecyclerView.ViewHolder {
+        TextView title, time;
         TextView content, source, numlikes, numviews, numcomments;
-        ImageView imageArchi ,likeimage,comment_img,view_img;
+        ImageView imageArchi , likeimage, comment_img, view_img;
         MaterialRippleLayout imagelike, imagecomment, article_mrl;
+        SliderLayout article_slider;
+
+        ViewPager viewPager;
 
         int countlieks;
         DatabaseReference databaseReference;
 
-        articlesViewHolder(View itemView)
-        {
+        articlesViewHolder(View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.article_title);
@@ -214,39 +222,41 @@ public class AdminFragment extends Fragment
             imageArchi = itemView.findViewById(R.id.article_image);
             imagelike = itemView.findViewById(R.id.like_btn);
             imagecomment = itemView.findViewById(R.id.comment_btn);
-            imageArchi = itemView.findViewById(R.id.article_image);
             article_mrl = itemView.findViewById(R.id.article_mrl);
-            likeimage=itemView.findViewById(R.id.like);
-            comment_img=itemView.findViewById(R.id.comment);
-            view_img=itemView.findViewById(R.id.view);
+            likeimage = itemView.findViewById(R.id.like);
+            comment_img = itemView.findViewById(R.id.comment);
+            view_img = itemView.findViewById(R.id.view);
+//            article_slider =(SliderLayout)itemView.findViewById(R.id.article_image_slider);
+
+            viewPager =itemView .findViewById(R.id.article_image_slider);
+
+
+
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
         }
 
-        void BindPlaces(final ArticleModel articleModel, final Context context)
-        {
-            if (articleModel.getType() == 1)
-            {
-                imageArchi.setVisibility(View.VISIBLE);
+        void BindPlaces(final ArticleModel articleModel, final Context context) {
+            if (articleModel.getType() == 1) {
 
-                Picasso.get()
-                        .load(articleModel.getImage_url())
-                        .placeholder(R.drawable.ic_darkgrey)
-                        .error(R.drawable.ic_darkgrey)
-                        .into(imageArchi);
 
-                imageArchi.setOnClickListener(new View.OnClickListener()
+                if (articleModel.getImage_url()!=null) {
+                    ViewPagerAdapter adapter = new ViewPagerAdapter(context, articleModel.getImage_url());
+                    viewPager.setAdapter(adapter);
+                }
+
+
+
+
+                else if (articleModel.getType() == 2)
+
                 {
-                    @Override
-                    public void onClick(View v)
-                    {
+                    imageArchi.setVisibility(View.VISIBLE);
+                }
 
-                    }
-                });
-            } else if (articleModel.getType() == 2)
-            {
                 imageArchi.setImageResource(R.drawable.ic_youtube);
                 imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
 
                 imageArchi.setOnClickListener(new View.OnClickListener()
                 {
@@ -258,55 +268,42 @@ public class AdminFragment extends Fragment
                         context.startActivity(intent);
                     }
                 });
+
             }
+
 
             title.setText(articleModel.getTitle());
             String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
             time.setText(time_txt);
             source.setText(articleModel.getSource());
             content.setText(articleModel.getContent());
-
-            Picasso.get()
-                    .load(articleModel.getImage_url())
-                    .placeholder(R.drawable.ic_darkgrey)
-                    .error(R.drawable.ic_darkgrey)
-                    .into(imageArchi);
         }
 
-        void setlikesstatus(final String articlekey, final Context context, final FirebaseUser user)
-        {
-            databaseReference.child("Likes").addValueEventListener(new ValueEventListener()
-            {
+        void setlikesstatus(final String articlekey, final Context context, final FirebaseUser user) {
+            databaseReference.child("Likes").addValueEventListener(new ValueEventListener() {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                {
-                    if (user != null)
-                    {
-                        if (dataSnapshot.child(articlekey).hasChild(user.getUid()))
-                        {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (user != null) {
+                        if (dataSnapshot.child(articlekey).hasChild(user.getUid())) {
                             countlieks = (int) dataSnapshot.child(articlekey).getChildrenCount();
                             numlikes.setText(countlieks + "");
                             numlikes.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                             likeimage.setColorFilter(ContextCompat.getColor(context, R.color.colorAccent));
-                        } else
-                        {
+                        } else {
                             countlieks = (int) dataSnapshot.child(articlekey).getChildrenCount();
 
-                            if (countlieks > 0)
-                            {
+                            if (countlieks > 0) {
                                 numlikes.setText(countlieks + "");
                                 numlikes.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                                 likeimage.setColorFilter(ContextCompat.getColor(context, R.color.colorAccent));
-                            } else
-                                {
-                                    numlikes.setText(countlieks + "");
-                                    numlikes.setTextColor(ContextCompat.getColor(context, R.color.darker_grey));
-                                    likeimage.setColorFilter(ContextCompat.getColor(context, R.color.darker_grey));
-                                }
+                            } else {
+                                numlikes.setText(countlieks + "");
+                                numlikes.setTextColor(ContextCompat.getColor(context, R.color.darker_grey));
+                                likeimage.setColorFilter(ContextCompat.getColor(context, R.color.darker_grey));
+                            }
                         }
-                    } else
-                    {
+                    } else {
                         countlieks = (int) dataSnapshot.child(articlekey).getChildrenCount();
                         numlikes.setText(countlieks + "");
                         numlikes.setTextColor(ContextCompat.getColor(context, R.color.darker_grey));
@@ -315,37 +312,29 @@ public class AdminFragment extends Fragment
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError)
-                {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
-        void setcommentstatus(final String articlekey, final Context context, final FirebaseUser user)
-        {
-            databaseReference.addValueEventListener(new ValueEventListener()
-            {
+        void setcommentstatus(final String articlekey, final Context context, final FirebaseUser user) {
+            databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                {
-                    if (user != null)
-                    {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (user != null) {
                         int count = (int) dataSnapshot.child("Comments").child(articlekey).getChildrenCount();
 
-                        if (count > 0)
-                        {
+                        if (count > 0) {
                             numcomments.setText(count + "");
                             numcomments.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                             comment_img.setColorFilter(ContextCompat.getColor(context, R.color.colorAccent));
-                        } else
-                        {
+                        } else {
                             numcomments.setText("0");
                             numcomments.setTextColor(ContextCompat.getColor(context, R.color.darker_grey));
                             comment_img.setColorFilter(ContextCompat.getColor(context, R.color.darker_grey));
                         }
-                    } else
-                    {
+                    } else {
                         int count = (int) dataSnapshot.child("Comments").child(articlekey).getChildrenCount();
 
                         numcomments.setText(count + "");
@@ -355,37 +344,29 @@ public class AdminFragment extends Fragment
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError)
-                {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
-        void setviewsstatus(final Context context, final String articlekey, final FirebaseUser user)
-        {
-            databaseReference.addValueEventListener(new ValueEventListener()
-            {
+        void setviewsstatus(final Context context, final String articlekey, final FirebaseUser user) {
+            databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                {
-                    if (user != null)
-                    {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (user != null) {
                         int count = (int) dataSnapshot.child("Views").child(articlekey).getChildrenCount();
 
-                        if (count > 0)
-                        {
+                        if (count > 0) {
                             numviews.setText(count + "");
                             numviews.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                             view_img.setColorFilter(ContextCompat.getColor(context, R.color.colorAccent));
-                        } else
-                        {
+                        } else {
                             numviews.setText("0");
                             numviews.setTextColor(ContextCompat.getColor(context, R.color.darker_grey));
                             view_img.setColorFilter(ContextCompat.getColor(context, R.color.darker_grey));
                         }
-                    } else
-                    {
+                    } else {
                         int count = (int) dataSnapshot.child("Views").child(articlekey).getChildrenCount();
 
                         numviews.setText(count + "");
@@ -395,13 +376,16 @@ public class AdminFragment extends Fragment
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError)
-                {
+                public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(context, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
+
+
+
     }
+
 
     @Override
     public void onStart()

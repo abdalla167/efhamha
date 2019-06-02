@@ -10,12 +10,14 @@ import java.util.HashMap;
 
 public class ArticleModel implements Serializable
 {
-    private String image_url,title,content,source,article_time,article_day,article_month,article_year;
+    private String title,content,source,article_time,article_day,article_month,article_year,wordfile;
     int type;
+    private ArrayList<String>image_url;
+
 
     public ArticleModel() { }
 
-    public ArticleModel(String image_url, String title, String content, String source, String article_time, String article_day, String article_month, String article_year, int type) {
+    public ArticleModel(ArrayList<String> image_url, String title, String content, String source, String article_time, String article_day, String article_month, String article_year ,String wordfile, int type) {
         this.image_url = image_url;
         this.title = title;
         this.content = content;
@@ -25,13 +27,14 @@ public class ArticleModel implements Serializable
         this.article_month = article_month;
         this.article_year = article_year;
         this.type = type;
+        this.wordfile=wordfile;
     }
 
-    public String getImage_url() {
+    public ArrayList<String> getImage_url() {
         return image_url;
     }
 
-    public void setImage_url(String image_url) {
+    public void setImage_url(ArrayList<String> image_url) {
         this.image_url = image_url;
     }
 
@@ -71,6 +74,10 @@ public class ArticleModel implements Serializable
         return article_day;
     }
 
+    public void setWordfile(String wordfile) {
+        this.wordfile = wordfile;
+    }
+
     public void setArticle_day(String article_day) {
         this.article_day = article_day;
     }
@@ -97,5 +104,9 @@ public class ArticleModel implements Serializable
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getWordfile() {
+        return wordfile;
     }
 }

@@ -33,6 +33,7 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -44,9 +45,17 @@ import static atmosphere.sh.efhamha.aesh.ha.R.drawable.ic_add_a_photo_black_24dp
 
 public class AddArticleActivity extends AppCompatActivity
 {
-    private static final int img_id = 1;
-    private Uri uri_image;
-    private String image_url;
+    private static final int word_id = 4;
+    private Uri word_uri;
+    private String word_url;
+
+
+    private ArrayList<Uri>uri_image=new ArrayList<>() ;
+    private ArrayList<String>image_url=new ArrayList<>() ;
+
+    private Uri video_uri;
+    
+
     private ImageView im,video;
     private TextView arc_title,arc_source,arc_content,url_txt;
     private Spinner spinner;
@@ -165,7 +174,7 @@ public class AddArticleActivity extends AppCompatActivity
 
     public void chooseimageformgallery(View view)
     {
-        if (uri_image == null)
+        if (video_uri == null)
         {
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
@@ -190,98 +199,164 @@ public class AddArticleActivity extends AppCompatActivity
                 if (result != null)
                 {
                     type = 1;
-                    uri_image = result.getUri();
-                    url_txt.setText(uri_image.getLastPathSegment());
+                    uri_image.add( result.getUri());
+                    url_txt.setText(uri_image.get(uri_image.size()-1).getLastPathSegment());
+
+                    Toast.makeText(this, "انت اخترت "+uri_image.size()+"صور", Toast.LENGTH_SHORT).show();
+
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
             {
                 Exception error = result.getError();
             }
-        } else if (resultCode == RESULT_OK)
+        } 
+        else if (resultCode == RESULT_OK)
         {
             if (requestCode == 103)
             {
                 type = 2;
-                uri_image = data.getData();
-                url_txt.setText(uri_image.getLastPathSegment());
+                assert data != null;
+                video_uri = data.getData();
+                url_txt.setText(video_uri.getLastPathSegment());
+            }
+
+
+            //3shan uri bta3 l word file
+            else if (requestCode == word_id)
+            {
+                assert data != null;
+                word_uri = data.getData();
+
+                Toast.makeText(this, "File successfuly uploaded", Toast.LENGTH_SHORT).show();
+                      
             }
         }
+
+        
+        
     }
 
-    public void upload_article(View view)
-    {
-        if (uri_image == null || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("")|| arc_content.getText() .toString().equals("") || category.equals("اختار موضوع"))
-        {
+    public void upload_article(View view) {
+
+
+        if (uri_image == null || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
             Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
-        } else {
-            final String title =arc_title.getText().toString();
-            final String source =arc_source.getText().toString();
-            final String content =arc_content.getText().toString();
+        }
+
+
+        else {
+
 
             prog.show();
+            //3shan arf3 word file
 
-            final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(uri_image));
-            filereference.putFile(uri_image).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
-            {
-                @Override
-                public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot)
-                {
-                    filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
-                    {
-                        @Override
-                        public void onSuccess(Uri uri)
-                        {
-                            String ID = mdatarefre.push().getKey();
+            if (word_uri != null) {
 
-                            image_url = uri.toString();
-                            ArticleModel obj = new ArticleModel(image_url,title,content,source,time_txt,day_txt,month_txt,year_txt,type);
-                            mdatarefre.child("Articles").child(ID).setValue(obj);
-                            mdatarefre.child("Notifications").child(ID).setValue(obj);
-                            mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
-                        }
-                    });
+                final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(word_uri));
+                filereference.putFile(word_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+                        filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
 
-                }
-            }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>()
-            {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
-                {
-                    Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
+                                //get link of word file
+                                word_url = uri.toString();
 
-                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                    startActivity(intent);
-                }
-            }).addOnFailureListener(new OnFailureListener()
-            {
-                @Override
-                public void onFailure(@NonNull Exception e)
-                {
-                    prog.hide();
-                    Toast.makeText(AddArticleActivity.this, "Error Connection", Toast.LENGTH_SHORT).show();
-                }
-            });
+                            }
+                        });
+
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                });
+
+            }
+
+
+            final String title = arc_title.getText().toString();
+            final String source = arc_source.getText().toString();
+            final String content = arc_content.getText().toString();
+
+            int i;
+            for (i = 0; i < uri_image.size(); i++) {
+                final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(uri_image.get(i)));
+                filereference.putFile(uri_image.get(i)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+                        filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+
+
+                                image_url.add(uri.toString());
+
+                            }
+                        });
+
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        prog.hide();
+                        Toast.makeText(AddArticleActivity.this, "Error Connection", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            if (uri_image.size()==image_url.size()) {
+                String ID = mdatarefre.push().getKey();
+                ArticleModel obj = new ArticleModel(image_url, title, content, source, time_txt, day_txt, month_txt, year_txt, word_url, type);
+                mdatarefre.child("Articles").child(ID).setValue(obj);
+                mdatarefre.child("Notifications").child(ID).setValue(obj);
+                mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
+                Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                startActivity(intent);
+            }
         }
-    }
 
-    public void choosevideo(View view)
-    {
-        if (uri_image == null)
+    }
+        public void choosevideo (View view)
         {
-            Intent intent = new Intent();
-            intent.setType("video/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent,"Select Video"),103);
-        } else
-            {
+            if (uri_image == null) {
+                Intent intent = new Intent();
+                intent.setType("video/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Video"), 103);
+            } else {
                 Toast.makeText(getApplicationContext(), "انت مختار صورة", Toast.LENGTH_SHORT).show();
             }
-    }
+        }
 
-    public void removeuri(View view)
-    {
-        uri_image = null;
-        url_txt.setText("المسار");
+        public void removeuri (View view)
+        {
+            uri_image = null;
+            url_txt.setText("المسار");
+        }
+
+        public void addwordfile (View view){
+
+
+         Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("application/*");
+
+            startActivityForResult(Intent.createChooser(intent, "Select word"), word_id);
+        }
+
     }
-}
 

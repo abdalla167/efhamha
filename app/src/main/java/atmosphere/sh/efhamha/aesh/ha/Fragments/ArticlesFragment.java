@@ -13,11 +13,15 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
@@ -25,10 +29,15 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,8 +48,12 @@ import com.squareup.picasso.Picasso;
 import com.victor.loading.rotate.RotateLoading;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.VideoActivity;
+import atmosphere.sh.efhamha.aesh.ha.Helpers.ViewPagerAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
@@ -52,11 +65,21 @@ public class ArticlesFragment extends Fragment
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     LinearLayoutManager layoutManager;
+    EditText search_auothar;
     FirebaseRecyclerAdapter<ArticleModel, articlesViewHolder> firebaseRecyclerAdapter;
 
     FirebaseUser user;
 
+
+    ArrayList<ArticleModel>articleModels=new ArrayList<>();
+
     Boolean likechecker = false;
+
+
+    Query query = FirebaseDatabase.getInstance()
+            .getReference()
+            .child("Articles")
+            .limitToLast(50);
 
     @Nullable
     @Override
@@ -68,8 +91,7 @@ public class ArticlesFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -84,15 +106,59 @@ public class ArticlesFragment extends Fragment
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        displayArticles();
+
+
+
+        displayArticles(query);
+
+
+
+        search_auothar = view.findViewById(R.id.search_txt);
+        search_auothar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (s.toString().equals("")) {
+                    displayArticles(query);
+                }
+
+                else
+                               filter(s.toString());
+
+
+
+            }
+        });
+
+
+
     }
 
-    private void displayArticles()
-    {
-        Query query = FirebaseDatabase.getInstance()
+    private void filter(String text) {
+
+
+                 Query mQuery = FirebaseDatabase.getInstance()
                 .getReference()
                 .child("Articles")
+                //.orderByChild("source").startAt(text.toLowerCase()).endAt(text.toLowerCase()+ "\uf8ff")
                 .limitToLast(50);
+                 displayArticles(mQuery);
+
+    }
+
+    private void displayArticles(Query query)
+    {
+        Toast.makeText(getActivity(), ""+query.toString(), Toast.LENGTH_SHORT).show();
 
         FirebaseRecyclerOptions<ArticleModel> options =
                 new FirebaseRecyclerOptions.Builder<ArticleModel>()
@@ -228,18 +294,19 @@ public class ArticlesFragment extends Fragment
         rotateLoading.stop();
     }
 
-    public static class articlesViewHolder extends RecyclerView.ViewHolder
-    {
-        TextView title,time;
+    public static class articlesViewHolder extends RecyclerView.ViewHolder {
+        TextView title, time;
         TextView content, source, numlikes, numviews, numcomments;
-        ImageView imageArchi ,likeimage,comment_img,view_img;
+        ImageView imageArchi , likeimage, comment_img, view_img;
         MaterialRippleLayout imagelike, imagecomment, article_mrl;
+        SliderLayout article_slider;
+
+        ViewPager viewPager;
 
         int countlieks;
         DatabaseReference databaseReference;
 
-        articlesViewHolder(View itemView)
-        {
+        articlesViewHolder(View itemView) {
             super(itemView);
 
             title = itemView.findViewById(R.id.article_title);
@@ -252,37 +319,38 @@ public class ArticlesFragment extends Fragment
             imageArchi = itemView.findViewById(R.id.article_image);
             imagelike = itemView.findViewById(R.id.like_btn);
             imagecomment = itemView.findViewById(R.id.comment_btn);
-            imageArchi = itemView.findViewById(R.id.article_image);
             article_mrl = itemView.findViewById(R.id.article_mrl);
-            likeimage=itemView.findViewById(R.id.like);
-            comment_img=itemView.findViewById(R.id.comment);
-            view_img=itemView.findViewById(R.id.view);
+            likeimage = itemView.findViewById(R.id.like);
+            comment_img = itemView.findViewById(R.id.comment);
+            view_img = itemView.findViewById(R.id.view);
+//            article_slider =(SliderLayout)itemView.findViewById(R.id.article_image_slider);
+
+             viewPager =itemView .findViewById(R.id.article_image_slider);
+
+
+
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
         }
 
-        void BindPlaces(final ArticleModel articleModel, final Context context)
-        {
-            if (articleModel.getType() == 1)
-            {
-                imageArchi.setVisibility(View.VISIBLE);
+        void BindPlaces(final ArticleModel articleModel, final Context context) {
+            if (articleModel.getType() == 1) {
 
-                Picasso.get()
-                        .load(articleModel.getImage_url())
-                        .placeholder(R.drawable.ic_darkgrey)
-                        .error(R.drawable.ic_darkgrey)
-                        .into(imageArchi);
 
-                imageArchi.setOnClickListener(new View.OnClickListener()
+                if (articleModel.getImage_url()!=null) {
+                    ViewPagerAdapter adapter = new ViewPagerAdapter(context, articleModel.getImage_url());
+                    viewPager.setAdapter(adapter);
+                }
+
+
+
+
+                else if (articleModel.getType() == 2)
+
                 {
-                    @Override
-                    public void onClick(View v)
-                    {
+                    imageArchi.setVisibility(View.VISIBLE);
+                }
 
-                    }
-                });
-            } else if (articleModel.getType() == 2)
-                {
                     imageArchi.setImageResource(R.drawable.ic_youtube);
                     imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
@@ -297,14 +365,17 @@ public class ArticlesFragment extends Fragment
                             context.startActivity(intent);
                         }
                     });
+
                 }
 
-            title.setText(articleModel.getTitle());
-            String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
-            time.setText(time_txt);
-            source.setText(articleModel.getSource());
-            content.setText(articleModel.getContent());
-        }
+
+                title.setText(articleModel.getTitle());
+                String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
+                time.setText(time_txt);
+                source.setText(articleModel.getSource());
+                content.setText(articleModel.getContent());
+            }
+
 
         void setlikesstatus(final String articlekey, final Context context, final FirebaseUser user)
         {

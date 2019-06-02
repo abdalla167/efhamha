@@ -171,6 +171,14 @@
             android:background="@drawable/comment_background"
             android:padding="10dp"
             />
+        <Button
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:text="أضافة ملف"
+            android:layout_marginLeft="@dimen/_17sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@android:color/holo_red_dark"
+            android:onClick="addwordfile"/>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -189,6 +197,7 @@
                 style="@style/RippleStyleWhite"
                 >
 
+
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -197,6 +206,7 @@
                     android:textStyle="bold"
                     android:textColor="@android:color/white"
                     android:onClick="upload_article"
+
                     />
 
             </com.balysv.materialripple.MaterialRippleLayout>
