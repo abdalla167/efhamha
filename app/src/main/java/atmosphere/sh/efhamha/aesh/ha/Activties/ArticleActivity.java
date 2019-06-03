@@ -1,7 +1,9 @@
 package atmosphere.sh.efhamha.aesh.ha.Activties;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
@@ -140,6 +142,7 @@ public class ArticleActivity extends AppCompatActivity
 
         Toast.makeText(getApplicationContext(), "تم اضافة تعليق بنجاح", Toast.LENGTH_SHORT).show();
         commenttext.setText("");
+
     }
 
     public void addData ()
@@ -354,11 +357,32 @@ public class ArticleActivity extends AppCompatActivity
     }
 
     public void showfilecontent(View view) {
-
+/*
         Intent intent = new Intent(ArticleActivity.this, Showfile.class);
-        intent.putExtra("title",articleModel.getTitle() );
+        intent.putExtra("title",articleModel.getTitle());
         intent.putExtra("pdflink", articleModel.getWordfile());
         startActivity(intent);
+
+*/
+        try
+        {
+            Intent intentUrl = new Intent(Intent.ACTION_VIEW);
+            intentUrl.setDataAndType(Uri.parse(articleModel.getWordfile()), "application/*");
+            intentUrl.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intentUrl);
+        }
+        catch (ActivityNotFoundException e)
+        {
+            Toast.makeText(ArticleActivity.this, "No PDF Viewer Installed", Toast.LENGTH_LONG).show();
+        }
+
+
+
+
+
+
+
+
     }
 
     public static class commentsViewHolder extends RecyclerView.ViewHolder
@@ -454,7 +478,6 @@ public class ArticleActivity extends AppCompatActivity
                     }
                 });
     }
-
     @Override
     public void onBackPressed()
     {

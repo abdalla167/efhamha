@@ -158,7 +158,7 @@ public class ArticlesFragment extends Fragment
 
     private void displayArticles(Query query)
     {
-        Toast.makeText(getActivity(), ""+query.toString(), Toast.LENGTH_SHORT).show();
+
 
         FirebaseRecyclerOptions<ArticleModel> options =
                 new FirebaseRecyclerOptions.Builder<ArticleModel>()

@@ -69,6 +69,7 @@ public class AddArticleActivity extends AppCompatActivity
 
     private ProgressDialog prog;
 
+    int c=0;
     String time_txt,day_txt,month_txt,year_txt;
 
     @Override
@@ -243,6 +244,7 @@ public class AddArticleActivity extends AppCompatActivity
     public void upload_article(View view) {
 
 
+
         if (uri_image == null || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
             Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
         }
@@ -301,6 +303,19 @@ public class AddArticleActivity extends AppCompatActivity
 
                                 image_url.add(uri.toString());
 
+
+                                if (uri_image.size()==image_url.size()) {
+                                    String ID = mdatarefre.push().getKey();
+                                    ArticleModel obj = new ArticleModel(image_url, title, content, source, time_txt, day_txt, month_txt, year_txt, word_url, type);
+                                    mdatarefre.child("Articles").child(ID).setValue(obj);
+                                    mdatarefre.child("Notifications").child(ID).setValue(obj);
+                                    mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
+                                    Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
+                                    prog.dismiss();
+                                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                    startActivity(intent);
+                                }
+
                             }
                         });
 
@@ -308,6 +323,8 @@ public class AddArticleActivity extends AppCompatActivity
                 }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+
 
 
 
@@ -320,17 +337,7 @@ public class AddArticleActivity extends AppCompatActivity
                     }
                 });
             }
-            if (uri_image.size()==image_url.size()) {
-                String ID = mdatarefre.push().getKey();
-                ArticleModel obj = new ArticleModel(image_url, title, content, source, time_txt, day_txt, month_txt, year_txt, word_url, type);
-                mdatarefre.child("Articles").child(ID).setValue(obj);
-                mdatarefre.child("Notifications").child(ID).setValue(obj);
-                mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
-                Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
-                prog.dismiss();
-                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                startActivity(intent);
-            }
+
         }
 
     }
@@ -357,7 +364,7 @@ public class AddArticleActivity extends AppCompatActivity
 
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            intent.setType("application/pdf");
+            intent.setType("application/*");
             startActivityForResult(Intent.createChooser(intent, "Select word"), word_id);
         }
 

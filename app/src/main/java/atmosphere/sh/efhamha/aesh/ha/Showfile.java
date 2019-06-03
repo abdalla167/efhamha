@@ -3,15 +3,21 @@ package atmosphere.sh.efhamha.aesh.ha;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+
+
+
 
 public class Showfile extends AppCompatActivity {
 
-    PDFView pdfView;
-    int pageNumber = 0;
+    WebView pdfView;
+
     String title;
     String filelink;
     @Override
@@ -26,26 +32,21 @@ public class Showfile extends AppCompatActivity {
         title = getIntent().getStringExtra("title");
         filelink = getIntent().getStringExtra("pdflink");
 
-
         Toast.makeText(this, ""+filelink, Toast.LENGTH_SHORT).show();
 
-        displayFromurl(filelink);
+        pdfView.setWebViewClient(new WebViewClient());
+        pdfView.loadUrl(filelink);
 
+        WebSettings webSettings = pdfView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
 
-    }
-
-    private void displayFromurl(String url) {
-
-        pdfView.fromUri(Uri.parse(url))
-                .enableSwipe(true)
-                .swipeHorizontal(false)
-                .enableDoubletap(true)
-                .defaultPage(0)
-                .password(null)
-                .scrollHandle(null)
-                .load();
-    }
 
 
     }
+
+
+
+
+
+}
 
