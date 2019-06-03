@@ -16,6 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activties.EditArtical"></activity>
+        <activity android:name=".Activties.EditComment" />
         <activity
             android:name=".Activties.VideoActivity"
             android:screenOrientation="landscape" />
@@ -87,7 +89,7 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".Showfile"></activity>
+        <activity android:name=".Showfile" />
     </application>
 
 </manifest>

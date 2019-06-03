@@ -219,6 +219,14 @@ public class ArticleActivity extends AppCompatActivity
                                 /*databaseReference.child("Comments").child(KEY).child(key).removeValue();
                                 Toast.makeText(getApplicationContext(), "تم حذف التعليق", Toast.LENGTH_SHORT).show();*/
                                 return true;
+
+                            case R.id.edite_comment_men:
+                                Intent intent =new Intent(ArticleActivity.this, EditArtical.class);
+                                intent.putExtra("modelAreticl",articleModel);
+                                intent.putExtra("key_art",KEY);
+                                startActivity(intent);
+
+                                return true;
                             default:
                                 return true;
                         }
@@ -271,6 +279,17 @@ public class ArticleActivity extends AppCompatActivity
                                         databaseReference.child("Comments").child(KEY).child(key).removeValue();
                                         Toast.makeText(getApplicationContext(), "تم حذف التعليق", Toast.LENGTH_SHORT).show();
                                         return true;
+
+                                    case R.id. edite_comment_men:
+                                        Intent intent =new Intent(ArticleActivity.this, EditComment.class);
+                                        intent.putExtra("comment", model);
+                                        intent.putExtra("key1",KEY);
+                                        intent.putExtra("comment_key2", key);
+                                        intent.putExtra("com_art","2");
+                                        startActivity(intent);
+
+                                     return true;
+
                                     default:
                                         return true;
                                 }

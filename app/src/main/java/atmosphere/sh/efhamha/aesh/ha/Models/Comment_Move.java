@@ -2,14 +2,15 @@ package atmosphere.sh.efhamha.aesh.ha.Models;
 
 import java.io.Serializable;
 
-public class CommentModel implements Serializable {
+public class Comment_Move implements Serializable {
+
 
     private String image_url,username,contentcomment,userid;
 
-    public CommentModel() {
+    public Comment_Move() {
     }
 
-    public CommentModel(String image_url, String username, String contentcomment, String userid) {
+    public Comment_Move(String image_url, String username, String contentcomment, String userid) {
         this.image_url = image_url;
         this.username = username;
         this.contentcomment = contentcomment;

@@ -5,5 +5,9 @@
         android:title="Delete"
         android:id="@+id/delete"
         />
+    <item
+        android:title="Edit"
+        android:id="@+id/edite_comment_men"
+        />
 
 </menu>
