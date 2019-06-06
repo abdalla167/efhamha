@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activties.SplashScreenActivity"
-    android:background="@android:color/white"
+    android:background="@drawable/background"
     >
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/logo"
+        android:src="@drawable/logofinal"
         android:padding="70dp"
         />
 
