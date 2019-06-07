@@ -1,6 +1,8 @@
 package atmosphere.sh.efhamha.aesh.ha.AdminApp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +18,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +33,7 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +42,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 import com.squareup.picasso.Picasso;
 import com.victor.loading.rotate.RotateLoading;
 
@@ -47,6 +55,7 @@ import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.MainActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.VideoActivity;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
+import atmosphere.sh.efhamha.aesh.ha.Helpers.InputValidator;
 import atmosphere.sh.efhamha.aesh.ha.Helpers.ViewPagerAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
@@ -56,7 +65,7 @@ public class AdminFragment extends Fragment
     View view;
 
     RecyclerView recyclerView;
-    FloatingActionButton add_new_article,signout;
+    FloatingActionButton signout;
 
     RotateLoading rotateLoading;
     FirebaseDatabase firebaseDatabase;
@@ -66,11 +75,14 @@ public class AdminFragment extends Fragment
 
     FirebaseUser user;
 
+    //Firebase Database
+    DatabaseReference messageReference;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.admin_fragment, container, false);
+
 
         return view;
     }
@@ -83,7 +95,9 @@ public class AdminFragment extends Fragment
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerView = view.findViewById(R.id.recyclerview);
-        add_new_article = view.findViewById(R.id.add_new_article);
+        SpeedDialView speedDialView = view.findViewById(R.id.adminAction);
+        speedDialView.inflate(R.menu.menu_admin_actions);
+
         signout = view.findViewById(R.id.signout_fab);
 
         rotateLoading = view.findViewById(R.id.rotateloading);
@@ -92,20 +106,13 @@ public class AdminFragment extends Fragment
         databaseReference = firebaseDatabase.getReference();
         databaseReference.keepSynced(true);
 
+        //Message
+        messageReference = FirebaseDatabase.getInstance().getReference().child("messages");
+
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         displayArticles();
-
-        add_new_article.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(getContext(), AddArticleActivity.class);
-                startActivity(intent);
-            }
-        });
 
         signout.setOnClickListener(new View.OnClickListener()
         {
@@ -117,6 +124,78 @@ public class AdminFragment extends Fragment
                 startActivity(intent);
             }
         });
+
+        speedDialView.setOnActionSelectedListener(new SpeedDialView.OnActionSelectedListener() {
+            @Override
+            public boolean onActionSelected(SpeedDialActionItem speedDialActionItem) {
+                switch (speedDialActionItem.getId()) {
+                    case R.id.add_article:
+                        Intent intent = new Intent(getContext(), AddArticleActivity.class);
+                        startActivity(intent);
+                        return false; // true to keep the Speed Dial open
+
+                    case R.id.add_message:
+                        saveMessage();
+                        return false;
+
+                    default:
+                        return false;
+                }
+            }
+        });
+    }
+
+    private void saveMessage() {
+
+        LayoutInflater li = LayoutInflater.from(getContext());
+        View promptsView = li.inflate(R.layout.message, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        final  EditText messageET = (EditText) promptsView.findViewById(R.id.messageET);
+        final  EditText titleET = (EditText) promptsView.findViewById(R.id.titleET);
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("تم", null)
+                .setNegativeButton("الغاء", null);
+
+        // create alert dialog
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Boolean wantToCloseDialog = false;
+
+                if((InputValidator.messageValidation(getContext(), messageET))){
+                    String message = messageET.getText().toString();
+                    String title = titleET.getText().toString();
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    hashMap.put("from", user.getUid());
+                    hashMap.put("title", title);
+                    hashMap.put("content", message);
+                    messageReference.child(user.getUid()).push().setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getActivity(), "Message Saved", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    wantToCloseDialog = true;
+                }
+                if(wantToCloseDialog) {
+                    alertDialog.dismiss();
+                }
+            }
+        });
+
     }
 
     private void displayArticles()

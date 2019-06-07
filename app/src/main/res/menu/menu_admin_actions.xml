@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/add_article"
+        android:title="مقال"
+        android:icon="@drawable/article"/>
+    <item
+        android:id="@+id/add_message"
+        android:title="رسالة"
+        android:icon="@drawable/message"/>
+</menu>

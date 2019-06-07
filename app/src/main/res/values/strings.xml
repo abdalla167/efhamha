@@ -16,6 +16,11 @@
     <string name="reset_password">اعادة تعيين كلمة السر</string>
     <string name="reset_password_instructions">لإعادة تعيين كلمة السر ، أدخل بريدك الإلكتروني ، واضغط على الزر وتحقق من البريد الألكتروني و أتبع التعليمات.</string>
 
+    //Notification
+    <string name="default_notification_channel_id" translatable="false">أفهمها وعيشها</string>
+    <string name="default_notification_channel_des" translatable="false">اشعار من أفهمها وعيشها</string>
+
+
     // Facebook
     <string name="facebook_app_id">1080893165427925</string>
     <string name="fb_login_protocol_scheme">fb1080893165427925</string>

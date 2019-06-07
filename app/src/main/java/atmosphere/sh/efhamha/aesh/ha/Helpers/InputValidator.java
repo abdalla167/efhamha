@@ -78,4 +78,13 @@ public class InputValidator {
         }
         return true;
     }
+    public static boolean messageValidation(Context context, EditText messageET){
+        String message = messageET.getText().toString();
+
+        if(message.isEmpty()){
+            messageET.setError("يرجي أدخال الرسالة");
+            return false;
+        }
+        return true;
+    }
 }

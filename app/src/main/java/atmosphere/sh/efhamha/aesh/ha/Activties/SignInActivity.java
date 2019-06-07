@@ -31,6 +31,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -41,6 +42,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.List;
 
@@ -82,6 +85,7 @@ public class SignInActivity extends AppCompatActivity
     //Firebase Database
     FirebaseDatabase database;
     DatabaseReference ref;
+
 
     //Google
     private GoogleApiClient mGoogleApiClient;
@@ -227,6 +231,17 @@ public class SignInActivity extends AppCompatActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG1, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            //Save Token
+                            String userToken = FirebaseInstanceId.getInstance().getToken();
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                            reference.child("Users").child(user.getUid()).child("device_token").setValue(userToken).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+
+                                public void onSuccess(Void aVoid) {
+                                }
+                            });
+
                             if (!user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com")))
                             {
                                 alertDialog = new AlertDialog.Builder(SignInActivity.this);
@@ -242,10 +257,11 @@ public class SignInActivity extends AppCompatActivity
                                     }
                                 });
                                 alertDialog.show();
-                            } else if (user.getEmail().equals("admin@admin.com"))
-                            {
-                                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                                startActivity(intent);
+                            } else if (user.getEmail().equals("admin@admin.com")){
+
+                                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                        startActivity(intent);
+
                             } else if (user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com")))
                             {
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
