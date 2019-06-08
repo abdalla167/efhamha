@@ -3,8 +3,8 @@
     <item>
         <shape android:shape="rectangle">
             <padding android:left="8dp" android:right="8dp" />
-            <corners android:radius="8dp" />
-            <solid android:color="@color/colorGoogle" />
+            <corners android:radius="22dp" />
+            <solid android:color="@color/colorSignOutBtn" />
         </shape>
     </item>
 </selector>
