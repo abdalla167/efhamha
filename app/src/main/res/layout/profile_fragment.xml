@@ -1,116 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/profile_background_color"
     >
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/profile_background"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        >
+        android:layout_height="200dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/profile_background">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/user"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="26dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="26dp"
-            />
+    </ImageView>
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="5dp"
-            android:layout_margin="26dp"
-            >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/user"
+        android:layout_gravity="center"
+        android:layout_marginTop="120sp"
+        android:layout_marginRight="26dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="26dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/profile_background"
+        />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@color/colorWhite"
-                android:padding="20sp"
-                >
-
-                <TextView
-                    android:id="@+id/username_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp"
-                    android:drawableLeft="@drawable/ic_user2"
-                    android:drawableTint="@color/colorAccent"
-                    android:drawablePadding="30dp"
-                    android:layout_marginBottom="10dp"
-                    android:padding="5dp"
-                    />
-
-                <TextView
-                    android:id="@+id/email_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="16sp"
-                    android:drawableLeft="@drawable/ic_email"
-                    android:drawableTint="@color/colorAccent"
-                    android:drawablePadding="30dp"
-                    android:padding="5dp"
-                    />
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/username_txt"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        android:textColor="@color/username_profile_color"
+        android:textSize="21sp"
+        android:drawablePadding="30dp"
+        android:layout_marginTop="30sp"
+        android:lineHeight="10sp"
+        android:layout_marginBottom="10dp"
+        android:padding="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profile_image"
+        />
 
-        <android.support.v7.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="5dp"
-            android:layout_marginLeft="26dp"
-            android:layout_marginBottom="26dp"
-            android:layout_marginTop="26dp"
-            android:layout_marginRight="26dp"
-            >
+    <TextView
+        android:id="@+id/email_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/email_profile_color"
+        android:textSize="14.7sp"
+        android:layout_marginTop="6.3dp"
+        android:lineHeight="6.8sp"
+        android:drawablePadding="30dp"
+        android:padding="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username_txt"
+        />
 
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/RippleStyleWhite"
-                >
+    <Button
+        android:id="@+id/signout_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="تسجيل خروج"
+        android:textSize="21.3sp"
+        android:lineHeight="10sp"
+        android:padding="20sp"
+        android:layout_marginTop="63dp"
+        android:textColor="@color/profile_background_color"
+        android:textStyle="bold"
+        android:background="@drawable/back_solid_google"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email_txt"
+        />
 
-                <Button
-                    android:id="@+id/signout_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
-                    android:text="تسجيل خروج"
-                    android:textColor="@color/colorWhite"
-                    android:textStyle="bold"
-                    />
 
-            </com.balysv.materialripple.MaterialRippleLayout>
-
-        </android.support.v7.widget.CardView>
-
-    </LinearLayout>
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

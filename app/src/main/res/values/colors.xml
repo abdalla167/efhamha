@@ -11,4 +11,8 @@
     <color name="darker_grey">#aaa</color>
 
     <color name="red">#F03925</color>
+    <color name="username_profile_color">#2454b7</color>
+    <color name="email_profile_color">#b6b6b6</color>
+    <color name="profile_background_color">#f9f9f9</color>
+    <color name="color_signout">#ff4636</color>
 </resources>
