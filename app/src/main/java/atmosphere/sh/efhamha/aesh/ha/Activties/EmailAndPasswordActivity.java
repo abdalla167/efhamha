@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -56,7 +57,7 @@ public class EmailAndPasswordActivity extends AppCompatActivity
     CircleImageView profileImage;
     @BindView(R.id.username_field)
     EditText usernameField;
-
+    TextView textView;
     private String userName, email, password;
     private ProgressDialog progressDialog;
     private AlertDialog.Builder alertDialog;
@@ -85,13 +86,23 @@ public class EmailAndPasswordActivity extends AppCompatActivity
         database = FirebaseDatabase.getInstance();
         mainRef = firebaseStorage.getReference();
         userImagesRef = mainRef.child("images/users");
-
+textView=findViewById(R.id.logen_agin);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white_24dp);
         getSupportActionBar().setTitle("");
+
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(EmailAndPasswordActivity.this,SignInActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
