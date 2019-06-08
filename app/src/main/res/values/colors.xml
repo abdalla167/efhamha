@@ -15,4 +15,6 @@
     <color name="email_profile_color">#b6b6b6</color>
     <color name="profile_background_color">#f9f9f9</color>
     <color name="color_signout">#ff4636</color>
+    <color name="sign_button_color">#e59408</color>
+    <color name="forget_password_color">#ffbf11</color>
 </resources>
