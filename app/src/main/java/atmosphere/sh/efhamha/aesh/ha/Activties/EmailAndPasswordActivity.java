@@ -57,7 +57,7 @@ public class EmailAndPasswordActivity extends AppCompatActivity
     CircleImageView profileImage;
     @BindView(R.id.username_field)
     EditText usernameField;
-    TextView textView;
+    TextView login;
     private String userName, email, password;
     private ProgressDialog progressDialog;
     private AlertDialog.Builder alertDialog;
@@ -86,7 +86,7 @@ public class EmailAndPasswordActivity extends AppCompatActivity
         database = FirebaseDatabase.getInstance();
         mainRef = firebaseStorage.getReference();
         userImagesRef = mainRef.child("images/users");
-textView=findViewById(R.id.logen_agin);
+        login=findViewById(R.id.login_button);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,7 +94,7 @@ textView=findViewById(R.id.logen_agin);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_arrow_left_white_24dp);
         getSupportActionBar().setTitle("");
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

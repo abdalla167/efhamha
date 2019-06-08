@@ -88,12 +88,11 @@
                     android:id="@+id/signIn_password_editText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:hint="كلمة السر"
                     android:inputType="textPassword"
                     android:padding="10dp"
                     android:textSize="14dp"
-                    android:textAlignment="textStart"
+                    android:gravity="center|right"
                     android:textColor="@color/profile_background_color"
                     android:textColorHint="@color/profile_background_color"
                     android:backgroundTint="@color/profile_background_color"/>
