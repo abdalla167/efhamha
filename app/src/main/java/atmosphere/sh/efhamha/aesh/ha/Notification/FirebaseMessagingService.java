@@ -9,6 +9,7 @@ import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.MainActivity;
@@ -59,7 +60,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     private void sendMessageNotification(String title, String message, String messageId){
 
         //get the notification id
-        int notificationId = buildNotificationId(messageId);
+        int notificationId =0;
 
         // Instantiate a Builder object.
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
@@ -95,7 +96,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     }
 
-
+/*
     private int buildNotificationId(String id){
         Log.d(TAG, "buildNotificationId: building a notification id.");
 
@@ -107,5 +108,5 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         Log.d(TAG, "buildNotificationId: notification id:" + notificationId);
         return notificationId;
     }
-
+*/
 }

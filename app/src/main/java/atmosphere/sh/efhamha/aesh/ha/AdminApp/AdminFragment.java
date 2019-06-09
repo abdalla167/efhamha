@@ -175,7 +175,7 @@ public class AdminFragment extends Fragment
             {
                 Boolean wantToCloseDialog = false;
 
-                if((InputValidator.messageValidation(getContext(), messageET))){
+                if((InputValidator.messageValidation(getContext(), messageET, titleET))){
                     String message = messageET.getText().toString();
                     String title = titleET.getText().toString();
                     HashMap<String, String> hashMap = new HashMap<>();

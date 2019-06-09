@@ -44,6 +44,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -232,6 +233,8 @@ public class SignInActivity extends AppCompatActivity
                             Log.d(TAG1, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
+                            //Subscribe User To Topic
+                            FirebaseMessaging.getInstance().subscribeToTopic("messages");
                             //Save Token
                             String userToken = FirebaseInstanceId.getInstance().getToken();
                             DatabaseReference reference = FirebaseDatabase.getInstance().getReference();

@@ -78,11 +78,18 @@ public class InputValidator {
         }
         return true;
     }
-    public static boolean messageValidation(Context context, EditText messageET){
+    public static boolean messageValidation(Context context, EditText messageET, EditText titleET){
         String message = messageET.getText().toString();
+        String title = titleET.getText().toString();
 
-        if(message.isEmpty()){
-            messageET.setError("يرجي أدخال الرسالة");
+        if(title.isEmpty() || message.isEmpty()) {
+
+            if (title.isEmpty())
+                titleET.setError("يرجي أدخال العنوان");
+
+            if (message.isEmpty())
+                messageET.setError("يرجي أدخال المحتوي");
+
             return false;
         }
         return true;
