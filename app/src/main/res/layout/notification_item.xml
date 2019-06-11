@@ -31,15 +31,17 @@
         android:layout_height="match_parent"
        android:orientation="vertical"
         android:gravity="center"
+        android:weightSum="3"
         android:paddingRight="@dimen/_10sdp"
         >
 
         <TextView
             android:id="@+id/article_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:text="عنوان المقال"
             android:layout_gravity="right"
+            android:layout_weight="1"
             android:textSize="@dimen/_18sdp"
             android:textColor="@color/com_facebook_button_background_color"
 
@@ -47,10 +49,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="horizontal"
             android:weightSum="2"
             android:gravity="right"
+            android:layout_weight="1"
             >
         <TextView
             android:layout_width="wrap_content"
@@ -72,9 +75,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="horizontal"
             android:gravity="right"
+            android:layout_weight="1"
             >
 
             <TextView
@@ -113,6 +117,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.8"
+        android:layout_gravity="center"
         android:layout_marginLeft="@dimen/_10sdp"
        />
 
