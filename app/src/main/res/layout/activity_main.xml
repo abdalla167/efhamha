@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activties.MainActivity"
+    android:background="@drawable/archi_background"
     >
 
     <RelativeLayout
@@ -58,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/background"
+                android:background="@drawable/main_background"
                 />
 
             <View

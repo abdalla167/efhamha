@@ -76,10 +76,7 @@ public class ArticlesFragment extends Fragment
     Boolean likechecker = false;
 
 
-    Query query = FirebaseDatabase.getInstance()
-            .getReference()
-            .child("Articles")
-            .limitToLast(50);
+
 
     @Nullable
     @Override
@@ -109,7 +106,7 @@ public class ArticlesFragment extends Fragment
 
 
 
-        displayArticles(query);
+        displayArticles("");
 
 
 
@@ -128,13 +125,8 @@ public class ArticlesFragment extends Fragment
 
             @Override
             public void afterTextChanged(Editable s) {
-
-                if (s.toString().equals("")) {
-                    displayArticles(query);
-                }
-
-                else
-                               filter(s.toString());
+                firebaseRecyclerAdapter=null;
+                               displayArticles(s.toString());
 
 
 
@@ -145,21 +137,31 @@ public class ArticlesFragment extends Fragment
 
     }
 
-    private void filter(String text) {
 
 
-                 Query mQuery = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("Articles")
-                //.orderByChild("source").startAt(text.toLowerCase()).endAt(text.toLowerCase()+ "\uf8ff")
-                .limitToLast(50);
-                 displayArticles(mQuery);
-
-    }
-
-    private void displayArticles(Query query)
+    private void displayArticles(final String writer)
     {
+        Query query;
 
+
+
+        if (writer.equals("")||writer.equals(null)) {
+            query = FirebaseDatabase.getInstance()
+                    .getReference()
+                    .child("Articles");
+                   // .limitToLast(50);
+
+        }
+        else
+        {
+            query=FirebaseDatabase.getInstance()
+                    .getReference()
+                    .child("Articles")
+                    .child("Source")
+                    .startAt(writer).endAt(writer + "\uf8ff");
+                    //.limitToLast(50);
+            Toast.makeText(getActivity(), "33333333333", Toast.LENGTH_SHORT).show();
+        }
 
         FirebaseRecyclerOptions<ArticleModel> options =
                 new FirebaseRecyclerOptions.Builder<ArticleModel>()
@@ -168,6 +170,10 @@ public class ArticlesFragment extends Fragment
 
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ArticleModel, articlesViewHolder>(options)
         {
+
+
+
+
             @Override
             protected void onBindViewHolder(@NonNull articlesViewHolder holder, int position, @NonNull final ArticleModel model)
             {
@@ -175,8 +181,14 @@ public class ArticlesFragment extends Fragment
 
                 final String key = getRef(position).getKey();
 
-                holder.BindPlaces(model,getContext());
+                if (model.getSource().toLowerCase().contains(writer.toLowerCase())) {
+                  holder.BindPlaces(model, getContext());
+                }
+                else if (writer.equals(""))
+                {
+                    holder.BindPlaces(model, getContext());
 
+                }
                 holder.setlikesstatus(key,getContext(),user);
                 holder.setcommentstatus(key,getContext(),user);
                 holder.setviewsstatus(getContext(),key,user);
@@ -291,6 +303,7 @@ public class ArticlesFragment extends Fragment
             }
         });
 
+
         recyclerView.setAdapter(firebaseRecyclerAdapter);
         rotateLoading.stop();
     }
@@ -370,10 +383,10 @@ public class ArticlesFragment extends Fragment
                 }
 
 
-                title.setText(articleModel.getTitle());
-                String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
+               title.setText(articleModel.getTitle());
+                String time_txt = " " + articleModel.getArticle_day()+"  "+articleModel.getArticle_time() + " " + articleModel.getArticle_month() +  " " + articleModel.getArticle_year() ;
                 time.setText(time_txt);
-                source.setText(articleModel.getSource());
+                source.setText("   "+articleModel.getSource()+"  ");
                 content.setText(articleModel.getContent());
             }
 
@@ -504,9 +517,8 @@ public class ArticlesFragment extends Fragment
     {
         super.onStart();
         if (firebaseRecyclerAdapter != null)
-        {
             firebaseRecyclerAdapter.startListening();
-        }
+
     }
 
     @Override
