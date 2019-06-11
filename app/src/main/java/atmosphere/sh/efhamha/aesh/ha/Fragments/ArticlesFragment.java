@@ -160,7 +160,7 @@ public class ArticlesFragment extends Fragment
                     .child("Source")
                     .startAt(writer).endAt(writer + "\uf8ff");
                     //.limitToLast(50);
-            Toast.makeText(getActivity(), "33333333333", Toast.LENGTH_SHORT).show();
+
         }
 
         FirebaseRecyclerOptions<ArticleModel> options =
@@ -294,14 +294,18 @@ public class ArticlesFragment extends Fragment
                 int lastVisiblePosition =
                         layoutManager.findLastCompletelyVisibleItemPosition();
 
+                /*
                 if (lastVisiblePosition == -1 ||
                         (positionStart >= (friendlyMessageCount - 1) &&
                                 lastVisiblePosition == (positionStart - 1)))
                 {
                     recyclerView.scrollToPosition(positionStart);
                 }
+                */
             }
+
         });
+
 
 
         recyclerView.setAdapter(firebaseRecyclerAdapter);
@@ -383,7 +387,7 @@ public class ArticlesFragment extends Fragment
                 }
 
 
-               title.setText(articleModel.getTitle());
+                title.setText(articleModel.getTitle());
                 String time_txt = " " + articleModel.getArticle_day()+"  "+articleModel.getArticle_time() + " " + articleModel.getArticle_month() +  " " + articleModel.getArticle_year() ;
                 time.setText(time_txt);
                 source.setText("   "+articleModel.getSource()+"  ");

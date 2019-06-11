@@ -264,12 +264,14 @@ public class AdminFragment extends Fragment
                 int lastVisiblePosition =
                         layoutManager.findLastCompletelyVisibleItemPosition();
 
+                /*
                 if (lastVisiblePosition == -1 ||
                         (positionStart >= (friendlyMessageCount - 1) &&
                                 lastVisiblePosition == (positionStart - 1)))
                 {
                     recyclerView.scrollToPosition(positionStart);
                 }
+                */
             }
         });
 
@@ -354,9 +356,9 @@ public class AdminFragment extends Fragment
 
 
             title.setText(articleModel.getTitle());
-            String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
+            String time_txt = " " + articleModel.getArticle_day()+"  "+articleModel.getArticle_time() + " " + articleModel.getArticle_month() +  " " + articleModel.getArticle_year() ;
             time.setText(time_txt);
-            source.setText(articleModel.getSource());
+            source.setText("   "+articleModel.getSource()+"  ");
             content.setText(articleModel.getContent());
         }
 
