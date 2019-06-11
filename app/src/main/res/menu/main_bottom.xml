@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/articles"
-        android:icon="@drawable/ic_article"
+        android:icon="@drawable/normartical"
         android:title="articles"
         />
 
@@ -16,13 +16,13 @@
 
     <item
         android:id="@+id/info"
-        android:icon="@drawable/ic_information"
+        android:icon="@drawable/info"
         android:title="info"
         />
 
     <item
         android:id="@+id/profile"
-        android:icon="@drawable/ic_user"
+        android:icon="@drawable/profile"
         android:title="profile"
         />
 
