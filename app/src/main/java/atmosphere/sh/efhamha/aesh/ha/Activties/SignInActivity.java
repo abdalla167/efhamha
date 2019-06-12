@@ -31,12 +31,15 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserInfo;
@@ -235,15 +238,6 @@ public class SignInActivity extends AppCompatActivity
 
                             //Subscribe User To Topic
                             FirebaseMessaging.getInstance().subscribeToTopic("messages");
-                            //Save Token
-                            String userToken = FirebaseInstanceId.getInstance().getToken();
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-                            reference.child("Users").child(user.getUid()).child("device_token").setValue(userToken).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-
-                                public void onSuccess(Void aVoid) {
-                                }
-                            });
 
                             if (!user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com")))
                             {
@@ -269,14 +263,21 @@ public class SignInActivity extends AppCompatActivity
                             {
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             }
-                        } else {
-                            progressDialog.dismiss();
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG1, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(SignInActivity.this, "Authentication failed. " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if(e instanceof FirebaseAuthInvalidCredentialsException)
+                    Toast.makeText(SignInActivity.this, "كلمة السر غير صحيحه", Toast.LENGTH_SHORT).show();
+                else if (e instanceof FirebaseAuthInvalidUserException)
+                    Toast.makeText(SignInActivity.this, "البريد الألكتروني غير صحيح", Toast.LENGTH_SHORT).show();
+
+                else
+                    Toast.makeText(SignInActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
+            }
+        });
     }
 
     private boolean getInputData() {

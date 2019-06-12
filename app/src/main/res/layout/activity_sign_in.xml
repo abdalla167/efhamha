@@ -44,7 +44,6 @@
                 android:layout_marginTop="16.3dp"
                 android:gravity="center"
                 android:lineHeight="28.3sp"
-                android:padding="5dp"
                 android:text="@string/app_name"
                 android:textColor="@color/profile_background_color"
                 android:textSize="17.7sp" />
