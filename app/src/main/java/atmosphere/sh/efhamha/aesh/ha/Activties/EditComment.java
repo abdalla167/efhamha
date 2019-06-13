@@ -1,7 +1,10 @@
 package atmosphere.sh.efhamha.aesh.ha.Activties;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +58,40 @@ public class EditComment extends AppCompatActivity {
                 .error(R.drawable.ic_darkgrey)
                 .into(image);
 
+
+        editText.addTextChangedListener(new TextWatcher() {
+int c=0,c2=0;
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+
+              c2=s.length();
+                if (s.length() > 0)
+                { //do your work here }
+updat.setBackground(getResources().getDrawable( R.drawable.edit_writ));
+                    c=s.length();
+                }
+                else
+                {
+
+
+                }
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+
+
+            }
+
+            public void afterTextChanged(Editable s) {
+if(c2==c){
+
+  //  updat.setBackground(getResources().getDrawable( R.drawable.shap_edit));
+}
+            }
+        });
 
         updat.setOnClickListener(new View.  OnClickListener() {
             @Override

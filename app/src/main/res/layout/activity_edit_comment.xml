@@ -90,6 +90,7 @@
             android:layout_height="match_parent"
             android:text="UPDATE"
             android:layout_marginLeft="5dp"
+
             android:fontFamily="@string/app_name"
 
 
