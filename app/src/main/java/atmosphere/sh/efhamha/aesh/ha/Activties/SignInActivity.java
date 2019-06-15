@@ -43,8 +43,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -53,6 +56,7 @@ import java.util.List;
 
 import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
 import atmosphere.sh.efhamha.aesh.ha.Helpers.InputValidator;
+import atmosphere.sh.efhamha.aesh.ha.Models.Admin;
 import atmosphere.sh.efhamha.aesh.ha.Models.UserModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import butterknife.BindView;
@@ -223,6 +227,7 @@ public class SignInActivity extends AppCompatActivity
     private void signIn(String email, String password) {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("برجاء الانتظار ....");
+        progressDialog.setCancelable(false);
         progressDialog.show();
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -236,33 +241,42 @@ public class SignInActivity extends AppCompatActivity
                             Log.d(TAG1, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
+                            database = FirebaseDatabase.getInstance();
+                            ref = database.getReference();
+
                             //Subscribe User To Topic
                             FirebaseMessaging.getInstance().subscribeToTopic("messages");
 
-                            if (!user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com")))
-                            {
-                                alertDialog = new AlertDialog.Builder(SignInActivity.this);
-                                alertDialog.setCancelable(false);
-                                alertDialog.setTitle("الرجاء تأكيد الايميل");
-                                alertDialog.setMessage("افحص بريدك الالكتروني لتأكيد الايميل");
-                                alertDialog.setPositiveButton("تم", new DialogInterface.OnClickListener()
-                                {
+                            final String email = user.getEmail();
+
+                             ref.child("Admins").addValueEventListener(new ValueEventListener() {
                                     @Override
-                                    public void onClick(DialogInterface dialog, int which)
-                                    {
-                                       dialog.dismiss();
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            String adminEmail1 = snapshot.child("email").getValue(String.class);
+                                            if(adminEmail1.equals(email)) {
+                                                startActivity(new Intent(getApplicationContext(), AdminActivity.class));
+                                                finish();
+                                            }
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
                                     }
                                 });
-                                alertDialog.show();
-                            } else if (user.getEmail().equals("admin@admin.com")){
 
-                                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                                        startActivity(intent);
-
-                            } else if (user.isEmailVerified() && !(user.getEmail().equals("admin@admin.com")))
+                             if (!user.isEmailVerified()) {
+                                 Toast.makeText(SignInActivity.this, "الرجائ تأكيد الأيميل", Toast.LENGTH_SHORT).show();
+                            } else if (user.isEmailVerified())
                             {
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                finish();
                             }
+                            
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

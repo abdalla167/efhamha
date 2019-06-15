@@ -161,7 +161,6 @@ public class EmailAndPasswordActivity extends AppCompatActivity
                         {
                             Log.d(TAG, "createUserWithEmail:success");
                             progressDialog.dismiss();
-
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             emialAddressVerification(user);

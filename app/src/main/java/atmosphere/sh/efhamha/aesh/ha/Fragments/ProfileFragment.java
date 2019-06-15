@@ -38,6 +38,7 @@ import java.util.List;
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.MainActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.SignInActivity;
+import atmosphere.sh.efhamha.aesh.ha.Models.Admin;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -89,18 +90,16 @@ public class ProfileFragment extends Fragment
 
     //Get User Data
     public void loadUserData(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userId = user.getUid();
 
         ref.child("Users").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 String userName = dataSnapshot.child("userName").getValue(String.class);
                 String email = dataSnapshot.child("email").getValue(String.class);
                 String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
 
-                //Log.d("imageUrl", imageUrl);
                 usernameTV.setText(userName);
                 emailTV.setText(email);
                 Picasso.get()
