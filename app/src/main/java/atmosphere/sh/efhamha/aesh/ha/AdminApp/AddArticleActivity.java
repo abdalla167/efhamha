@@ -44,21 +44,20 @@ import atmosphere.sh.efhamha.aesh.ha.R;
 
 import static atmosphere.sh.efhamha.aesh.ha.R.drawable.ic_add_a_photo_black_24dp;
 
-public class AddArticleActivity extends AppCompatActivity
-{
+public class AddArticleActivity extends AppCompatActivity {
     private static final int word_id = 4;
     private Uri word_uri;
     private String word_url;
 
 
-    private ArrayList<Uri>uri_image=new ArrayList<>() ;
-    private ArrayList<String>image_url=new ArrayList<>() ;
+    private ArrayList<Uri> uri_image = new ArrayList<>();
+    private ArrayList<String> image_url = new ArrayList<>();
 
     private Uri video_uri;
-    
 
-    private ImageView im,video;
-    private TextView arc_title,arc_source,arc_content,url_txt;
+
+    private ImageView im, video;
+    private TextView arc_title, arc_source, arc_content, url_txt;
     private Spinner spinner;
     String category;
     int type;
@@ -69,23 +68,22 @@ public class AddArticleActivity extends AppCompatActivity
 
     private ProgressDialog prog;
 
-    int c=0;
-    String time_txt,day_txt,month_txt,year_txt;
+    int c = 0;
+    String time_txt, day_txt, month_txt, year_txt;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_article);
 
         im = findViewById(R.id.add_article_image);
         url_txt = findViewById(R.id.url);
         video = findViewById(R.id.add_article_video);
-        arc_title=findViewById(R.id.add_article_title);
-        arc_source=findViewById(R.id.add_article_by);
-        arc_content=findViewById(R.id.add_article_content);
+        arc_title = findViewById(R.id.add_article_title);
+        arc_source = findViewById(R.id.add_article_by);
+        arc_content = findViewById(R.id.add_article_content);
         spinner = findViewById(R.id.categ_spinner);
-        addpdffile=findViewById(R.id.addpdf);
+        addpdffile = findViewById(R.id.addpdf);
 
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getApplicationContext(),
@@ -94,17 +92,14 @@ public class AddArticleActivity extends AppCompatActivity
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter1);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 category = String.valueOf(parent.getItemAtPosition(position));
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -121,8 +116,7 @@ public class AddArticleActivity extends AppCompatActivity
         int time = calendar.get(Calendar.HOUR_OF_DAY);
         int time2 = calendar.get(Calendar.MINUTE);
 
-        switch (month)
-        {
+        switch (month) {
             case Calendar.JANUARY:
                 month_txt = "يناير";
                 break;
@@ -169,55 +163,43 @@ public class AddArticleActivity extends AppCompatActivity
         time_txt = t1 + ":" + t2;
     }
 
-    private String getfileextention(Uri ur)
-    {
+    private String getfileextention(Uri ur) {
         ContentResolver resolver = getContentResolver();
         MimeTypeMap typeMap = MimeTypeMap.getSingleton();
         return typeMap.getExtensionFromMimeType(resolver.getType(ur));
     }
 
-    public void chooseimageformgallery(View view)
-    {
-        if (video_uri == null)
-        {
+    public void chooseimageformgallery(View view) {
+        if (video_uri == null) {
             CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
                     .setAspectRatio(1, 1)
                     .start(AddArticleActivity.this);
-        } else
-            {
-                Toast.makeText(getApplicationContext(), "انت مختار فيديو", Toast.LENGTH_SHORT).show();
-            }
+        } else {
+            Toast.makeText(getApplicationContext(), "انت مختار فيديو", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-        {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == Activity.RESULT_OK)
-            {
-                if (result != null)
-                {
+            if (resultCode == Activity.RESULT_OK) {
+                if (result != null) {
                     type = 1;
-                    uri_image.add( result.getUri());
-                    url_txt.setText(uri_image.get(uri_image.size()-1).getLastPathSegment());
+                    uri_image.add(result.getUri());
+                    url_txt.setText(uri_image.get(uri_image.size() - 1).getLastPathSegment());
 
-                    Toast.makeText(this, "انت اخترت "+uri_image.size()+"صور", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "انت اخترت " + uri_image.size() + "صور", Toast.LENGTH_SHORT).show();
 
                 }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
-            {
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
-        } 
-        else if (resultCode == RESULT_OK)
-        {
-            if (requestCode == 103)
-            {
+        } else if (resultCode == RESULT_OK) {
+            if (requestCode == 103) {
                 type = 2;
                 assert data != null;
                 video_uri = data.getData();
@@ -226,31 +208,25 @@ public class AddArticleActivity extends AppCompatActivity
 
 
             //3shan uri bta3 l word file
-            else if (requestCode == word_id)
-            {
+            else if (requestCode == word_id) {
                 assert data != null;
                 word_uri = data.getData();
                 addpdffile.setText("تغير ملف");
 
                 Toast.makeText(this, "تم ادراج ملف ", Toast.LENGTH_SHORT).show();
-                      
+
             }
         }
 
-        
-        
+
     }
 
     public void upload_article(View view) {
 
 
-
         if (uri_image == null || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
             Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
-        }
-
-
-        else {
+        } else {
 
 
             prog.show();
@@ -304,9 +280,9 @@ public class AddArticleActivity extends AppCompatActivity
                                 image_url.add(uri.toString());
 
 
-                                if (uri_image.size()==image_url.size()) {
+                                if (uri_image.size() == image_url.size()) {
                                     String ID = mdatarefre.push().getKey();
-                                    ArticleModel obj = new ArticleModel(ID,image_url, title, content, source,category,time_txt, day_txt, month_txt, year_txt, word_url, type);
+                                    ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type);
                                     mdatarefre.child("Articles").child(ID).setValue(obj);
                                     mdatarefre.child("Notifications").child(ID).setValue(obj);
                                     mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
@@ -325,9 +301,6 @@ public class AddArticleActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
 
-
-
-
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -341,32 +314,31 @@ public class AddArticleActivity extends AppCompatActivity
         }
 
     }
-        public void choosevideo (View view)
-        {
-            if (uri_image == null) {
-                Intent intent = new Intent();
-                intent.setType("video/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Video"), 103);
-            } else {
-                Toast.makeText(getApplicationContext(), "انت مختار صورة", Toast.LENGTH_SHORT).show();
-            }
-        }
 
-        public void removeuri (View view)
-        {
-            uri_image = null;
-            url_txt.setText("المسار");
-        }
-
-        public void addwordfile (View view){
-
-
+    public void choosevideo(View view) {
+        if (uri_image == null) {
             Intent intent = new Intent();
+            intent.setType("video/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            intent.setType("application/*");
-            startActivityForResult(Intent.createChooser(intent, "Select word"), word_id);
+            startActivityForResult(Intent.createChooser(intent, "Select Video"), 103);
+        } else {
+            Toast.makeText(getApplicationContext(), "انت مختار صورة", Toast.LENGTH_SHORT).show();
         }
-
     }
+
+    public void removeuri(View view) {
+        uri_image = null;
+        url_txt.setText("المسار");
+    }
+
+    public void addwordfile(View view) {
+
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setType("application/*");
+        startActivityForResult(Intent.createChooser(intent, "Select word"), word_id);
+    }
+
+}
 

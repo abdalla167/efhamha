@@ -167,7 +167,7 @@ public class NotificationsFragment extends Fragment
 
     public static class notificationsViewHolder extends RecyclerView.ViewHolder
     {
-        TextView title,time;
+        TextView title,time,by;
         MaterialRippleLayout mrl;
         CircleImageView image;
 
@@ -177,6 +177,7 @@ public class NotificationsFragment extends Fragment
 
             title = itemView.findViewById(R.id.article_title);
             time = itemView.findViewById(R.id.article_time);
+            by = itemView.findViewById(R.id.article_by);
             image = itemView.findViewById(R.id.article_image);
             mrl = itemView.findViewById(R.id.notification_mrl);
         }
@@ -195,6 +196,7 @@ public class NotificationsFragment extends Fragment
                     image.setImageResource(R.drawable.ic_youtube);
                 }
             title.setText(notificationModel.getTitle());
+            by.setText(notificationModel.getSource());
             String time_txt = notificationModel.getArticle_day() + " " + notificationModel.getArticle_month() + " " + notificationModel.getArticle_year();
             time.setText(time_txt);
         }

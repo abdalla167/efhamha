@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment
                 String email = dataSnapshot.child("email").getValue(String.class);
                 String imageUrl = dataSnapshot.child("imageUrl").getValue(String.class);
 
-                Log.d("imageUrl", imageUrl);
+                //Log.d("imageUrl", imageUrl);
                 usernameTV.setText(userName);
                 emailTV.setText(email);
                 Picasso.get()
@@ -156,6 +156,7 @@ public class ProfileFragment extends Fragment
             count++;
         }
     }
+
     public void updateUI()
     {
         startActivity(new Intent(getActivity(), MainActivity.class));

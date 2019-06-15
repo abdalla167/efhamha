@@ -137,7 +137,6 @@ public class ArticlesFragment extends Fragment {
         for (ArticleModel item : articleModels) {
             if (item.getCategory()!=null)
             {
-                Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
             if (item.getCategory().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
@@ -384,7 +383,7 @@ public class ArticlesFragment extends Fragment {
             }
 
             holder.title.setText(currentItem.getTitle());
-            String time_txt = currentItem.getArticle_day() + " " + currentItem.getArticle_time() + " "  + currentItem.getArticle_month() + " " + currentItem.getArticle_year()+" ";
+            String time_txt = currentItem.getArticle_time() + " " + currentItem.getArticle_day() + " "  + currentItem.getArticle_month() + " " + currentItem.getArticle_year()+" ";
             holder.time.setText(time_txt);
             holder.source.setText(currentItem.getSource());
             holder.content.setText(currentItem.getContent());

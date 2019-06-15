@@ -77,7 +77,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 );
 
         //add properties to the builder
-        builder.setSmallIcon(R.drawable.logofinal)
+        builder.setSmallIcon(R.drawable.logoinfo)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentTitle(title)
                 .setAutoCancel(true)

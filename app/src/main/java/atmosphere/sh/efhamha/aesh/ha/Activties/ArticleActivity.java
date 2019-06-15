@@ -49,11 +49,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
 
-public class ArticleActivity extends AppCompatActivity
-{
+public class ArticleActivity extends AppCompatActivity {
 
-    TextView title,time;
-    TextView content, source,comments_count;
+    TextView title, time;
+    TextView content, source, comments_count;
     ImageView imageArchi;
     MaterialRippleLayout edit_article_mrl;
     EditText commenttext;
@@ -70,15 +69,14 @@ public class ArticleActivity extends AppCompatActivity
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
 
-    String KEY,name,imageurl;
+    String KEY, name, imageurl;
 
     int admin;
 
-     ArticleModel articleModel;
+    ArticleModel articleModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
 
@@ -87,8 +85,7 @@ public class ArticleActivity extends AppCompatActivity
         displayComments(KEY);
     }
 
-    public void init ()
-    {
+    public void init() {
         title = findViewById(R.id.article_title_full);
         time = findViewById(R.id.article_time_full);
         content = findViewById(R.id.article_content_full);
@@ -101,8 +98,8 @@ public class ArticleActivity extends AppCompatActivity
         rotateLoading = findViewById(R.id.rotateloading);
         bottom = findViewById(R.id.bottom);
 
-        viewPager =findViewById(R.id.article_image_viewpagerfull);
-        gobdf=findViewById(R.id.showpdf);
+        viewPager = findViewById(R.id.article_image_viewpagerfull);
+        gobdf = findViewById(R.id.showpdf);
 
         rotateLoading.start();
 
@@ -115,27 +112,23 @@ public class ArticleActivity extends AppCompatActivity
         layoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        add_comment_btn.setOnClickListener(new View.OnClickListener()
-        {
+        add_comment_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 String content = commenttext.getText().toString();
 
-                if (TextUtils.isEmpty(content))
-                {
+                if (TextUtils.isEmpty(content)) {
                     Toast.makeText(getApplicationContext(), "من فضلك اضف تعليقا", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                addComment(name,imageurl,content,KEY);
+                addComment(name, imageurl, content, KEY);
             }
         });
     }
 
-    private void addComment(String name, String imageurl, String content,String key)
-    {
-        CommentModel commentModel = new CommentModel(imageurl,name,content,getUid());
+    private void addComment(String name, String imageurl, String content, String key) {
+        CommentModel commentModel = new CommentModel(imageurl, name, content, getUid());
         String comment_key = databaseReference.child("Comments").push().getKey();
         databaseReference.child("Comments").child(key).child(comment_key).setValue(commentModel);
 
@@ -144,23 +137,20 @@ public class ArticleActivity extends AppCompatActivity
 
     }
 
-    public void addData ()
-    {
+    public void addData() {
         admin = getIntent().getIntExtra("admin", 0);
         articleModel = (ArticleModel) getIntent().getSerializableExtra("ar");
         KEY = getIntent().getStringExtra("ar2");
 
-        if (admin == 1)
-        {
+        if (admin == 1) {
             edit_article_mrl.setVisibility(View.VISIBLE);
             bottom.setVisibility(GONE);
-        } else
-        {
+        } else {
             edit_article_mrl.setVisibility(View.GONE);
             returnData(getUid());
         }
 
-        if(articleModel.getWordfile()==null)
+        if (articleModel.getWordfile() == null)
             gobdf.setVisibility(GONE);
 
         title.setText(articleModel.getTitle());
@@ -169,9 +159,8 @@ public class ArticleActivity extends AppCompatActivity
         source.setText(articleModel.getSource());
         content.setText(articleModel.getContent());
 
-        if (articleModel.getType() == 1)
-        {
-            if (articleModel.getImage_url()!=null) {
+        if (articleModel.getType() == 1) {
+            if (articleModel.getImage_url() != null) {
                 ViewPagerAdapter adapter = new ViewPagerAdapter(this, articleModel.getImage_url());
                 viewPager.setAdapter(adapter);
             }
@@ -184,62 +173,54 @@ public class ArticleActivity extends AppCompatActivity
                     .error(R.drawable.ic_darkgrey)
                     .into(imageArchi);
                     */
-        } else
-            {
-                imageArchi.setImageResource(R.drawable.ic_youtube);
+        } else {
+            imageArchi.setImageResource(R.drawable.ic_youtube);
 
-                imageArchi.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        Intent intent = new Intent(getApplicationContext(), VideoActivity.class);
-                        intent.putExtra("url", articleModel.getImage_url());
-                        startActivity(intent);
-                    }
-                });
-            }
+            imageArchi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), VideoActivity.class);
+                    intent.putExtra("url", articleModel.getImage_url());
+                    startActivity(intent);
+                }
+            });
+        }
 
-        edit_article_mrl.setOnClickListener(new View.OnClickListener()
-        {
+        edit_article_mrl.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 PopupMenu popup = new PopupMenu(ArticleActivity.this, edit_article_mrl);
                 //Inflating the Popup using xml file
                 popup.getMenuInflater()
                         .inflate(R.menu.edit_comment, popup.getMenu());
 
                 //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
-                {
-                    public boolean onMenuItemClick(MenuItem item)
-                    {
-                        switch (item.getItemId())
-                        {
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
                             case R.id.delete:
                                 /*databaseReference.child("Comments").child(KEY).child(key).removeValue();
                                 Toast.makeText(getApplicationContext(), "تم حذف التعليق", Toast.LENGTH_SHORT).show();*/
                                 return true;
 
                             case R.id.edite_comment_men:
-                                Intent intent =new Intent(ArticleActivity.this, EditArtical.class);
-                                intent.putExtra("modelAreticl",articleModel);
-                                intent.putExtra("key_art",KEY);
+                                Intent intent = new Intent(ArticleActivity.this, EditArtical.class);
+                                intent.putExtra("modelAreticl", articleModel);
+                                intent.putExtra("key_art", KEY);
                                 startActivity(intent);
 
                                 return true;
                             default:
                                 return true;
                         }
-                    }});
+                    }
+                });
                 popup.show(); //showing popup menu
             }
         });
     }
 
-    private void displayComments(String key)
-    {
+    private void displayComments(String key) {
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
                 .child("Comments")
@@ -251,60 +232,52 @@ public class ArticleActivity extends AppCompatActivity
                         .setQuery(query, CommentModel.class)
                         .build();
 
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<CommentModel, commentsViewHolder>(options)
-        {
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<CommentModel, commentsViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final commentsViewHolder holder, int position, @NonNull final CommentModel model)
-            {
+            protected void onBindViewHolder(@NonNull final commentsViewHolder holder, int position, @NonNull final CommentModel model) {
                 rotateLoading.stop();
 
                 final String key = getRef(position).getKey();
 
-                holder.materialRippleLayout.setOnClickListener(new View.OnClickListener()
-                {
+                holder.materialRippleLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         PopupMenu popup = new PopupMenu(ArticleActivity.this, holder.materialRippleLayout);
                         //Inflating the Popup using xml file
                         popup.getMenuInflater()
                                 .inflate(R.menu.edit_comment, popup.getMenu());
 
                         //registering popup with OnMenuItemClickListener
-                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener()
-                        {
-                            public boolean onMenuItemClick(MenuItem item)
-                            {
-                                switch (item.getItemId())
-                                {
+                        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            public boolean onMenuItemClick(MenuItem item) {
+                                switch (item.getItemId()) {
                                     case R.id.delete:
                                         databaseReference.child("Comments").child(KEY).child(key).removeValue();
                                         Toast.makeText(getApplicationContext(), "تم حذف التعليق", Toast.LENGTH_SHORT).show();
                                         return true;
 
-                                    case R.id. edite_comment_men:
-                                        Intent intent =new Intent(ArticleActivity.this, EditComment.class);
+                                    case R.id.edite_comment_men:
+                                        Intent intent = new Intent(ArticleActivity.this, EditComment.class);
                                         intent.putExtra("comment", model);
-                                        intent.putExtra("key1",KEY);
+                                        intent.putExtra("key1", KEY);
                                         intent.putExtra("comment_key2", key);
-                                        intent.putExtra("com_art","2");
+                                        intent.putExtra("com_art", "2");
                                         startActivity(intent);
 
-                                     return true;
+                                        return true;
 
                                     default:
                                         return true;
                                 }
-                            }});
+                            }
+                        });
                         popup.show(); //showing popup menu
                     }
                 });
 
-                databaseReference.addValueEventListener(new ValueEventListener()
-                {
+                databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                    {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         int count = (int) dataSnapshot.child("Comments").child(KEY).getChildrenCount();
 
                         comments_count.setText("التعليقات (" + count + ")");
@@ -312,8 +285,7 @@ public class ArticleActivity extends AppCompatActivity
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError)
-                    {
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
                         Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -323,18 +295,15 @@ public class ArticleActivity extends AppCompatActivity
 
             @NonNull
             @Override
-            public commentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-            {
+            public commentsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.comment_item, parent, false);
                 return new commentsViewHolder(view);
             }
         };
 
-        firebaseRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver()
-        {
+        firebaseRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
-            public void onItemRangeInserted(int positionStart, int itemCount)
-            {
+            public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
                 int friendlyMessageCount = firebaseRecyclerAdapter.getItemCount();
                 int lastVisiblePosition =
@@ -344,8 +313,7 @@ public class ArticleActivity extends AppCompatActivity
                 // of the list to show the newly added message.
                 if (lastVisiblePosition == -1 ||
                         (positionStart >= (friendlyMessageCount - 1) &&
-                                lastVisiblePosition == (positionStart - 1)))
-                {
+                                lastVisiblePosition == (positionStart - 1))) {
                     recyclerView.scrollToPosition(positionStart);
                 }
             }
@@ -363,35 +331,24 @@ public class ArticleActivity extends AppCompatActivity
         startActivity(intent);
 
 */
-        try
-        {
+        try {
             Intent intentUrl = new Intent(Intent.ACTION_VIEW);
             intentUrl.setDataAndType(Uri.parse(articleModel.getWordfile()), "application/*");
             intentUrl.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intentUrl);
-        }
-        catch (ActivityNotFoundException e)
-        {
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(ArticleActivity.this, "No PDF Viewer Installed", Toast.LENGTH_LONG).show();
         }
 
 
-
-
-
-
-
-
     }
 
-    public static class commentsViewHolder extends RecyclerView.ViewHolder
-    {
-        TextView username,content;
+    public static class commentsViewHolder extends RecyclerView.ViewHolder {
+        TextView username, content;
         CircleImageView image;
         MaterialRippleLayout materialRippleLayout;
 
-        commentsViewHolder(View itemView)
-        {
+        commentsViewHolder(View itemView) {
             super(itemView);
 
             username = itemView.findViewById(R.id.username_comment);
@@ -400,20 +357,17 @@ public class ArticleActivity extends AppCompatActivity
             materialRippleLayout = itemView.findViewById(R.id.edit_mrl);
         }
 
-        void BindPlaces(CommentModel commentModel)
-        {
+        void BindPlaces(CommentModel commentModel) {
             username.setText(commentModel.getUsername());
             content.setText(commentModel.getContentcomment());
 
             String id = commentModel.getUserid();
 
-            if (id.equals(getUid()) || getUid().equals("CJ4jidhu82acscpjmd7fUjaT39n2"))
-            {
+            if (id.equals(getUid()) || getUid().equals("CJ4jidhu82acscpjmd7fUjaT39n2")) {
                 materialRippleLayout.setVisibility(View.VISIBLE);
-            } else
-                {
-                    materialRippleLayout.setVisibility(View.GONE);
-                }
+            } else {
+                materialRippleLayout.setVisibility(View.GONE);
+            }
 
             Picasso.get()
                     .load(commentModel.getImage_url())
@@ -424,68 +378,55 @@ public class ArticleActivity extends AppCompatActivity
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
-        if (firebaseRecyclerAdapter != null)
-        {
+        if (firebaseRecyclerAdapter != null) {
             firebaseRecyclerAdapter.startListening();
         }
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
 
-        if (firebaseRecyclerAdapter != null)
-        {
+        if (firebaseRecyclerAdapter != null) {
             firebaseRecyclerAdapter.stopListening();
         }
     }
 
-    public static String getUid()
-    {
+    public static String getUid() {
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public void returnData (String uid)
-    {
+    public void returnData(String uid) {
         databaseReference.child("Users").child(uid).addListenerForSingleValueEvent(
-                new ValueEventListener()
-                {
+                new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                    {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         // Get user value
                         UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
-                        if (userModel != null)
-                        {
+                        if (userModel != null) {
                             name = userModel.getUserName();
                             imageurl = userModel.getImageUrl();
-                        } else
-                            {
-                                Toast.makeText(getApplicationContext(), "Can't Get User ..", Toast.LENGTH_SHORT).show();
-                            }
+                        } else {
+                            //Toast.makeText(getApplicationContext(), "Can't Get User ..", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError)
-                    {
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
                         Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
     @Override
-    public void onBackPressed()
-    {
-        if (admin == 1)
-        {
+    public void onBackPressed() {
+        if (admin == 1) {
             Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
             startActivity(intent);
-        } else
-        {
+        } else {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         }

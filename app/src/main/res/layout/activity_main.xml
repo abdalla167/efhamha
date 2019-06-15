@@ -7,83 +7,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activties.MainActivity"
-    android:background="@drawable/archi_background"
     >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         >
 
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            tools:ignore="NewApi"
+            android:layoutDirection="rtl"
+            tools:targetApi="jelly_bean_mr1"
+            app:titleTextColor="@android:color/white"
+            />
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"
+            />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            app:menu="@menu/main_bottom"
+            app:labelVisibilityMode="unlabeled"
+            app:itemIconTint="@drawable/bottom_navigation_colors"
+            app:itemTextColor="@drawable/bottom_navigation_colors"
             >
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:background="@color/colorAccent"
-                />
+        </android.support.design.widget.BottomNavigationView>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/colorWhite"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@android:color/transparent"
-                tools:ignore="NewApi"
-                android:layoutDirection="rtl"
-                tools:targetApi="jelly_bean_mr1"
-                app:titleTextColor="@android:color/white"
-                />
-
-            <FrameLayout
-                android:id="@+id/fragment_container"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/main_background"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorAccent"
-                />
-
-            <android.support.design.widget.BottomNavigationView
-                android:id="@+id/navigation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#fff"
-                app:menu="@menu/main_bottom"
-                app:labelVisibilityMode="unlabeled"
-                app:itemIconTint="@drawable/bottom_navigation_colors"
-                app:itemTextColor="@drawable/bottom_navigation_colors"
-                >
-
-            </android.support.design.widget.BottomNavigationView>
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -95,7 +64,8 @@
         app:itemTextColor="@color/colorAccent"
         app:headerLayout="@layout/nav_header"
         android:layoutDirection="rtl"
-        tools:targetApi="jelly_bean_mr1">
+        tools:targetApi="jelly_bean_mr1"
+        >
 
     </android.support.design.widget.NavigationView>
 

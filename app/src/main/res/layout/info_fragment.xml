@@ -4,15 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="3"
     android:background="#f9f9f9">
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="1.2"
+        android:layout_weight="1"
         android:background="@drawable/backgroundinfo"
         android:weightSum="3"
         >
@@ -24,139 +22,80 @@
         android:src="@drawable/logoinfo"
         android:padding="20dp"
         android:layout_gravity="center"
-
         />
-
-
-        <ImageView
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="0dp"
-            android:src="@drawable/efhamha"
-            android:layout_gravity="center"
-            android:layout_weight="0.5"
-            android:layout_marginTop="-18dp"
-            />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.8"
-        android:weightSum="4"
-        android:orientation="vertical"
-        android:paddingRight="@dimen/_15sdp"
-        android:padding="@dimen/_15sdp"
-
-        >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:src="@drawable/upr"
-            android:layout_weight="1"
-            />
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/naselkala"
-            android:layout_weight="2"
-            />
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:src="@drawable/dol"
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/_10sdp"
-
-            />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:weightSum="3">
-        <RelativeLayout
+        
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp">
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent"
+            />
+        
+    </LinearLayout>
 
-
-        </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:text="@string/info"
+        android:layout_marginTop="20dp"
+        android:padding="20dp"
+        />
+    
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="40dp"
+        >
+        
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="-10dp"
-            android:layout_weight="3"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="center"
-
+            android:padding="20dp"
             >
 
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="تواصل معنا"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:layout_marginBottom="20dp"
+                />
+            
             <LinearLayout
-                android:layout_width="324dp"
-                android:layout_height="@dimen/_110sdp"
-                android:layout_gravity="center"
-                android:background="@drawable/cardback"
-                android:orientation="vertical"
-                android:weightSum="2"
-
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
                 >
-
+                
                 <ImageView
-                    android:layout_width="@dimen/_70sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:src="@drawable/twasel"
-
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_facebook1"
+                    android:layout_marginRight="20dp"
                     />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="15dp"
-                    android:layout_weight="2"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/signIn_facebook_button"
-                        android:layout_width="@dimen/_26sdp"
-                        android:layout_height="@dimen/_26sdp"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:background="@drawable/facbookinfo" />
-
-
-                    <ImageView
-                        android:id="@+id/signIn_google_button"
-                        android:layout_width="@dimen/_26sdp"
-                        android:layout_height="@dimen/_26sdp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:background="@drawable/gmail" />
-                </LinearLayout>
-
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_gmail1"
+                    />
+                
             </LinearLayout>
-
-
+            
         </LinearLayout>
-        ////////////////
-
-
-    </LinearLayout>
-
+        
+    </android.support.v7.widget.CardView>
+    
 </LinearLayout>
