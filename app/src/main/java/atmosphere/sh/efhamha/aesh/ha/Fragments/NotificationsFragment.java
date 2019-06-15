@@ -41,7 +41,7 @@ import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.view.View.GONE;
+
 
 public class NotificationsFragment extends Fragment
 {

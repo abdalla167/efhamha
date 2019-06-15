@@ -31,16 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D10Fragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D1Fragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D2Fragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D3Fragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D4Fragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D5Fragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D6Fragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D7Fragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D8Fragment;
-import atmosphere.sh.efhamha.aesh.ha.Fragments.D9Fragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.InfoFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.NotificationsFragment;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ProfileFragment;
@@ -57,6 +47,8 @@ public class MainActivity extends AppCompatActivity
 
     DrawerLayout mDrawerLayout;
     NavigationView navigationView;
+
+   public static String catename ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -78,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         Fragment articlesFragment = new ArticlesFragment();
         loadFragment(articlesFragment);
         getSupportActionBar().setTitle("أجدد المقالات");
+        catename="";
 
         addBadgeView();
 
@@ -92,6 +85,8 @@ public class MainActivity extends AppCompatActivity
                         Fragment articlesFragment1 = new ArticlesFragment();
                         loadFragment(articlesFragment1);
                         getSupportActionBar().setTitle("أجدد المقالات");
+                        catename="";
+
                         return true;
                     case R.id.notification:
                         Fragment notificationsFragment = new NotificationsFragment();
@@ -138,72 +133,94 @@ public class MainActivity extends AppCompatActivity
                         switch (menuItem.getItemId())
                         {
                             case R.id.d1 :
-                                Fragment d1Fragment = new D1Fragment();
-                                loadFragment(d1Fragment);
+                                Fragment ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("كبسولات السعاده");
+                                catename="كبسولات السعاده";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
                             case R.id.d2 :
-                                Fragment d2Fragment = new D2Fragment();
-                                loadFragment(d2Fragment);
+                                 ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("أنت حر");
+                                catename="أنت حر";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
                             case R.id.d3 :
-                                Fragment d3Fragment = new D3Fragment();
-                                loadFragment(d3Fragment);
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("هن");
+                                catename="هن";
+
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
                             case R.id.d4 :
-                                Fragment d4Fragment = new D4Fragment();
-                                loadFragment(d4Fragment);
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("أنت و مزاجك");
                                 menuItem.setChecked(true);
+                                catename="أنت و مزاجك";
                                 mDrawerLayout.closeDrawers();
                                 return true;
                             case R.id.d5 :
-                                Fragment d5Fragment = new D5Fragment();
-                                loadFragment(d5Fragment);
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("اسمع غيرك");
+                                catename="اسمع غيرك";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
                             case R.id.d6 :
-                                Fragment d6Fragment = new D6Fragment();
-                                loadFragment(d6Fragment);
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("اختلاف مش خلاف");
+                                catename="اختلاف مش خلاف";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
                             case R.id.d7 :
-                                Fragment d7Fragment = new D7Fragment();
-                                loadFragment(d7Fragment);
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("رؤي");
+                                catename="رؤي";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
                             case R.id.d8 :
-                                Fragment d8Fragment = new D8Fragment();
-                                loadFragment(d8Fragment);
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("ملف العدد");
+                                catename="ملف العدد";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
                             case R.id.d9 :
-                                Fragment d9Fragment = new D9Fragment();
-                                loadFragment(d9Fragment);
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("حوار العدد");
+                                catename="حوار العدد";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
                             case R.id.d10 :
-                                Fragment d10Fragment = new D10Fragment();
-                                loadFragment(d10Fragment);
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
                                 getSupportActionBar().setTitle("زقزوقة");
+                                catename="زقزوقة";
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+
+
+
+                            case R.id.d11 :
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
+                                getSupportActionBar().setTitle("اجدد المقالات");
+                                catename="";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;

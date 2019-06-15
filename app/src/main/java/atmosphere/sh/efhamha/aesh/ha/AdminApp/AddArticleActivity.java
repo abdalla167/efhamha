@@ -306,7 +306,7 @@ public class AddArticleActivity extends AppCompatActivity
 
                                 if (uri_image.size()==image_url.size()) {
                                     String ID = mdatarefre.push().getKey();
-                                    ArticleModel obj = new ArticleModel(image_url, title, content, source, time_txt, day_txt, month_txt, year_txt, word_url, type);
+                                    ArticleModel obj = new ArticleModel(ID,image_url, title, content, source,category,time_txt, day_txt, month_txt, year_txt, word_url, type);
                                     mdatarefre.child("Articles").child(ID).setValue(obj);
                                     mdatarefre.child("Notifications").child(ID).setValue(obj);
                                     mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
