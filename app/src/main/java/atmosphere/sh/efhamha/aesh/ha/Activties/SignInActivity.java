@@ -270,7 +270,7 @@ public class SignInActivity extends AppCompatActivity
                                 });
 
                              if (!user.isEmailVerified()) {
-                                 Toast.makeText(SignInActivity.this, "الرجائ تأكيد الأيميل", Toast.LENGTH_SHORT).show();
+                                 Toast.makeText(SignInActivity.this, "الرجاء تأكيد الأيميل", Toast.LENGTH_SHORT).show();
                             } else if (user.isEmailVerified())
                             {
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
