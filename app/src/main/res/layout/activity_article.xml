@@ -46,6 +46,23 @@
                         android:scaleType="centerCrop"
                         android:background="@android:color/darker_gray" />
 
+                    <TextView
+                        android:id="@+id/showcaption_activity"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_45sdp"
+                        android:layout_alignBottom="@+id/article_image_viewpagerfull"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="0dp"
+                        android:layout_marginBottom="0dp"
+                        android:background="#8D8787"
+                        android:textSize="@dimen/_13sdp"
+                        android:textStyle="bold"
+                        android:gravity="center|right"
+                        android:textColor="#000"
+                        android:alpha="0.5"
+                        />
+
+
 
                 </RelativeLayout>
 

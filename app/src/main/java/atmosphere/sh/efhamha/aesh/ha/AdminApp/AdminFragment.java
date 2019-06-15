@@ -281,12 +281,10 @@ public class AdminFragment extends Fragment
 
     public static class articlesViewHolder extends RecyclerView.ViewHolder {
         TextView title, time;
-        TextView content, source, numlikes, numviews, numcomments;
+        TextView content, source, numlikes, numviews, numcomments,caption;
         ImageView imageArchi , likeimage, comment_img, view_img;
         MaterialRippleLayout imagelike, imagecomment, article_mrl;
         SliderLayout article_slider;
-
-
         ViewPager viewPager;
 
         int countlieks;
@@ -309,6 +307,7 @@ public class AdminFragment extends Fragment
             likeimage = itemView.findViewById(R.id.like);
             comment_img = itemView.findViewById(R.id.comment);
             view_img = itemView.findViewById(R.id.view);
+            caption=itemView.findViewById(R.id.showcaption_item);
 //            article_slider =(SliderLayout)itemView.findViewById(R.id.article_image_slider);
 
             viewPager =itemView .findViewById(R.id.article_image_slider);
@@ -358,6 +357,7 @@ public class AdminFragment extends Fragment
             title.setText(articleModel.getTitle());
             String time_txt = " " + articleModel.getArticle_day()+"  "+articleModel.getArticle_time() + " " + articleModel.getArticle_month() +  " " + articleModel.getArticle_year() ;
             time.setText(time_txt);
+            caption.setText(articleModel.getCaption());
             source.setText("   "+articleModel.getSource()+"  ");
             content.setText(articleModel.getContent());
         }

@@ -42,6 +42,7 @@ import atmosphere.sh.efhamha.aesh.ha.Activties.EmailAndPasswordActivity;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
+import static atmosphere.sh.efhamha.aesh.ha.R.drawable.final_logo;
 import static atmosphere.sh.efhamha.aesh.ha.R.drawable.ic_add_a_photo_black_24dp;
 
 public class AddArticleActivity extends AppCompatActivity {
@@ -57,7 +58,7 @@ public class AddArticleActivity extends AppCompatActivity {
 
 
     private ImageView im, video;
-    private TextView arc_title, arc_source, arc_content, url_txt;
+    private TextView arc_title, arc_source, arc_content, url_txt,caption;
     private Spinner spinner;
     String category;
     int type;
@@ -84,7 +85,7 @@ public class AddArticleActivity extends AppCompatActivity {
         arc_content = findViewById(R.id.add_article_content);
         spinner = findViewById(R.id.categ_spinner);
         addpdffile = findViewById(R.id.addpdf);
-
+caption=findViewById(R.id.add_caption);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getApplicationContext(),
                 R.array.categories, android.R.layout.simple_spinner_item);
@@ -224,7 +225,7 @@ public class AddArticleActivity extends AppCompatActivity {
     public void upload_article(View view) {
 
 
-        if (uri_image == null || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
+        if (uri_image == null || arc_title.getText().toString().equals("")||caption.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
             Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
         } else {
 
@@ -266,6 +267,7 @@ public class AddArticleActivity extends AppCompatActivity {
             final String title = arc_title.getText().toString();
             final String source = arc_source.getText().toString();
             final String content = arc_content.getText().toString();
+            final String cap=caption.getText().toString();
 
             int i;
             for (i = 0; i < uri_image.size(); i++) {
@@ -282,7 +284,7 @@ public class AddArticleActivity extends AppCompatActivity {
 
                                 if (uri_image.size() == image_url.size()) {
                                     String ID = mdatarefre.push().getKey();
-                                    ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type);
+                                    ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type,cap);
                                     mdatarefre.child("Articles").child(ID).setValue(obj);
                                     mdatarefre.child("Notifications").child(ID).setValue(obj);
                                     mdatarefre.child("Categories").child(category).child(ID).setValue(obj);

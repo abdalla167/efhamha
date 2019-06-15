@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class  Artical_Move  implements Serializable {
 
 
-private String title,content,source,article_time,article_day,article_month,article_year,wordfile;
+private String title,content,source,article_time,article_day,article_month,article_year,wordfile,caption;
         int type;
 private ArrayList<String> image_url;
 
@@ -93,7 +93,7 @@ public void setImage_url(ArrayList<String> image_url) {
 
 
 ///
-public Artical_Move(ArrayList<String> image_url, String title, String content, String source, String article_time, String article_day, String article_month, String article_year ,String wordfile, int type) {
+public Artical_Move(ArrayList<String> image_url, String title, String content, String source, String article_time, String article_day, String article_month, String article_year ,String wordfile, int type,String caption) {
         this.image_url = image_url;
         this.title = title;
         this.content = content;
@@ -104,5 +104,6 @@ public Artical_Move(ArrayList<String> image_url, String title, String content, S
         this.article_year = article_year;
         this.type = type;
         this.wordfile=wordfile;
-        }
+this.caption=caption;
+}
         }

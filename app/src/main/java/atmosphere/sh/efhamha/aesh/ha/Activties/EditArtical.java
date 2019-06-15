@@ -59,7 +59,7 @@ public class EditArtical extends AppCompatActivity {
 
                 Artical_Move artical_move=new Artical_Move(articleModel.getImage_url(),articleModel.getTitle(),editText.getText().toString()
                         ,articleModel.getSource(),articleModel.getArticle_time(),articleModel.getArticle_day(),
-                        articleModel.getArticle_month(),articleModel.getArticle_year(),articleModel.getWordfile(),articleModel.getType());
+                        articleModel.getArticle_month(),articleModel.getArticle_year(),articleModel.getWordfile(),articleModel.getType(),articleModel.getCaption());
 
                        databaseReference.child("Articles").child(KEY1).setValue(artical_move);
 

@@ -37,7 +37,7 @@
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
                     android:background="@android:color/darker_gray"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/article_image_slider"
@@ -45,6 +45,25 @@
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
                     android:background="@android:color/darker_gray" />
+
+
+                <TextView
+                    android:id="@+id/showcaption_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_45sdp"
+                    android:layout_alignBottom="@+id/article_image_slider"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:background="#DFDADA"
+                    android:alpha="0.8"
+                    android:textSize="@dimen/_13sdp"
+                    android:text="text"
+                    android:textStyle="bold"
+                    android:gravity="center|right"
+                    android:textColor="#000"
+                    />
+
 
             </RelativeLayout>
 
