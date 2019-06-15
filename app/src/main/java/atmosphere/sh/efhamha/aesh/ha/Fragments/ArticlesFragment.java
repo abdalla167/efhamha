@@ -135,8 +135,12 @@ public class ArticlesFragment extends Fragment {
 
 
         for (ArticleModel item : articleModels) {
+            if (item.getCategory()!=null)
+            {
+                Toast.makeText(getActivity(), "check", Toast.LENGTH_SHORT).show();
             if (item.getCategory().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
+            }
             }
         }
 
