@@ -212,7 +212,7 @@ public class ArticlesFragment extends Fragment {
 
         class AricleViewHolder extends RecyclerView.ViewHolder {
             TextView title, time;
-            TextView content, source, numlikes, numviews, numcomments;
+            TextView content, source, numlikes, numviews, numcomments,caption;
             ImageView imageArchi, likeimage, comment_img, view_img;
             MaterialRippleLayout imagelike, imagecomment, article_mrl;
             SliderLayout article_slider;
@@ -239,6 +239,7 @@ public class ArticlesFragment extends Fragment {
                 comment_img = itemView.findViewById(R.id.comment);
                 view_img = itemView.findViewById(R.id.view);
                 viewPager = itemView.findViewById(R.id.article_image_slider);
+                caption=itemView.findViewById(R.id.showcaption_item);
                 databaseReference = FirebaseDatabase.getInstance().getReference();
             }
 
@@ -387,6 +388,7 @@ public class ArticlesFragment extends Fragment {
             holder.time.setText(time_txt);
             holder.source.setText(currentItem.getSource());
             holder.content.setText(currentItem.getContent());
+            holder.caption.setText(currentItem.getCaption());
             final String key = currentItem.getAricle_id();
             holder.setlikesstatus(key, context, user);
             holder.setcommentstatus(key, context, user);

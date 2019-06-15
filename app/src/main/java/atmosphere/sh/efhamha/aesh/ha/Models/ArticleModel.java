@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class ArticleModel implements Serializable
 {
-    private String aricle_id,title,content,source,category,article_time,article_day,article_month,article_year,pdf;
+    private String aricle_id,title,content,source,category,article_time,article_day,article_month,article_year,pdf,caption;
     int type;
     private ArrayList<String>image_url;
 
@@ -26,7 +26,7 @@ public class ArticleModel implements Serializable
         return category;
     }
 
-    public ArticleModel(String aricle_id, ArrayList<String> image_url, String title, String content, String source, String category, String article_time, String article_day, String article_month, String article_year , String wordfile, int type) {
+    public ArticleModel(String aricle_id, ArrayList<String> image_url, String title, String content, String source, String category, String article_time, String article_day, String article_month, String article_year , String wordfile, int type,String caption) {
         this.image_url = image_url;
         this.title = title;
         this.content = content;
@@ -39,6 +39,7 @@ public class ArticleModel implements Serializable
         this.pdf=wordfile;
         this.aricle_id=aricle_id;
         this.category=category;
+        this.caption=caption;
     }
 
     public ArrayList<String> getImage_url() {
@@ -59,6 +60,14 @@ public class ArticleModel implements Serializable
 
     public String getContent() {
         return content;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
     }
 
     public void setContent(String content) {

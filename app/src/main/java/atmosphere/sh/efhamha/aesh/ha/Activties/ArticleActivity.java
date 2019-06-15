@@ -52,7 +52,7 @@ import static android.view.View.GONE;
 public class ArticleActivity extends AppCompatActivity {
 
     TextView title, time;
-    TextView content, source, comments_count;
+    TextView content, source, comments_count,caption;
     ImageView imageArchi;
     MaterialRippleLayout edit_article_mrl;
     EditText commenttext;
@@ -97,7 +97,7 @@ public class ArticleActivity extends AppCompatActivity {
         add_comment_btn = findViewById(R.id.add_comment_btn);
         rotateLoading = findViewById(R.id.rotateloading);
         bottom = findViewById(R.id.bottom);
-
+caption=findViewById(R.id.showcaption_activity);
         viewPager = findViewById(R.id.article_image_viewpagerfull);
         gobdf = findViewById(R.id.showpdf);
 
@@ -158,6 +158,7 @@ public class ArticleActivity extends AppCompatActivity {
         time.setText(time_txt);
         source.setText(articleModel.getSource());
         content.setText(articleModel.getContent());
+        caption.setText(articleModel.getCaption());
 
         if (articleModel.getType() == 1) {
             if (articleModel.getImage_url() != null) {
