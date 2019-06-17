@@ -188,10 +188,11 @@
             android:id="@+id/addpdf"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_30sdp"
-            android:text="أضافة ملف"
+            android:text="إضافة ملف"
+            android:background="@color/profile_background_color"
             android:layout_marginLeft="@dimen/_17sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:textColor="@android:color/holo_red_dark"
+            android:textColor="@color/colorPrimary"
             android:onClick="addwordfile"/>
 
         <android.support.v7.widget.CardView
@@ -216,7 +217,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorAccent"
-                    android:text="اضافة المقال"
+                    android:text="إضافة المقال"
                     android:textStyle="bold"
                     android:textColor="@android:color/white"
                     android:onClick="upload_article"
