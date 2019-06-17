@@ -185,7 +185,7 @@ public class AdminFragment extends Fragment
                     messageReference.child(user.getUid()).push().setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(getActivity(), "Message Saved", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Message Sent", Toast.LENGTH_SHORT).show();
                         }
                     });
                     wantToCloseDialog = true;
