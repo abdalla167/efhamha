@@ -1,6 +1,8 @@
 package atmosphere.sh.efhamha.aesh.ha.Activties;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.net.Uri;
@@ -28,6 +30,8 @@ import android.widget.Toast;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -221,8 +225,16 @@ public class ArticleActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.delete:
-                                /*databaseReference.child("Comments").child(KEY).child(key).removeValue();
-                                Toast.makeText(getApplicationContext(), "تم حذف التعليق", Toast.LENGTH_SHORT).show();*/
+                                AlertDialog.Builder  alertDialog = new AlertDialog.Builder(ArticleActivity.this);
+                                alertDialog.setTitle("هل انت متأكد");
+                                alertDialog.setPositiveButton("حذف", new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        deleteArticle(articleModel.getAricle_id());
+                                    }
+                                });
+                                alertDialog.show();
                                 return true;
 
                             case R.id.edite_comment_men:
@@ -241,6 +253,20 @@ public class ArticleActivity extends AppCompatActivity {
             }
         });
     }
+    private void deleteArticle(final String article_id) {
+
+        databaseReference.child("Articles").child(article_id).removeValue().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful())
+                    Toast.makeText(ArticleActivity.this, "تم حذف المقال بنجاح", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(ArticleActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 
     private void displayComments(String key) {
         Query query = FirebaseDatabase.getInstance()
