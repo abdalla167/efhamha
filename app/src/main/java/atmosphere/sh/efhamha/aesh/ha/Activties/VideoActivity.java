@@ -30,10 +30,7 @@ public class VideoActivity extends AppCompatActivity
         URL = getIntent().getStringExtra("url");
 
         rotateLoading.start();
-
-        Toast.makeText(this, ""+URL, Toast.LENGTH_SHORT).show();
-          Uri uri = Uri.parse(URL);
-
+        Uri uri = Uri.parse(URL);
         MediaController mediaController = new MediaController(VideoActivity.this);
         mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);

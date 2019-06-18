@@ -39,6 +39,8 @@ import com.victor.loading.rotate.RotateLoading;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 
@@ -167,7 +169,11 @@ public class ArticlesFragment extends Fragment {
                 }
 
 
+
+
                 if (articleModels!=null) {
+
+                    Collections.reverse(articleModels);
 
                     if (articleAdapter==null)
                     {
@@ -363,20 +369,25 @@ public class ArticlesFragment extends Fragment {
 
 
                 if (currentItem.getImage_url() != null) {
+
+                    holder.viewPager.setVisibility(View.VISIBLE);
                     ViewPagerAdapter adapter = new ViewPagerAdapter(context, currentItem.getImage_url());
                     holder.viewPager.setAdapter(adapter);
+                    holder.imageArchi.setVisibility(View.GONE);
                 }
             }
-                else if (currentItem.getType() == 2)
+                else if (currentItem.getType() == 2 )
 
                 {
+                    holder.caption.setVisibility(View.GONE);
                     holder.viewPager.setVisibility(View.GONE);
                     holder.imageArchi.setVisibility(View.VISIBLE);
+                    holder.imageArchi.setImageResource(R.drawable.ic_youtube);
+                    holder.imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    holder.imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
                 }
 
-                holder.imageArchi.setImageResource(R.drawable.ic_youtube);
-                holder.imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                holder.imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
+
                 holder.imageArchi.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
