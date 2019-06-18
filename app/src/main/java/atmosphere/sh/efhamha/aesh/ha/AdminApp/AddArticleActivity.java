@@ -180,10 +180,11 @@ public class AddArticleActivity extends AppCompatActivity {
 
     public void chooseimageformgallery(View view) {
         if (video_uri == null) {
-            CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
-                    .setAspectRatio(1, 1)
-                    .start(AddArticleActivity.this);
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(intent, img_id);
+            startActivityForResult(Intent.createChooser(intent, "select"), 1);
         } else {
             Toast.makeText(getApplicationContext(), "انت مختار فيديو", Toast.LENGTH_SHORT).show();
         }
@@ -193,19 +194,19 @@ public class AddArticleActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == Activity.RESULT_OK) {
-                if (result != null) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+                if (data != null) {
                     type = 1;
-                    uri_image.add(result.getUri());
+                    uri_image.add(data.getData());
                     url_txt.setText(uri_image.get(uri_image.size() - 1).getLastPathSegment());
                     video_uri = null;
                     Toast.makeText(this, "انت اخترت " + uri_image.size() + "صور", Toast.LENGTH_SHORT).show();
 
                 }
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
+                Toast.makeText(this, "Error occur", Toast.LENGTH_SHORT).show();
             }
         } else if (resultCode == RESULT_OK) {
             if (requestCode == 2) {
@@ -369,10 +370,12 @@ public class AddArticleActivity extends AppCompatActivity {
     }
 
     public void choosevideo(View view) {
-        if (uri_image == null) {
+        if (uri_image.size() == 0) {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
             intent.setType("video/*");
             startActivityForResult(intent, 2);
+
+
 
         } else {
             Toast.makeText(getApplicationContext(), "انت مختار صورة", Toast.LENGTH_SHORT).show();
