@@ -371,7 +371,7 @@ public class ArticlesFragment extends Fragment {
                     holder.viewPager.setAdapter(adapter);
                     holder.imageArchi.setVisibility(View.GONE);
                     holder.page_numper.setVisibility(View.VISIBLE);
-                    holder.page_numper.setText(1+" / "+currentItem.getImage_url().size());
+                    holder.page_numper.setText(1 +" / "+currentItem.getImage_url().size());
 
                 }
             }
@@ -382,7 +382,7 @@ public class ArticlesFragment extends Fragment {
                     holder.viewPager.setVisibility(View.GONE);
                     holder.page_numper.setVisibility(View.GONE);
                     holder.imageArchi.setVisibility(View.VISIBLE);
-                    holder.imageArchi.setImageResource(R.drawable.ic_youtube);
+                    holder.imageArchi.setImageResource(R.drawable.play_button);
                     holder.imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     holder.imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
                 }
@@ -406,9 +406,9 @@ public class ArticlesFragment extends Fragment {
             holder.source.setText(sourc+currentItem.getSource());
             holder.content.setText(currentItem.getContent());
 
-            if (currentItem.getCaption()!=null)
-            holder.caption.setText(currentItem.getCaption().get(0));
-
+            if (currentItem.getCaption()!=null) {
+                holder.caption.setText(currentItem.getCaption().get(0));
+            }
             holder.viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int i, float v, int i1) {
@@ -421,10 +421,9 @@ public class ArticlesFragment extends Fragment {
                 public void onPageSelected(int i) {
 
 
-                    if (i<currentItem.getCaption().size())
+                    if (i<currentItem.getCaption().size()) {
                         holder.caption.setText(currentItem.getCaption().get(i));
-
-
+                    }
 
                     else
                         holder.caption.setVisibility(View.GONE);

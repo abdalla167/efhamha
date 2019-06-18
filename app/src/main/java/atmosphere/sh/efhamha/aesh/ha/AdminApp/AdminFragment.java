@@ -60,8 +60,7 @@ import atmosphere.sh.efhamha.aesh.ha.Helpers.ViewPagerAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
-public class AdminFragment extends Fragment
-{
+public class AdminFragment extends Fragment {
     View view;
 
     RecyclerView recyclerView;
@@ -77,10 +76,10 @@ public class AdminFragment extends Fragment
 
     //Firebase Database
     DatabaseReference messageReference;
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.admin_fragment, container, false);
 
 
@@ -88,8 +87,7 @@ public class AdminFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -114,11 +112,9 @@ public class AdminFragment extends Fragment
 
         displayArticles();
 
-        signout.setOnClickListener(new View.OnClickListener()
-        {
+        signout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);
@@ -155,8 +151,8 @@ public class AdminFragment extends Fragment
         // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);
 
-        final  EditText messageET = (EditText) promptsView.findViewById(R.id.messageET);
-        final  EditText titleET = (EditText) promptsView.findViewById(R.id.titleET);
+        final EditText messageET = (EditText) promptsView.findViewById(R.id.messageET);
+        final EditText titleET = (EditText) promptsView.findViewById(R.id.titleET);
         // set dialog message
         alertDialogBuilder
                 .setCancelable(false)
@@ -168,14 +164,12 @@ public class AdminFragment extends Fragment
         // show it
         alertDialog.show();
 
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
-        {
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 Boolean wantToCloseDialog = false;
 
-                if((InputValidator.messageValidation(getContext(), messageET, titleET))){
+                if ((InputValidator.messageValidation(getContext(), messageET, titleET))) {
                     String message = messageET.getText().toString();
                     String title = titleET.getText().toString();
                     HashMap<String, String> hashMap = new HashMap<>();
@@ -190,7 +184,7 @@ public class AdminFragment extends Fragment
                     });
                     wantToCloseDialog = true;
                 }
-                if(wantToCloseDialog) {
+                if (wantToCloseDialog) {
                     alertDialog.dismiss();
                 }
             }
@@ -198,8 +192,7 @@ public class AdminFragment extends Fragment
 
     }
 
-    private void displayArticles()
-    {
+    private void displayArticles() {
         Query query = FirebaseDatabase.getInstance()
                 .getReference()
                 .child("Articles")
@@ -210,35 +203,29 @@ public class AdminFragment extends Fragment
                         .setQuery(query, ArticleModel.class)
                         .build();
 
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ArticleModel, articlesViewHolder>(options)
-        {
+        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<ArticleModel, articlesViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull articlesViewHolder holder, int position, @NonNull final ArticleModel model)
-            {
+            protected void onBindViewHolder(@NonNull articlesViewHolder holder, int position, @NonNull final ArticleModel model) {
                 rotateLoading.stop();
 
                 final String key = getRef(position).getKey();
 
-                holder.BindPlaces(model,getContext());
+                holder.BindPlaces(model, getContext());
 
-                holder.setlikesstatus(key,getContext(),user);
-                holder.setcommentstatus(key,getContext(),user);
-                holder.setviewsstatus(getContext(),key,user);
+                holder.setlikesstatus(key, getContext(), user);
+                holder.setcommentstatus(key, getContext(), user);
+                holder.setviewsstatus(getContext(), key, user);
 
-                holder.article_mrl.setOnClickListener(new View.OnClickListener()
-                {
+                holder.article_mrl.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v)
-                    {
-                        if (user != null)
-                        {
+                    public void onClick(View v) {
+                        if (user != null) {
                             Intent intent = new Intent(getContext(), ArticleActivity.class);
                             intent.putExtra("admin", 1);
                             intent.putExtra("ar", model);
                             intent.putExtra("ar2", key);
                             startActivity(intent);
-                        } else
-                        {
+                        } else {
                             Toast.makeText(getContext(), "لو سمحت سجل دخولك الأول", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -247,18 +234,15 @@ public class AdminFragment extends Fragment
 
             @NonNull
             @Override
-            public articlesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-            {
+            public articlesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.article_item, parent, false);
                 return new articlesViewHolder(view);
             }
         };
 
-        firebaseRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver()
-        {
+        firebaseRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
-            public void onItemRangeInserted(int positionStart, int itemCount)
-            {
+            public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
                 int friendlyMessageCount = firebaseRecyclerAdapter.getItemCount();
                 int lastVisiblePosition =
@@ -281,8 +265,8 @@ public class AdminFragment extends Fragment
 
     public static class articlesViewHolder extends RecyclerView.ViewHolder {
         TextView title, time;
-        TextView content, source, numlikes, numviews, numcomments,caption ,page_numper;
-        ImageView imageArchi , likeimage, comment_img, view_img;
+        TextView content, source, numlikes, numviews, numcomments, caption, page_numper;
+        ImageView imageArchi, likeimage, comment_img, view_img;
         MaterialRippleLayout imagelike, imagecomment, article_mrl;
         SliderLayout article_slider;
         ViewPager viewPager;
@@ -307,13 +291,11 @@ public class AdminFragment extends Fragment
             likeimage = itemView.findViewById(R.id.like);
             comment_img = itemView.findViewById(R.id.comment);
             view_img = itemView.findViewById(R.id.view);
-            caption=itemView.findViewById(R.id.showcaption_item);
-            page_numper=itemView.findViewById(R.id.page_num);
+            caption = itemView.findViewById(R.id.showcaption_item);
+            page_numper = itemView.findViewById(R.id.page_num);
 //            article_slider =(SliderLayout)itemView.findViewById(R.id.article_image_slider);
 
-            viewPager =itemView .findViewById(R.id.article_image_slider);
-
-
+            viewPager = itemView.findViewById(R.id.article_image_slider);
 
 
             databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -328,18 +310,15 @@ public class AdminFragment extends Fragment
 
                     viewPager.setVisibility(View.VISIBLE);
                     ViewPagerAdapter adapter = new ViewPagerAdapter(context, articleModel.getImage_url());
-                    viewPager.setAdapter(adapter);5
+                    viewPager.setAdapter(adapter);
                     imageArchi.setVisibility(View.GONE);
-                    page_numper.setText(1+" / "+articleModel.getImage_url().size());
+                    page_numper.setText(1 + " / " + articleModel.getImage_url().size());
                 }
-            }
-            else if (articleModel.getType() == 2 )
-
-            {
+            } else if (articleModel.getType() == 2) {
                 caption.setVisibility(View.GONE);
                 viewPager.setVisibility(View.GONE);
                 imageArchi.setVisibility(View.VISIBLE);
-                imageArchi.setImageResource(R.drawable.ic_youtube);
+                imageArchi.setImageResource(R.drawable.play_button);
                 imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
             }
@@ -354,17 +333,17 @@ public class AdminFragment extends Fragment
                 }
             });
 
-            String sourc=source.getText().toString()+" ";
-            source.setText(sourc+articleModel.getSource());
+            String sourc = source.getText().toString() + " ";
+            source.setText(sourc + articleModel.getSource());
             content.setText(articleModel.getContent());
 
-            if (articleModel.getCaption()!=null)
+            if (articleModel.getCaption() != null) {
+                Toast.makeText(context, articleModel.getCaption().get(0), Toast.LENGTH_SHORT).show();
                 caption.setText(articleModel.getCaption().get(0));
-
+            }
             viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int i, float v, int i1) {
-
 
 
                 }
@@ -373,17 +352,17 @@ public class AdminFragment extends Fragment
                 public void onPageSelected(int i) {
 
 
-                    if (i<articleModel.getCaption().size())
+                    if (i < articleModel.getCaption().size()) {
+                        Toast.makeText(context, articleModel.getCaption().get(0), Toast.LENGTH_SHORT).show();
                         caption.setText(articleModel.getCaption().get(i));
-
-
+                    }
 
                     else
-                      caption.setVisibility(View.GONE);
+                        caption.setVisibility(View.GONE);
 
 
-                    int num= i+1;
-                     page_numper.setText(num+" / "+articleModel.getImage_url().size());
+                    int num = i + 1;
+                    page_numper.setText(num + " / " + articleModel.getImage_url().size());
                 }
 
                 @Override
@@ -394,10 +373,10 @@ public class AdminFragment extends Fragment
 
 
             title.setText(articleModel.getTitle());
-            String time_txt = " " + articleModel.getArticle_day()+"  "+articleModel.getArticle_time() + " " + articleModel.getArticle_month() +  " " + articleModel.getArticle_year() ;
+            String time_txt = " " + articleModel.getArticle_day() + "  " + articleModel.getArticle_time() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
             time.setText(time_txt);
-           // caption.setText(articleModel.getCaption());
-            source.setText("   "+articleModel.getSource()+"  ");
+            // caption.setText(articleModel.getCaption());
+            source.setText("   " + articleModel.getSource() + "  ");
             content.setText(articleModel.getContent());
         }
 
@@ -505,27 +484,22 @@ public class AdminFragment extends Fragment
         }
 
 
-
     }
 
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
-        if (firebaseRecyclerAdapter != null)
-        {
+        if (firebaseRecyclerAdapter != null) {
             firebaseRecyclerAdapter.startListening();
         }
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
 
-        if (firebaseRecyclerAdapter != null)
-        {
+        if (firebaseRecyclerAdapter != null) {
             firebaseRecyclerAdapter.stopListening();
         }
     }

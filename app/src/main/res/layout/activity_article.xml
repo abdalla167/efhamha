@@ -94,6 +94,7 @@
 
             </android.support.v7.widget.CardView>
 
+
             <TextView
                 android:id="@+id/showcaption_activity"
                 android:layout_width="match_parent"

@@ -79,7 +79,7 @@ public class AddArticleActivity extends AppCompatActivity {
     int c = 0;
     String time_txt, day_txt, month_txt, year_txt;
 
-    ArrayList<String>captions  =new ArrayList<>();
+    ArrayList<String> captions = new ArrayList<>();
 
 
     @Override
@@ -247,12 +247,15 @@ public class AddArticleActivity extends AppCompatActivity {
 
     public void upload_article(View view) {
 
+        if (uri_image != null)
+            if (captions.size() < uri_image.size()) {
+                Toast.makeText(this, "من فضلك ادخلك " + (uri_image.size() - captions.size()) + " مضمون الصوره", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        if ((uri_image == null && video_uri == null) || arc_title.getText().toString().equals("")  || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
+        if ((uri_image == null && video_uri == null) || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
             Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
-        }
-        else {
-
+        } else {
 
             prog.show();
             //3shan arf3 word file
@@ -291,7 +294,6 @@ public class AddArticleActivity extends AppCompatActivity {
             final String title = arc_title.getText().toString();
             final String source = arc_source.getText().toString();
             final String content = arc_content.getText().toString();
-
 
 
             if (uri_image != null) {
@@ -371,6 +373,7 @@ public class AddArticleActivity extends AppCompatActivity {
 
         }
 
+
     }
 
     public void choosevideo(View view) {
@@ -378,8 +381,7 @@ public class AddArticleActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
             intent.setType("video/*");
             startActivityForResult(intent, 2);
-        }
-        else {
+        } else {
             Toast.makeText(getApplicationContext(), "انت مختار صورة", Toast.LENGTH_SHORT).show();
         }
     }
@@ -399,15 +401,12 @@ public class AddArticleActivity extends AppCompatActivity {
     }
 
     public void insertcaption(View view) {
-        if(!captiontext.getText().equals(""))
-        {
-            captions.add(captiontext.getText().toString());
+        String caption = captiontext.getText().toString();
+        if (caption.equals("")) {
+            Toast.makeText(this, "من فضللك ادخل مضومن الصورة", Toast.LENGTH_SHORT).show();
+        } else {
+            captions.add(caption);
             captiontext.setText("");
-
-        }
-        else
-            {
-                Toast.makeText(this, "من فضللك ادخل مضومن الصورة", Toast.LENGTH_SHORT).show();
         }
 
     }

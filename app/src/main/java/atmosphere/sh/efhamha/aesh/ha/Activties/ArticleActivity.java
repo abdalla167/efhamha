@@ -232,14 +232,13 @@ public class ArticleActivity extends AppCompatActivity {
                     */
         }
         else if (articleModel.getType()==2) {
-            Toast.makeText(this, "video", Toast.LENGTH_SHORT).show();
 
             caption.setVisibility(View.GONE);
             viewPager.setVisibility(View.GONE);
             imageArchi.setVisibility(View.VISIBLE);
             imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageArchi.setBackgroundColor(ContextCompat.getColor(this, R.color.darker_grey));
-            imageArchi.setImageResource(R.drawable.ic_youtube);
+            imageArchi.setImageResource(R.drawable.play_button);
 
         }
             imageArchi.setOnClickListener(new View.OnClickListener() {
