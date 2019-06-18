@@ -1,5 +1,6 @@
 package atmosphere.sh.efhamha.aesh.ha.Activties;
 
+import android.app.Activity;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +14,7 @@ import com.victor.loading.rotate.RotateLoading;
 
 import atmosphere.sh.efhamha.aesh.ha.R;
 
-public class VideoActivity extends AppCompatActivity
+public class VideoActivity extends Activity
 {
     VideoView videoView;
     RotateLoading rotateLoading;

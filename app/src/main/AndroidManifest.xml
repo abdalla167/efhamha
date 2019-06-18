@@ -31,7 +31,10 @@
         <activity android:name=".Activties.EditComment" />
         <activity
             android:name=".Activties.VideoActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".AdminApp.AddArticleActivity"
             android:screenOrientation="portrait"
