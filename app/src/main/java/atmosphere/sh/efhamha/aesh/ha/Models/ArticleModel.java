@@ -10,7 +10,7 @@ public class ArticleModel implements Serializable
     private String aricle_id,title,content,source,category,article_time,article_day,article_month,article_year,pdf,caption;
     int type;
     private ArrayList<String>image_url;
-
+    private String videoURL;
 
     public ArticleModel() { }
 
@@ -40,6 +40,29 @@ public class ArticleModel implements Serializable
         this.aricle_id=aricle_id;
         this.category=category;
         this.caption=caption;
+    }
+
+    public ArticleModel(String aricle_id, String videoURL, String title, String content, String source, String category, String article_time, String article_day, String article_month, String article_year, int type) {
+        this.aricle_id = aricle_id;
+        this.title = title;
+        this.content = content;
+        this.source = source;
+        this.category = category;
+        this.article_time = article_time;
+        this.article_day = article_day;
+        this.article_month = article_month;
+        this.article_year = article_year;
+        this.caption = caption;
+        this.type = type;
+        this.videoURL = videoURL;
+    }
+
+    public String getVideoURL() {
+        return videoURL;
+    }
+
+    public void setVideoURL(String videoURL) {
+        this.videoURL = videoURL;
     }
 
     public ArrayList<String> getImage_url() {

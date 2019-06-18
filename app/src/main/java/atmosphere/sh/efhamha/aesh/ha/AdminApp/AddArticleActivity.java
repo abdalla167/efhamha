@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
@@ -25,6 +28,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,6 +42,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.UUID;
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.EmailAndPasswordActivity;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
@@ -58,13 +64,14 @@ public class AddArticleActivity extends AppCompatActivity {
 
 
     private ImageView im, video;
-    private TextView arc_title, arc_source, arc_content, url_txt,caption;
+    private TextView arc_title, arc_source, arc_content, url_txt, caption;
     private Spinner spinner;
     String category;
     int type;
     private Button addpdffile;
 
     private StorageReference mstorageref = FirebaseStorage.getInstance().getReference("ArticlesImages");
+    private StorageReference videoStorage = FirebaseStorage.getInstance().getReference("ArticlesVideos");
     private DatabaseReference mdatarefre = FirebaseDatabase.getInstance().getReference();
 
     private ProgressDialog prog;
@@ -77,6 +84,7 @@ public class AddArticleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_article);
 
+
         im = findViewById(R.id.add_article_image);
         url_txt = findViewById(R.id.url);
         video = findViewById(R.id.add_article_video);
@@ -85,7 +93,7 @@ public class AddArticleActivity extends AppCompatActivity {
         arc_content = findViewById(R.id.add_article_content);
         spinner = findViewById(R.id.categ_spinner);
         addpdffile = findViewById(R.id.addpdf);
-caption=findViewById(R.id.add_caption);
+        caption = findViewById(R.id.add_caption);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getApplicationContext(),
                 R.array.categories, android.R.layout.simple_spinner_item);
@@ -192,7 +200,7 @@ caption=findViewById(R.id.add_caption);
                     type = 1;
                     uri_image.add(result.getUri());
                     url_txt.setText(uri_image.get(uri_image.size() - 1).getLastPathSegment());
-
+                    video_uri = null;
                     Toast.makeText(this, "انت اخترت " + uri_image.size() + "صور", Toast.LENGTH_SHORT).show();
 
                 }
@@ -200,11 +208,22 @@ caption=findViewById(R.id.add_caption);
                 Exception error = result.getError();
             }
         } else if (resultCode == RESULT_OK) {
-            if (requestCode == 103) {
+            if (requestCode == 2) {
                 type = 2;
-                assert data != null;
-                video_uri = data.getData();
-                url_txt.setText(video_uri.getLastPathSegment());
+
+                Uri selectedImage = data.getData();
+                String[] filePath = {MediaStore.Video.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath,
+                        null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String videoPath = c.getString(columnIndex);
+                video_uri = selectedImage;
+                uri_image = null;
+                c.close();
+
+
+                url_txt.setText(videoPath);
             }
 
 
@@ -225,7 +244,7 @@ caption=findViewById(R.id.add_caption);
     public void upload_article(View view) {
 
 
-        if (uri_image == null || arc_title.getText().toString().equals("")||caption.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
+        if ((uri_image == null && video_uri == null) || arc_title.getText().toString().equals("") || caption.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
             Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
         } else {
 
@@ -267,50 +286,85 @@ caption=findViewById(R.id.add_caption);
             final String title = arc_title.getText().toString();
             final String source = arc_source.getText().toString();
             final String content = arc_content.getText().toString();
-            final String cap=caption.getText().toString();
+            final String cap = caption.getText().toString();
 
-            int i;
-            for (i = 0; i < uri_image.size(); i++) {
-                final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(uri_image.get(i)));
-                filereference.putFile(uri_image.get(i)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+            if (uri_image != null) {
+                int i;
+                for (i = 0; i < uri_image.size(); i++) {
+                    final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(uri_image.get(i)));
+                    filereference.putFile(uri_image.get(i)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
+                            filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+
+                                    image_url.add(uri.toString());
+
+
+                                    if (uri_image.size() == image_url.size()) {
+                                        String ID = mdatarefre.push().getKey();
+                                        ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type, cap);
+                                        mdatarefre.child("Articles").child(ID).setValue(obj);
+                                        mdatarefre.child("Notifications").child(ID).setValue(obj);
+                                        mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
+                                        Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
+                                        prog.dismiss();
+                                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                        startActivity(intent);
+                                    }
+
+                                }
+                            });
+
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            prog.hide();
+                            Toast.makeText(AddArticleActivity.this, "Error Connection", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            } else if (video_uri != null) {
+                final String videoName = UUID.randomUUID().toString() + ".mb4";
+
+                Toast.makeText(this, "Video Upload", Toast.LENGTH_SHORT).show();
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                final String userID = user.getUid();
+                videoStorage.child(userID).child(userID + "/" + videoName).putFile(video_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
-                        filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        Toast.makeText(AddArticleActivity.this, "Video Uploaded", Toast.LENGTH_SHORT).show();
+                        videoStorage.child(userID).child(userID + "/" + videoName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-
-                                image_url.add(uri.toString());
-
-
-                                if (uri_image.size() == image_url.size()) {
-                                    String ID = mdatarefre.push().getKey();
-                                    ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type,cap);
-                                    mdatarefre.child("Articles").child(ID).setValue(obj);
-                                    mdatarefre.child("Notifications").child(ID).setValue(obj);
-                                    mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
-                                    Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
-                                    prog.dismiss();
-                                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                                    startActivity(intent);
-                                }
+                                String ID = mdatarefre.push().getKey();
+                                Toast.makeText(AddArticleActivity.this, "Create Article", Toast.LENGTH_SHORT).show();
+                                String videoUrl = uri.toString();
+                                Log.d("Video", "videoDownloadUrl: " + videoUrl);
+                                ArticleModel obj = new ArticleModel(ID, videoUrl, title, content, source, category, time_txt, day_txt, month_txt, year_txt, type);
+                                mdatarefre.child("Articles").child(ID).setValue(obj);
+                                mdatarefre.child("Notifications").child(ID).setValue(obj);
+                                mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
+                                Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
+                                prog.dismiss();
+                                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                                startActivity(intent);
 
                             }
                         });
 
                     }
-                }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        prog.hide();
-                        Toast.makeText(AddArticleActivity.this, "Error Connection", Toast.LENGTH_SHORT).show();
-                    }
                 });
+
             }
 
         }
@@ -319,10 +373,10 @@ caption=findViewById(R.id.add_caption);
 
     public void choosevideo(View view) {
         if (uri_image == null) {
-            Intent intent = new Intent();
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
             intent.setType("video/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Video"), 103);
+            startActivityForResult(intent, 2);
+
         } else {
             Toast.makeText(getApplicationContext(), "انت مختار صورة", Toast.LENGTH_SHORT).show();
         }
