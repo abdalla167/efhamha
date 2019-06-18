@@ -319,39 +319,38 @@ public class AdminFragment extends Fragment
         }
 
         void BindPlaces(final ArticleModel articleModel, final Context context) {
+
             if (articleModel.getType() == 1) {
 
 
-                if (articleModel.getImage_url()!=null) {
+                if (articleModel.getImage_url() != null) {
+
+                    viewPager.setVisibility(View.VISIBLE);
                     ViewPagerAdapter adapter = new ViewPagerAdapter(context, articleModel.getImage_url());
                     viewPager.setAdapter(adapter);
+                    imageArchi.setVisibility(View.GONE);
                 }
+            }
+            else if (articleModel.getType() == 2 )
 
-
-
-
-                else if (articleModel.getType() == 2)
-
-                {
-                    imageArchi.setVisibility(View.VISIBLE);
-                }
-
+            {
+                caption.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                imageArchi.setVisibility(View.VISIBLE);
                 imageArchi.setImageResource(R.drawable.ic_youtube);
                 imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
-
-                imageArchi.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        Intent intent = new Intent(context, VideoActivity.class);
-                        intent.putExtra("url", articleModel.getImage_url());
-                        context.startActivity(intent);
-                    }
-                });
-
             }
+
+
+            imageArchi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, VideoActivity.class);
+                    intent.putExtra("url", articleModel.getVideoURL());
+                    context.startActivity(intent);
+                }
+            });
 
 
             title.setText(articleModel.getTitle());
