@@ -54,7 +54,7 @@ import static android.view.View.GONE;
 public class ArticleActivity extends AppCompatActivity {
 
     TextView title, time;
-    TextView content, source, comments_count,caption;
+    TextView content, source, comments_count,caption,page_numper;
     ImageView imageArchi;
     MaterialRippleLayout edit_article_mrl;
     EditText commenttext;
@@ -106,6 +106,7 @@ public class ArticleActivity extends AppCompatActivity {
         caption=findViewById(R.id.showcaption_activity);
         viewPager = findViewById(R.id.article_image_viewpagerfull);
         gobdf = findViewById(R.id.showpdf);
+        page_numper=findViewById(R.id.page_num_full);
 
         rotateLoading.start();
 
@@ -168,14 +169,53 @@ public class ArticleActivity extends AppCompatActivity {
         title.setText(articleModel.getTitle());
         String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
         time.setText(time_txt);
-        source.setText(articleModel.getSource());
+        String sourc=source.getText().toString()+" ";
+        source.setText(sourc+articleModel.getSource());
         content.setText(articleModel.getContent());
-        caption.setText(articleModel.getCaption());
+       // caption.setText(articleModel.getCaption());
 
         if (articleModel.getType() == 1) {
             if (articleModel.getImage_url() != null) {
                 ViewPagerAdapter adapter = new ViewPagerAdapter(this, articleModel.getImage_url());
                 viewPager.setAdapter(adapter);
+                page_numper.setText(1+" / "+articleModel.getImage_url().size());
+
+
+                if (articleModel.getCaption()!=null)
+                    caption.setText(articleModel.getCaption().get(0));
+                    viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                    @Override
+                    public void onPageScrolled(int i, float v, int i1) {
+
+                    }
+
+                    @Override
+                    public void onPageSelected(int i) {
+
+                        if (i<articleModel.getCaption().size())
+                            caption.setText(articleModel.getCaption().get(i));
+
+
+
+                        else
+                            caption.setVisibility(View.GONE);
+
+
+                        int num= i+1;
+                        page_numper.setText(num+" / "+articleModel.getImage_url().size());
+                    }
+
+                    @Override
+                    public void onPageScrollStateChanged(int i) {
+
+                    }
+                });
+
+
+
+
+
+
             }
 
 

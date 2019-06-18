@@ -64,7 +64,7 @@ public class AddArticleActivity extends AppCompatActivity {
 
 
     private ImageView im, video;
-    private TextView arc_title, arc_source, arc_content, url_txt, caption;
+    private TextView arc_title, arc_source, arc_content, url_txt, captiontext;
     private Spinner spinner;
     String category;
     int type;
@@ -78,6 +78,9 @@ public class AddArticleActivity extends AppCompatActivity {
 
     int c = 0;
     String time_txt, day_txt, month_txt, year_txt;
+
+    ArrayList<String>captions  =new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +96,7 @@ public class AddArticleActivity extends AppCompatActivity {
         arc_content = findViewById(R.id.add_article_content);
         spinner = findViewById(R.id.categ_spinner);
         addpdffile = findViewById(R.id.addpdf);
-        caption = findViewById(R.id.add_caption);
+        captiontext = findViewById(R.id.add_caption);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getApplicationContext(),
                 R.array.categories, android.R.layout.simple_spinner_item);
@@ -245,9 +248,10 @@ public class AddArticleActivity extends AppCompatActivity {
     public void upload_article(View view) {
 
 
-        if ((uri_image == null && video_uri == null) || arc_title.getText().toString().equals("") || caption.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
+        if ((uri_image == null && video_uri == null) || arc_title.getText().toString().equals("")  || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
             Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
-        } else {
+        }
+        else {
 
 
             prog.show();
@@ -287,7 +291,7 @@ public class AddArticleActivity extends AppCompatActivity {
             final String title = arc_title.getText().toString();
             final String source = arc_source.getText().toString();
             final String content = arc_content.getText().toString();
-            final String cap = caption.getText().toString();
+
 
 
             if (uri_image != null) {
@@ -306,7 +310,7 @@ public class AddArticleActivity extends AppCompatActivity {
 
                                     if (uri_image.size() == image_url.size()) {
                                         String ID = mdatarefre.push().getKey();
-                                        ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type, cap);
+                                        ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type, captions);
                                         mdatarefre.child("Articles").child(ID).setValue(obj);
                                         mdatarefre.child("Notifications").child(ID).setValue(obj);
                                         mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
@@ -374,10 +378,8 @@ public class AddArticleActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
             intent.setType("video/*");
             startActivityForResult(intent, 2);
-
-
-
-        } else {
+        }
+        else {
             Toast.makeText(getApplicationContext(), "انت مختار صورة", Toast.LENGTH_SHORT).show();
         }
     }
@@ -396,5 +398,18 @@ public class AddArticleActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select word"), word_id);
     }
 
+    public void insertcaption(View view) {
+        if(!captiontext.getText().equals(""))
+        {
+            captions.add(captiontext.getText().toString());
+            captiontext.setText("");
+
+        }
+        else
+            {
+                Toast.makeText(this, "من فضللك ادخل مضومن الصورة", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }
 

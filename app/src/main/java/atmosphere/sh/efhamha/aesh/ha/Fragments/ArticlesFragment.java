@@ -168,9 +168,6 @@ public class ArticlesFragment extends Fragment {
                     articleModels.add(dataSnapshot1.getValue(ArticleModel.class));
                 }
 
-
-
-
                 if (articleModels!=null) {
 
                     Collections.reverse(articleModels);
@@ -219,7 +216,7 @@ public class ArticlesFragment extends Fragment {
 
         class AricleViewHolder extends RecyclerView.ViewHolder {
             TextView title, time;
-            TextView content, source, numlikes, numviews, numcomments,caption;
+            TextView content, source, numlikes, numviews, numcomments,caption,page_numper;
             ImageView imageArchi, likeimage, comment_img, view_img;
             MaterialRippleLayout imagelike, imagecomment, article_mrl;
             SliderLayout article_slider;
@@ -248,6 +245,7 @@ public class ArticlesFragment extends Fragment {
                 viewPager = itemView.findViewById(R.id.article_image_slider);
                 caption=itemView.findViewById(R.id.showcaption_item);
                 databaseReference = FirebaseDatabase.getInstance().getReference();
+                page_numper=itemView.findViewById(R.id.page_num);
             }
 
 
@@ -362,18 +360,19 @@ public class ArticlesFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(AricleViewHolder holder, int position) {
+        public void onBindViewHolder(final AricleViewHolder holder, int position) {
             final ArticleModel currentItem = articleList.get(position);
 
             if (currentItem.getType() == 1) {
 
-
                 if (currentItem.getImage_url() != null) {
-
                     holder.viewPager.setVisibility(View.VISIBLE);
                     ViewPagerAdapter adapter = new ViewPagerAdapter(context, currentItem.getImage_url());
                     holder.viewPager.setAdapter(adapter);
                     holder.imageArchi.setVisibility(View.GONE);
+                    holder.page_numper.setVisibility(View.VISIBLE);
+                    holder.page_numper.setText(1+" / "+currentItem.getImage_url().size());
+
                 }
             }
                 else if (currentItem.getType() == 2 )
@@ -381,6 +380,7 @@ public class ArticlesFragment extends Fragment {
                 {
                     holder.caption.setVisibility(View.GONE);
                     holder.viewPager.setVisibility(View.GONE);
+                    holder.page_numper.setVisibility(View.GONE);
                     holder.imageArchi.setVisibility(View.VISIBLE);
                     holder.imageArchi.setImageResource(R.drawable.ic_youtube);
                     holder.imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -401,9 +401,47 @@ public class ArticlesFragment extends Fragment {
             holder.title.setText(currentItem.getTitle());
             String time_txt = currentItem.getArticle_time() + " " + currentItem.getArticle_day() + " "  + currentItem.getArticle_month() + " " + currentItem.getArticle_year()+" ";
             holder.time.setText(time_txt);
-            holder.source.setText(currentItem.getSource());
+
+            String sourc=holder.source.getText().toString()+" ";
+            holder.source.setText(sourc+currentItem.getSource());
             holder.content.setText(currentItem.getContent());
-            holder.caption.setText(currentItem.getCaption());
+
+            if (currentItem.getCaption()!=null)
+            holder.caption.setText(currentItem.getCaption().get(0));
+
+            holder.viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int i, float v, int i1) {
+
+
+
+                }
+
+                @Override
+                public void onPageSelected(int i) {
+
+
+                    if (i<currentItem.getCaption().size())
+                        holder.caption.setText(currentItem.getCaption().get(i));
+
+
+
+                    else
+                        holder.caption.setVisibility(View.GONE);
+
+
+                    int num= i+1;
+                    holder.page_numper.setText(num+" / "+currentItem.getImage_url().size());
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int i) {
+
+                }
+            });
+
+
+
             final String key = currentItem.getAricle_id();
             holder.setlikesstatus(key, context, user);
             holder.setcommentstatus(key, context, user);

@@ -281,7 +281,7 @@ public class AdminFragment extends Fragment
 
     public static class articlesViewHolder extends RecyclerView.ViewHolder {
         TextView title, time;
-        TextView content, source, numlikes, numviews, numcomments,caption;
+        TextView content, source, numlikes, numviews, numcomments,caption ,page_numper;
         ImageView imageArchi , likeimage, comment_img, view_img;
         MaterialRippleLayout imagelike, imagecomment, article_mrl;
         SliderLayout article_slider;
@@ -308,6 +308,7 @@ public class AdminFragment extends Fragment
             comment_img = itemView.findViewById(R.id.comment);
             view_img = itemView.findViewById(R.id.view);
             caption=itemView.findViewById(R.id.showcaption_item);
+            page_numper=itemView.findViewById(R.id.page_num);
 //            article_slider =(SliderLayout)itemView.findViewById(R.id.article_image_slider);
 
             viewPager =itemView .findViewById(R.id.article_image_slider);
@@ -327,8 +328,9 @@ public class AdminFragment extends Fragment
 
                     viewPager.setVisibility(View.VISIBLE);
                     ViewPagerAdapter adapter = new ViewPagerAdapter(context, articleModel.getImage_url());
-                    viewPager.setAdapter(adapter);
+                    viewPager.setAdapter(adapter);5
                     imageArchi.setVisibility(View.GONE);
+                    page_numper.setText(1+" / "+articleModel.getImage_url().size());
                 }
             }
             else if (articleModel.getType() == 2 )
@@ -352,11 +354,49 @@ public class AdminFragment extends Fragment
                 }
             });
 
+            String sourc=source.getText().toString()+" ";
+            source.setText(sourc+articleModel.getSource());
+            content.setText(articleModel.getContent());
+
+            if (articleModel.getCaption()!=null)
+                caption.setText(articleModel.getCaption().get(0));
+
+            viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int i, float v, int i1) {
+
+
+
+                }
+
+                @Override
+                public void onPageSelected(int i) {
+
+
+                    if (i<articleModel.getCaption().size())
+                        caption.setText(articleModel.getCaption().get(i));
+
+
+
+                    else
+                      caption.setVisibility(View.GONE);
+
+
+                    int num= i+1;
+                     page_numper.setText(num+" / "+articleModel.getImage_url().size());
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int i) {
+
+                }
+            });
+
 
             title.setText(articleModel.getTitle());
             String time_txt = " " + articleModel.getArticle_day()+"  "+articleModel.getArticle_time() + " " + articleModel.getArticle_month() +  " " + articleModel.getArticle_year() ;
             time.setText(time_txt);
-            caption.setText(articleModel.getCaption());
+           // caption.setText(articleModel.getCaption());
             source.setText("   "+articleModel.getSource()+"  ");
             content.setText(articleModel.getContent());
         }

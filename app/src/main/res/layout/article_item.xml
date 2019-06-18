@@ -26,6 +26,19 @@
             android:alpha="0.8"
             android:background="#e7e7e7"
             >
+            <TextView
+                android:id="@+id/article_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="الصائمون الأوائل"
+                android:textSize="21.3sp"
+                android:textColor="@color/colorAccent"
+                android:background="@android:color/white"
+                android:padding="@dimen/_6sdp"
+                android:textStyle="bold"
+                android:layout_gravity="right"
+                android:layout_marginBottom="3dp"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -34,38 +47,38 @@
                 <ImageView
                     android:id="@+id/article_image"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="250dp"
                     android:scaleType="centerCrop"
                     android:background="@android:color/darker_gray"
-                    android:visibility="visible"/>
+                    android:visibility="invisible"/>
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/article_image_slider"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:background="@android:color/darker_gray" />
-
-
-                <TextView
-                    android:id="@+id/showcaption_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
-                    android:layout_alignBottom="@+id/article_image_slider"
-                    android:layout_marginLeft="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="#DFDADA"
-                    android:alpha="0.8"
-                    android:textSize="@dimen/_13sdp"
-                    android:text="text"
-                    android:textStyle="bold"
-                    android:gravity="center|right"
-                    android:textColor="#000"
-                    />
+                    android:layout_height="250dp"
+                    android:background="@android:color/darker_gray"
+                    android:scaleType="centerCrop" />
 
 
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/showcaption_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:gravity="center"
+                android:text=""
+                android:textSize="@dimen/_13sdp" />
+
+            <TextView
+                android:id="@+id/page_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                android:padding="@dimen/_3sdp"/>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,24 +87,13 @@
                 android:gravity="right"
                 >
 
-                <TextView
-                    android:id="@+id/article_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="الصائمون الأوائل"
-                    android:textSize="21.3sp"
-                    android:textColor="@color/colorAccent"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    />
+
 
                 <TextView
                     android:id="@+id/article_by"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:text="كتب بواسطة : "
                     android:layout_marginRight="15dp"
                     android:drawablePadding="10dp"
                     android:drawableRight="@drawable/ic_account_circle_black_24dp"

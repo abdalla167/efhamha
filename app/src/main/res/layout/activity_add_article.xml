@@ -91,6 +91,7 @@
             android:background="@drawable/comment_background"
             >
 
+
             <TextView
                 android:id="@+id/url"
                 android:layout_width="0dp"
@@ -118,6 +119,45 @@
 
         </LinearLayout>
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="4"
+            android:layout_marginRight="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:gravity="right">
+
+            <Button
+                android:id="@+id/addcaptiontbtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="insertcaption"
+                android:text="تم"
+                android:textSize="@dimen/_14sdp"
+                android:layout_marginRight="4dp"
+                android:textColor="@color/colorPrimary"
+                android:background="@android:color/white"
+                />
+
+            <EditText
+                android:id="@+id/add_caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@drawable/comment_background"
+                android:hint="مضمون الصوره"
+                android:padding="10dp"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+
+                />
+
+        </LinearLayout>
+
+
         <EditText
             android:id="@+id/add_article_title"
             android:layout_width="match_parent"
@@ -131,19 +171,7 @@
             android:background="@drawable/comment_background"
             android:padding="10dp"
             />
-        <EditText
-            android:id="@+id/add_caption"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:hint="مضمون الصوره"
-            android:textColor="@android:color/black"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/comment_background"
-            android:padding="10dp"
-            />
+
 
         <EditText
             android:id="@+id/add_article_by"
