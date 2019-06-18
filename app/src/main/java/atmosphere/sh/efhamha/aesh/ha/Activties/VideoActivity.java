@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.victor.loading.rotate.RotateLoading;
@@ -30,7 +31,8 @@ public class VideoActivity extends AppCompatActivity
 
         rotateLoading.start();
 
-        Uri uri = Uri.parse(URL);
+        Toast.makeText(this, ""+URL, Toast.LENGTH_SHORT).show();
+          Uri uri = Uri.parse(URL);
 
         MediaController mediaController = new MediaController(VideoActivity.this);
         mediaController.setAnchorView(videoView);
@@ -47,5 +49,6 @@ public class VideoActivity extends AppCompatActivity
                 videoView.start();
             }
         });
+
     }
 }

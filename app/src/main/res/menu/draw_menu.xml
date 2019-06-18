@@ -35,7 +35,7 @@
 
         <item
             android:id="@+id/d7"
-            android:title="رؤي"
+            android:title="رؤى"
             />
 
         <item
@@ -51,6 +51,10 @@
         <item
             android:id="@+id/d10"
             android:title="زقزوقة"
+            />
+        <item
+            android:id="@+id/d12"
+            android:title="على الاصل دور"
             />
         <item
             android:id="@+id/d11"

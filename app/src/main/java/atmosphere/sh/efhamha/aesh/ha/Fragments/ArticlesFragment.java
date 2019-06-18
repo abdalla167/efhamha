@@ -39,6 +39,7 @@ import com.victor.loading.rotate.RotateLoading;
 
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
@@ -364,9 +365,12 @@ public class ArticlesFragment extends Fragment {
                 if (currentItem.getImage_url() != null) {
                     ViewPagerAdapter adapter = new ViewPagerAdapter(context, currentItem.getImage_url());
                     holder.viewPager.setAdapter(adapter);
-                } else if (currentItem.getType() == 2)
+                }
+            }
+                else if (currentItem.getType() == 2)
 
                 {
+                    holder.viewPager.setVisibility(View.GONE);
                     holder.imageArchi.setVisibility(View.VISIBLE);
                 }
 
@@ -377,11 +381,11 @@ public class ArticlesFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(context, VideoActivity.class);
-                        intent.putExtra("url", currentItem.getImage_url());
+                        intent.putExtra("url", currentItem.getVideoURL());
                         context.startActivity(intent);
                     }
                 });
-            }
+
 
             holder.title.setText(currentItem.getTitle());
             String time_txt = currentItem.getArticle_time() + " " + currentItem.getArticle_day() + " "  + currentItem.getArticle_month() + " " + currentItem.getArticle_year()+" ";
@@ -407,9 +411,16 @@ public class ArticlesFragment extends Fragment {
                         startActivity(intent);
 
                         databaseReference.child("Views").child(key).child(user.getUid()).setValue(user.getUid());
-                    } else
+                    }
+                    else
                     {
-                        Toast.makeText(getContext(), "لو سمحت سجل دخولك الأول", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), ArticleActivity.class);
+                        intent.putExtra("ar", currentItem);
+                        intent.putExtra("ar2", key);
+                        startActivity(intent);
+                        String ID = databaseReference.push().getKey();
+                        databaseReference.child("Views").child(key).child(ID).setValue(ID);
+
                     }
                 }
             });

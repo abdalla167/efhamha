@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
 
         Fragment articlesFragment = new ArticlesFragment();
         loadFragment(articlesFragment);
-        getSupportActionBar().setTitle("أجدد المقالات");
+        getSupportActionBar().setTitle("أجدد الموضوعات");
         catename="";
 
         addBadgeView();
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
                     case R.id.articles:
                         Fragment articlesFragment1 = new ArticlesFragment();
                         loadFragment(articlesFragment1);
-                        getSupportActionBar().setTitle("أجدد المقالات");
+                        getSupportActionBar().setTitle("أجدد الموضوعات");
                         catename="";
 
                         return true;
@@ -219,8 +219,17 @@ public class MainActivity extends AppCompatActivity
                             case R.id.d11 :
                                 ArticlesFragment = new ArticlesFragment();
                                 loadFragment(ArticlesFragment);
-                                getSupportActionBar().setTitle("اجدد المقالات");
+                                getSupportActionBar().setTitle("اجدد الموضوعات");
                                 catename="";
+                                menuItem.setChecked(true);
+                                mDrawerLayout.closeDrawers();
+                                return true;
+
+                            case R.id.d12 :
+                                ArticlesFragment = new ArticlesFragment();
+                                loadFragment(ArticlesFragment);
+                                getSupportActionBar().setTitle("علي الاصل دور");
+                                catename="علي الاصل دور";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;

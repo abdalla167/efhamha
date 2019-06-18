@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -75,10 +77,14 @@ public class ArticleActivity extends AppCompatActivity {
 
     ArticleModel articleModel;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
+
+
 
         init();
         addData();
@@ -97,7 +103,7 @@ public class ArticleActivity extends AppCompatActivity {
         add_comment_btn = findViewById(R.id.add_comment_btn);
         rotateLoading = findViewById(R.id.rotateloading);
         bottom = findViewById(R.id.bottom);
-caption=findViewById(R.id.showcaption_activity);
+        caption=findViewById(R.id.showcaption_activity);
         viewPager = findViewById(R.id.article_image_viewpagerfull);
         gobdf = findViewById(R.id.showpdf);
 
@@ -128,13 +134,19 @@ caption=findViewById(R.id.showcaption_activity);
     }
 
     private void addComment(String name, String imageurl, String content, String key) {
-        CommentModel commentModel = new CommentModel(imageurl, name, content, getUid());
-        String comment_key = databaseReference.child("Comments").push().getKey();
-        databaseReference.child("Comments").child(key).child(comment_key).setValue(commentModel);
 
-        Toast.makeText(getApplicationContext(), "تم اضافة تعليق بنجاح", Toast.LENGTH_SHORT).show();
-        commenttext.setText("");
+        if (getUid()!=null) {
+            CommentModel commentModel = new CommentModel(imageurl, name, content, getUid());
+            String comment_key = databaseReference.child("Comments").push().getKey();
+            databaseReference.child("Comments").child(key).child(comment_key).setValue(commentModel);
 
+            Toast.makeText(getApplicationContext(), "تم اضافة تعليق بنجاح", Toast.LENGTH_SHORT).show();
+            commenttext.setText("");
+        }
+        else
+        {
+            Toast.makeText(this, "من فضللك سجل دخولك", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void addData() {
@@ -174,18 +186,27 @@ caption=findViewById(R.id.showcaption_activity);
                     .error(R.drawable.ic_darkgrey)
                     .into(imageArchi);
                     */
-        } else {
+        }
+        else if (articleModel.getType()==2) {
+            Toast.makeText(this, "video", Toast.LENGTH_SHORT).show();
+
+            caption.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
+            imageArchi.setVisibility(View.VISIBLE);
+            imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageArchi.setBackgroundColor(ContextCompat.getColor(this, R.color.darker_grey));
             imageArchi.setImageResource(R.drawable.ic_youtube);
 
+        }
             imageArchi.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getApplicationContext(), VideoActivity.class);
-                    intent.putExtra("url", articleModel.getImage_url());
+                    intent.putExtra("url", articleModel.getVideoURL());
                     startActivity(intent);
                 }
             });
-        }
+
 
         edit_article_mrl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -348,6 +369,7 @@ caption=findViewById(R.id.showcaption_activity);
         TextView username, content;
         CircleImageView image;
         MaterialRippleLayout materialRippleLayout;
+       FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         commentsViewHolder(View itemView) {
             super(itemView);
@@ -396,10 +418,18 @@ caption=findViewById(R.id.showcaption_activity);
     }
 
     public static String getUid() {
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    if (user!=null)
         return FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                    return null;
     }
 
     public void returnData(String uid) {
+
+        FirebaseUser user =  FirebaseAuth.getInstance().getCurrentUser();
+        if (user!=null)
+        {
         databaseReference.child("Users").child(uid).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -420,7 +450,7 @@ caption=findViewById(R.id.showcaption_activity);
                         Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-    }
+    }}
 
     @Override
     public void onBackPressed() {

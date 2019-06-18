@@ -336,18 +336,15 @@ public class AddArticleActivity extends AppCompatActivity {
             } else if (video_uri != null) {
                 final String videoName = UUID.randomUUID().toString() + ".mb4";
 
-                Toast.makeText(this, "Video Upload", Toast.LENGTH_SHORT).show();
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 final String userID = user.getUid();
                 videoStorage.child(userID).child(userID + "/" + videoName).putFile(video_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(AddArticleActivity.this, "Video Uploaded", Toast.LENGTH_SHORT).show();
                         videoStorage.child(userID).child(userID + "/" + videoName).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
                                 String ID = mdatarefre.push().getKey();
-                                Toast.makeText(AddArticleActivity.this, "Create Article", Toast.LENGTH_SHORT).show();
                                 String videoUrl = uri.toString();
                                 Log.d("Video", "videoDownloadUrl: " + videoUrl);
                                 ArticleModel obj = new ArticleModel(ID, videoUrl, title, content, source, category, time_txt, day_txt, month_txt, year_txt, type);
