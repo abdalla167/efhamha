@@ -315,7 +315,7 @@ public class AdminFragment extends Fragment {
                     page_numper.setText(1 + " / " + articleModel.getImage_url().size());
                 }
             } else if (articleModel.getType() == 2) {
-                caption.setVisibility(View.GONE);
+                caption.setVisibility(View.VISIBLE);
                 viewPager.setVisibility(View.GONE);
                 imageArchi.setVisibility(View.VISIBLE);
                 imageArchi.setImageResource(R.drawable.play_button);
@@ -358,7 +358,7 @@ public class AdminFragment extends Fragment {
                     }
 
                     else
-                        caption.setVisibility(View.GONE);
+                        caption.setVisibility(View.VISIBLE);
 
 
                     int num = i + 1;
