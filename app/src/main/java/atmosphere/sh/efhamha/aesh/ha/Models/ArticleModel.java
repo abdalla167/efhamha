@@ -53,7 +53,6 @@ public class ArticleModel implements Serializable
         this.article_day = article_day;
         this.article_month = article_month;
         this.article_year = article_year;
-        this.caption = caption;
         this.type = type;
         this.videoURL = videoURL;
     }

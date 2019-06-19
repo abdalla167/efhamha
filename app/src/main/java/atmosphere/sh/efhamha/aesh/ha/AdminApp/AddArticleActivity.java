@@ -183,12 +183,7 @@ public class AddArticleActivity extends AppCompatActivity {
 
     public void chooseimageformgallery(View view) {
 
-        if(uri_image.size()==2){
 
-
-
-
-        }
         if (video_uri == null) {
             Intent intent = new Intent();
             intent.setType("image/*");

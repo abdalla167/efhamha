@@ -359,8 +359,6 @@ public class AdminFragment extends Fragment {
 
                     else
                         caption.setVisibility(View.VISIBLE);
-
-
                     int num = i + 1;
                     page_numper.setText(num + " / " + articleModel.getImage_url().size());
                 }
