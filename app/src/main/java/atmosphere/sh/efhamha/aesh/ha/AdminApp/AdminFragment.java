@@ -328,7 +328,7 @@ public class AdminFragment extends Fragment
 
                     viewPager.setVisibility(View.VISIBLE);
                     ViewPagerAdapter adapter = new ViewPagerAdapter(context, articleModel.getImage_url());
-                    viewPager.setAdapter(adapter);5
+                    viewPager.setAdapter(adapter);
                     imageArchi.setVisibility(View.GONE);
                     page_numper.setText(1+" / "+articleModel.getImage_url().size());
                 }

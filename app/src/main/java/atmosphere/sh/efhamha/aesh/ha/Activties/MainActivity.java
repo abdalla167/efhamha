@@ -1,5 +1,6 @@
 package atmosphere.sh.efhamha.aesh.ha.Activties;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,12 +46,19 @@ public class MainActivity extends AppCompatActivity
     BottomNavigationView navigation;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-
+FloatingActionButton share;
     DrawerLayout mDrawerLayout;
     NavigationView navigationView;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    FirebaseUser user;
 
    public static String catename ="";
 
+
+
+
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -62,6 +71,35 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        share=findViewById(R.id.share_btn);
+
+        share.setVisibility(VISIBLE);
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(user != null){
+
+
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=atmosphere.sh.efhamha.aesh.ha");
+                    sendIntent.setType("text/plain");
+                    startActivity(sendIntent);
+
+
+                }else {
+
+                    Toast.makeText(MainActivity.this, "لو سمحت سجل دخولك الاول", Toast.LENGTH_SHORT).show();
+
+
+                }
+
+
+
+            }
+        });
 
         drawer();
 
@@ -82,6 +120,7 @@ public class MainActivity extends AppCompatActivity
                 switch (item.getItemId())
                 {
                     case R.id.articles:
+                        share.setVisibility(VISIBLE);
                         Fragment articlesFragment1 = new ArticlesFragment();
                         loadFragment(articlesFragment1);
                         getSupportActionBar().setTitle("أجدد الموضوعات");
@@ -89,11 +128,13 @@ public class MainActivity extends AppCompatActivity
 
                         return true;
                     case R.id.notification:
+                        share.setVisibility(GONE);
                         Fragment notificationsFragment = new NotificationsFragment();
                         loadFragment(notificationsFragment);
                         getSupportActionBar().setTitle("الاشعارات");
                         return true;
                     case R.id.info:
+                        share.setVisibility(GONE);
                         Fragment infoFragment = new InfoFragment();
                         loadFragment(infoFragment);
                         getSupportActionBar().setTitle("عن المجلة");
