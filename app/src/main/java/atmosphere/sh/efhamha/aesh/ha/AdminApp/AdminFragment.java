@@ -315,7 +315,8 @@ public class AdminFragment extends Fragment {
                     page_numper.setText(1 + " / " + articleModel.getImage_url().size());
                 }
             } else if (articleModel.getType() == 2) {
-                caption.setVisibility(View.VISIBLE);
+                caption.setVisibility(View.GONE);
+                page_numper.setVisibility(View.GONE);
                 viewPager.setVisibility(View.GONE);
                 imageArchi.setVisibility(View.VISIBLE);
                 imageArchi.setImageResource(R.drawable.play_button);
@@ -338,7 +339,6 @@ public class AdminFragment extends Fragment {
             content.setText(articleModel.getContent());
 
             if (articleModel.getCaption() != null) {
-                Toast.makeText(context, articleModel.getCaption().get(0), Toast.LENGTH_SHORT).show();
                 caption.setText(articleModel.getCaption().get(0));
             }
             viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
