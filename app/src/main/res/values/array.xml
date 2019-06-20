@@ -13,7 +13,23 @@
         <item>ملف العدد</item>
         <item>حوار العدد</item>
         <item>زقزوقة</item>
-        <item>على الاصل دور</item>
+        <item>على الأصل دور</item>
+    </string-array>
+
+
+
+
+    <string-array name="writers">
+        <item>   اختر </item>
+        <item>اسماء عبد المطلب</item>
+        <item>منه الله مصطفي</item>
+        <item>ايه صلاح</item>
+        <item>دولت البسيوني</item>
+        <item>سارة جمال</item>
+        <item>ندي علاء الجابري</item>
+        <item>مريم بدوي</item>
+        <item>دينا عامر</item>
+        <item>ندي عمران</item>
     </string-array>
 
 </resources>

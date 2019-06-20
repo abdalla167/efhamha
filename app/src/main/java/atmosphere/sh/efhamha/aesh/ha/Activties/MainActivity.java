@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity
     BottomNavigationView navigation;
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-FloatingActionButton share;
+    FloatingActionButton share;
     DrawerLayout mDrawerLayout;
     NavigationView navigationView;
     FirebaseDatabase firebaseDatabase;
@@ -72,7 +72,7 @@ FloatingActionButton share;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        share=findViewById(R.id.share_btn);
+        share=findViewById(R.id.share_btn1);
 
         share.setVisibility(VISIBLE);
         share.setOnClickListener(new View.OnClickListener() {
@@ -225,8 +225,8 @@ FloatingActionButton share;
                             case R.id.d7 :
                                 ArticlesFragment = new ArticlesFragment();
                                 loadFragment(ArticlesFragment);
-                                getSupportActionBar().setTitle("رؤي");
-                                catename="رؤي";
+                                getSupportActionBar().setTitle("رؤى");
+                                catename="رؤى";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
@@ -269,8 +269,8 @@ FloatingActionButton share;
                             case R.id.d12 :
                                 ArticlesFragment = new ArticlesFragment();
                                 loadFragment(ArticlesFragment);
-                                getSupportActionBar().setTitle("علي الاصل دور");
-                                catename="علي الاصل دور";
+                                getSupportActionBar().setTitle("علي الأصل دور");
+                                catename="علي الأصل دور";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;

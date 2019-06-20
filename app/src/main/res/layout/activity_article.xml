@@ -26,6 +26,7 @@
                 android:background="@android:color/white"
                 android:orientation="horizontal"
                 android:weightSum="4"
+                android:gravity="right"
 
                 >
 
@@ -35,12 +36,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1">
+                    android:layout_weight="0.5"
+                    android:visibility="visible">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center|bottom"
+                        android:layout_gravity="left"
                         android:src="@drawable/ic_more_horiz_black_24dp"
                         android:tint="@android:color/black" />
 
@@ -50,12 +52,13 @@
                     android:id="@+id/article_title_full"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
                     android:layout_gravity="right"
+                    android:layout_weight="3.5"
                     android:padding="5dp"
                     android:text="الصائمون الأوائل"
-                    android:textColor="@android:color/black"
                     android:textSize="20dp"
+                    android:textColor="@color/colorAccent"
+
 
                     android:textStyle="bold" />
 
@@ -85,10 +88,10 @@
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/article_image_viewpagerfull"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_300sdp"
                         android:background="@android:color/darker_gray"
-                        android:scaleType="centerCrop" />
+                        android:scaleType="fitCenter" />
 
                 </RelativeLayout>
 

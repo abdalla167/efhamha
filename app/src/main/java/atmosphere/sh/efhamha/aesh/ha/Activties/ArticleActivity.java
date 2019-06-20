@@ -178,6 +178,7 @@ public class ArticleActivity extends AppCompatActivity {
             if (articleModel.getImage_url() != null) {
                 ViewPagerAdapter adapter = new ViewPagerAdapter(this, articleModel.getImage_url());
                 viewPager.setAdapter(adapter);
+
                 page_numper.setText(1 + " / " + articleModel.getImage_url().size());
 
 
@@ -292,7 +293,12 @@ public class ArticleActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful())
+                {
                     Toast.makeText(ArticleActivity.this, "تم حذف المقال بنجاح", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                    startActivity(intent);
+
+                }
                 else
                     Toast.makeText(ArticleActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }

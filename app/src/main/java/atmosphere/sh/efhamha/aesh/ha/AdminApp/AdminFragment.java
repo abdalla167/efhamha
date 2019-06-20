@@ -381,7 +381,7 @@ public class AdminFragment extends Fragment {
             String time_txt = " " + articleModel.getArticle_day() + "  " + articleModel.getArticle_time() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
             time.setText(time_txt);
             // caption.setText(articleModel.getCaption());
-            source.setText("   " + articleModel.getSource() + "  ");
+            source.setText("كتب بواسطة: "+articleModel.getSource());
             content.setText(articleModel.getContent());
         }
 

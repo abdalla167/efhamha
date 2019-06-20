@@ -82,6 +82,17 @@ public class AddArticleActivity extends AppCompatActivity {
     ArrayList<String> captions = new ArrayList<>();
 
 
+
+    //--------------------
+
+
+    String title="";
+    String source="";
+    String content="";
+    //--------
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,23 +209,18 @@ public class AddArticleActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == 1) {
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                type = 1;
+                uri_image.add( data.getData());
+                url_txt.setText(uri_image.get(uri_image.size() - 1).getLastPathSegment());
+                video_uri = null;
+                Toast.makeText(this, ""+uri_image, Toast.LENGTH_SHORT).show();
 
-                if (data != null) {
-                    type = 1;
-                    uri_image.add(data.getData());
-                    url_txt.setText(uri_image.get(uri_image.size() - 1).getLastPathSegment());
-                    video_uri = null;
-                    Toast.makeText(this, "انت اخترت " + uri_image.size() + "صور", Toast.LENGTH_SHORT).show();
-
-                }
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(this, "Error occur", Toast.LENGTH_SHORT).show();
             }
-        } else if (resultCode == RESULT_OK) {
-            if (requestCode == 2) {
+        } else if (requestCode == 2) {
+
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                 type = 2;
 
                 Uri selectedImage = data.getData();
@@ -232,20 +238,18 @@ public class AddArticleActivity extends AppCompatActivity {
                 url_txt.setText(videoPath);
             }
 
-
-            //3shan uri bta3 l word file
-            else if (requestCode == word_id) {
-                assert data != null;
-                word_uri = data.getData();
-                addpdffile.setText("تغير ملف");
-
-                Toast.makeText(this, "تم ادراج ملف ", Toast.LENGTH_SHORT).show();
-
-            }
         }
+        //3shan uri bta3 l word file
+        else if (requestCode == word_id) {
+            assert data != null;
+            word_uri = data.getData();
+            addpdffile.setText("تغير ملف");
 
+            Toast.makeText(this, "تم ادراج ملف ", Toast.LENGTH_SHORT).show();
 
+        }
     }
+
 
     public void upload_article(View view) {
 
@@ -287,10 +291,9 @@ public class AddArticleActivity extends AppCompatActivity {
             }
 
 
-            final String title = arc_title.getText().toString();
-            final String source = arc_source.getText().toString();
-            final String content = arc_content.getText().toString();
-
+                title   = arc_title.getText().toString();
+                 source  = arc_source.getText().toString();
+                 content = arc_content.getText().toString();
 
             if (uri_image != null) {
                 int i;
@@ -304,6 +307,7 @@ public class AddArticleActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
 
                                     image_url.add(uri.toString());
+                                    Toast.makeText(AddArticleActivity.this, ""+uri.toString(), Toast.LENGTH_SHORT).show();
 
 
                                     if (uri_image.size() == image_url.size()) {
@@ -311,7 +315,17 @@ public class AddArticleActivity extends AppCompatActivity {
                                         ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type, captions);
                                         mdatarefre.child("Articles").child(ID).setValue(obj);
                                         mdatarefre.child("Notifications").child(ID).setValue(obj);
-                                        mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
+
+
+                                        title = "";
+                                        source = "";
+                                        content="";
+
+                                        arc_title.setText("");
+                                        arc_source.setText("");
+                                         arc_content.setText("");
+
+
                                         Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
                                         prog.dismiss();
                                         Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
@@ -353,7 +367,18 @@ public class AddArticleActivity extends AppCompatActivity {
                                 ArticleModel obj = new ArticleModel(ID, videoUrl, title, content, source, category, time_txt, day_txt, month_txt, year_txt, type);
                                 mdatarefre.child("Articles").child(ID).setValue(obj);
                                 mdatarefre.child("Notifications").child(ID).setValue(obj);
-                                mdatarefre.child("Categories").child(category).child(ID).setValue(obj);
+
+
+
+                                title = "";
+                                source = "";
+                                content="";
+
+                                arc_title.setText("");
+                                arc_source.setText("");
+                                arc_content.setText("");
+
+
                                 Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
                                 prog.dismiss();
                                 Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
@@ -396,7 +421,6 @@ public class AddArticleActivity extends AppCompatActivity {
             captions.add("");
 
         }
-
 
         if (caption.equals("")) {
             Toast.makeText(this, "من فضللك ادخل مضومن الصورة", Toast.LENGTH_SHORT).show();

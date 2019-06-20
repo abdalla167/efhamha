@@ -390,8 +390,9 @@ public class ArticlesFragment extends Fragment {
             String time_txt = currentItem.getArticle_time() + " " + currentItem.getArticle_day() + " " + currentItem.getArticle_month() + " " + currentItem.getArticle_year() + " ";
             holder.time.setText(time_txt);
 
-            String sourc = holder.source.getText().toString() + " ";
-            holder.source.setText(sourc + currentItem.getSource());
+
+            holder.source.setText("كتب بواسطة: "+currentItem.getSource());
+
             holder.content.setText(currentItem.getContent());
 
             if (currentItem.getCaption() != null) {

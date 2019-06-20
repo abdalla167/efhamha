@@ -16,6 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activties.Writers"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
+
+
+        </activity>
 
         <service
             android:name=".Notification.FirebaseMessagingService"
@@ -25,16 +32,14 @@
             </intent-filter>
         </service>
 
-
-
-        <activity android:name=".Activties.EditArtical"></activity>
+        <activity android:name=".Activties.EditArtical" />
         <activity android:name=".Activties.EditComment" />
         <activity
             android:name=".Activties.VideoActivity"
-            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:configChanges="orientation|screenSize"/>
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".AdminApp.AddArticleActivity"
             android:screenOrientation="portrait"
@@ -64,6 +69,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme"
             android:windowSoftInputMode="stateHidden">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -75,6 +82,8 @@
             android:label=""
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -108,19 +117,19 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/logoinfo" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>
