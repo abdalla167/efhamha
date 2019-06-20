@@ -342,6 +342,8 @@ public class AdminFragment extends Fragment {
             if (articleModel.getCaption() != null) {
                 caption.setText(articleModel.getCaption().get(0));
             }
+
+
             viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int i, float v, int i1) {
@@ -352,7 +354,7 @@ public class AdminFragment extends Fragment {
                 @Override
                 public void onPageSelected(int i) {
 
-/*
+                    /*
                     if (articleModel.getCaption() == null) {
                         page_numper.setText(i + 1 + " / " + articleModel.getImage_url().size());
                         return;
