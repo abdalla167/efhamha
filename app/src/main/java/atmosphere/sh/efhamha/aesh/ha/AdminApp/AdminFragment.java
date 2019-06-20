@@ -312,6 +312,7 @@ public class AdminFragment extends Fragment {
                     ViewPagerAdapter adapter = new ViewPagerAdapter(context, articleModel.getImage_url());
                     viewPager.setAdapter(adapter);
                     imageArchi.setVisibility(View.GONE);
+                    page_numper.setVisibility(View.VISIBLE);
                     page_numper.setText(1 + " / " + articleModel.getImage_url().size());
                 }
             } else if (articleModel.getType() == 2) {
@@ -351,13 +352,15 @@ public class AdminFragment extends Fragment {
                 @Override
                 public void onPageSelected(int i) {
 
-
-                    if (i < articleModel.getCaption().size()) {
-                        Toast.makeText(context, articleModel.getCaption().get(0), Toast.LENGTH_SHORT).show();
-                        caption.setText(articleModel.getCaption().get(i));
+/*
+                    if (articleModel.getCaption() == null) {
+                        page_numper.setText(i + 1 + " / " + articleModel.getImage_url().size());
+                        return;
                     }
-
-                    else
+                    */
+                    if (i < articleModel.getCaption().size()) {
+                        caption.setText(articleModel.getCaption().get(i));
+                    } else
                         caption.setVisibility(View.VISIBLE);
                     int num = i + 1;
                     page_numper.setText(num + " / " + articleModel.getImage_url().size());
