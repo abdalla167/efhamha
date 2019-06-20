@@ -341,8 +341,12 @@ public class AdminFragment extends Fragment {
 
             if (articleModel.getCaption() != null) {
                 caption.setText(articleModel.getCaption().get(0));
-            }
+            } else
+                caption.setVisibility(View.GONE);
 
+            if (articleModel.getCaption() != null)
+                if (articleModel.getCaption().size() > 0)
+                    caption.setVisibility(View.VISIBLE);
 
             viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
@@ -354,16 +358,14 @@ public class AdminFragment extends Fragment {
                 @Override
                 public void onPageSelected(int i) {
 
-                    /*
                     if (articleModel.getCaption() == null) {
-                        page_numper.setText(i + 1 + " / " + articleModel.getImage_url().size());
-                        return;
+                        caption.setVisibility(View.GONE);
+                    } else {
+                        if (i < articleModel.getCaption().size()) {
+                            caption.setText(articleModel.getCaption().get(i));
+                        } else
+                            caption.setVisibility(View.VISIBLE);
                     }
-                    */
-                    if (i < articleModel.getCaption().size()) {
-                        caption.setText(articleModel.getCaption().get(i));
-                    } else
-                        caption.setVisibility(View.VISIBLE);
                     int num = i + 1;
                     page_numper.setText(num + " / " + articleModel.getImage_url().size());
                 }

@@ -1,4 +1,5 @@
 package atmosphere.sh.efhamha.aesh.ha.Fragments;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -51,6 +52,8 @@ import atmosphere.sh.efhamha.aesh.ha.Helpers.ViewPagerAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
 
+import static android.view.View.GONE;
+
 
 public class ArticlesFragment extends Fragment {
     View view;
@@ -64,7 +67,6 @@ public class ArticlesFragment extends Fragment {
     ArrayList<ArticleModel> articleModels;
     Boolean likechecker = false;
     ArticleAdapter articleAdapter;
-
 
 
     @Nullable
@@ -114,13 +116,12 @@ public class ArticlesFragment extends Fragment {
                 filterbywriter(s.toString());
 
 
-
             }
         });
 
 
-
     }
+
     private void filterbywriter(String text) {
         ArrayList<ArticleModel> filteredList = new ArrayList<>();
 
@@ -138,16 +139,14 @@ public class ArticlesFragment extends Fragment {
 
 
         for (ArticleModel item : articleModels) {
-            if (item.getCategory()!=null)
-            {
-            if (item.getCategory().toLowerCase().contains(text.toLowerCase())) {
-                filteredList.add(item);
-            }
+            if (item.getCategory() != null) {
+                if (item.getCategory().toLowerCase().contains(text.toLowerCase())) {
+                    filteredList.add(item);
+                }
             }
         }
 
-        if (filteredList.size()==0)
-        {
+        if (filteredList.size() == 0) {
             Toast.makeText(getActivity(), "لا يوجد مقالات من هذا النوع", Toast.LENGTH_SHORT).show();
         }
 
@@ -158,7 +157,7 @@ public class ArticlesFragment extends Fragment {
 
     private void loadarticledata() {
 
-        articleModels=new ArrayList<>();
+        articleModels = new ArrayList<>();
         databaseReference.child("Articles").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -168,32 +167,25 @@ public class ArticlesFragment extends Fragment {
                     articleModels.add(dataSnapshot1.getValue(ArticleModel.class));
                 }
 
-                if (articleModels!=null) {
+                if (articleModels != null) {
 
                     Collections.reverse(articleModels);
 
-                    if (articleAdapter==null)
-                    {
-                    articleAdapter = new ArticleAdapter(articleModels, getActivity());
-                    LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-                    recyclerView.setLayoutManager(manager);
-                    recyclerView.setAdapter(articleAdapter);
-                }
-                else
-                    articleAdapter.notifyDataSetChanged();
+                    if (articleAdapter == null) {
+                        articleAdapter = new ArticleAdapter(articleModels, getActivity());
+                        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+                        recyclerView.setLayoutManager(manager);
+                        recyclerView.setAdapter(articleAdapter);
+                    } else
+                        articleAdapter.notifyDataSetChanged();
 
                     //hana b3ml filter le category
-                    if (articleAdapter!=null)
-                    {
+                    if (articleAdapter != null) {
 
                         filterbycategory(MainActivity.catename);
 
                     }
-                }
-
-
-
-                else
+                } else
                     Toast.makeText(getActivity(), "No Data to show", Toast.LENGTH_SHORT).show();
 
             }
@@ -203,7 +195,6 @@ public class ArticlesFragment extends Fragment {
 
             }
         });
-
 
 
     }
@@ -216,7 +207,7 @@ public class ArticlesFragment extends Fragment {
 
         class AricleViewHolder extends RecyclerView.ViewHolder {
             TextView title, time;
-            TextView content, source, numlikes, numviews, numcomments,caption,page_numper;
+            TextView content, source, numlikes, numviews, numcomments, caption, page_numper;
             ImageView imageArchi, likeimage, comment_img, view_img;
             MaterialRippleLayout imagelike, imagecomment, article_mrl;
             SliderLayout article_slider;
@@ -243,9 +234,9 @@ public class ArticlesFragment extends Fragment {
                 comment_img = itemView.findViewById(R.id.comment);
                 view_img = itemView.findViewById(R.id.view);
                 viewPager = itemView.findViewById(R.id.article_image_slider);
-                caption=itemView.findViewById(R.id.showcaption_item);
+                caption = itemView.findViewById(R.id.showcaption_item);
                 databaseReference = FirebaseDatabase.getInstance().getReference();
-                page_numper=itemView.findViewById(R.id.page_num);
+                page_numper = itemView.findViewById(R.id.page_num);
             }
 
 
@@ -348,7 +339,7 @@ public class ArticlesFragment extends Fragment {
 
         public ArticleAdapter(ArrayList<ArticleModel> articleList1, Context context) {
             this.articleList = articleList1;
-            this.articleListfillter=new ArrayList<>(articleList1);
+            this.articleListfillter = new ArrayList<>(articleList1);
             this.context = context;
         }
 
@@ -371,48 +362,44 @@ public class ArticlesFragment extends Fragment {
                     holder.viewPager.setAdapter(adapter);
                     holder.imageArchi.setVisibility(View.GONE);
                     holder.page_numper.setVisibility(View.VISIBLE);
-                    holder.page_numper.setText(1 +" / "+currentItem.getImage_url().size());
+                    holder.page_numper.setText(1 + " / " + currentItem.getImage_url().size());
 
                 }
+            } else if (currentItem.getType() == 2) {
+                holder.caption.setVisibility(View.GONE);
+                holder.viewPager.setVisibility(View.GONE);
+                holder.page_numper.setVisibility(View.GONE);
+                holder.imageArchi.setVisibility(View.VISIBLE);
+                holder.imageArchi.setImageResource(R.drawable.play_button);
+                holder.imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                holder.imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
             }
-                else if (currentItem.getType() == 2 )
 
-                {
-                    holder.caption.setVisibility(View.GONE);
-                    holder.viewPager.setVisibility(View.GONE);
-                    holder.page_numper.setVisibility(View.GONE);
-                    holder.imageArchi.setVisibility(View.VISIBLE);
-                    holder.imageArchi.setImageResource(R.drawable.play_button);
-                    holder.imageArchi.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    holder.imageArchi.setBackgroundColor(ContextCompat.getColor(context, R.color.darker_grey));
+
+            holder.imageArchi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, VideoActivity.class);
+                    intent.putExtra("url", currentItem.getVideoURL());
+                    context.startActivity(intent);
                 }
-
-
-                holder.imageArchi.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(context, VideoActivity.class);
-                        intent.putExtra("url", currentItem.getVideoURL());
-                        context.startActivity(intent);
-                    }
-                });
+            });
 
 
             holder.title.setText(currentItem.getTitle());
-            String time_txt = currentItem.getArticle_time() + " " + currentItem.getArticle_day() + " "  + currentItem.getArticle_month() + " " + currentItem.getArticle_year()+" ";
+            String time_txt = currentItem.getArticle_time() + " " + currentItem.getArticle_day() + " " + currentItem.getArticle_month() + " " + currentItem.getArticle_year() + " ";
             holder.time.setText(time_txt);
 
-            String sourc=holder.source.getText().toString()+" ";
-            holder.source.setText(sourc+currentItem.getSource());
+            String sourc = holder.source.getText().toString() + " ";
+            holder.source.setText(sourc + currentItem.getSource());
             holder.content.setText(currentItem.getContent());
 
-            if (currentItem.getCaption()!=null) {
+            if (currentItem.getCaption() != null) {
                 holder.caption.setText(currentItem.getCaption().get(0));
             }
             holder.viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int i, float v, int i1) {
-
 
 
                 }
@@ -421,16 +408,18 @@ public class ArticlesFragment extends Fragment {
                 public void onPageSelected(int i) {
 
 
-                    if (i<currentItem.getCaption().size()) {
-                        holder.caption.setText(currentItem.getCaption().get(i));
+                    if (currentItem.getCaption() == null) {
+                        holder.caption.setVisibility(GONE);
+
+                    } else {
+                        if (i < currentItem.getCaption().size()) {
+                            holder.caption.setText(currentItem.getCaption().get(i));
+                        } else
+                            holder.caption.setVisibility(View.GONE);
                     }
 
-                    else
-                        holder.caption.setVisibility(View.GONE);
-
-
-                    int num= i+1;
-                    holder.page_numper.setText(num+" / "+currentItem.getImage_url().size());
+                    int num = i + 1;
+                    holder.page_numper.setText(num + " / " + currentItem.getImage_url().size());
                 }
 
                 @Override
@@ -440,28 +429,22 @@ public class ArticlesFragment extends Fragment {
             });
 
 
-
             final String key = currentItem.getAricle_id();
             holder.setlikesstatus(key, context, user);
             holder.setcommentstatus(key, context, user);
             holder.setviewsstatus(context, key, user);
 
-            holder.article_mrl.setOnClickListener(new View.OnClickListener()
-            {
+            holder.article_mrl.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (user != null)
-                    {
+                public void onClick(View v) {
+                    if (user != null) {
                         Intent intent = new Intent(getContext(), ArticleActivity.class);
                         intent.putExtra("ar", currentItem);
                         intent.putExtra("ar2", key);
                         startActivity(intent);
 
                         databaseReference.child("Views").child(key).child(user.getUid()).setValue(user.getUid());
-                    }
-                    else
-                    {
+                    } else {
                         Intent intent = new Intent(getContext(), ArticleActivity.class);
                         intent.putExtra("ar", currentItem);
                         intent.putExtra("ar2", key);
@@ -473,48 +456,36 @@ public class ArticlesFragment extends Fragment {
                 }
             });
 
-            holder.imagecomment.setOnClickListener(new View.OnClickListener()
-            {
+            holder.imagecomment.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (user != null)
-                    {
+                public void onClick(View v) {
+                    if (user != null) {
                         Intent intent = new Intent(getContext(), ArticleActivity.class);
                         intent.putExtra("ar", currentItem);
                         intent.putExtra("ar2", key);
                         startActivity(intent);
 
                         databaseReference.child("Views").child(key).child(user.getUid()).setValue(user.getUid());
-                    } else
-                    {
+                    } else {
                         Toast.makeText(getContext(), "لو سمحت سجل دخولك الأول", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
 
-            holder.imagelike.setOnClickListener(new View.OnClickListener()
-            {
+            holder.imagelike.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
-                    if (user != null)
-                    {
+                public void onClick(View v) {
+                    if (user != null) {
                         likechecker = true;
 
-                        databaseReference.child("Likes").addValueEventListener(new ValueEventListener()
-                        {
+                        databaseReference.child("Likes").addValueEventListener(new ValueEventListener() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                            {
-                                if (likechecker.equals(true))
-                                {
-                                    if (dataSnapshot.child(key).hasChild(user.getUid()))
-                                    {
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (likechecker.equals(true)) {
+                                    if (dataSnapshot.child(key).hasChild(user.getUid())) {
                                         databaseReference.child("Likes").child(key).child(user.getUid()).removeValue();
                                         likechecker = false;
-                                    } else
-                                    {
+                                    } else {
                                         databaseReference.child("Likes").child(key).child(user.getUid()).setValue(true);
                                         likechecker = false;
                                     }
@@ -522,13 +493,11 @@ public class ArticlesFragment extends Fragment {
                             }
 
                             @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError)
-                            {
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
                                 Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
-                    } else
-                    {
+                    } else {
                         Toast.makeText(getContext(), "لو سمحت سجل دخولك الأول", Toast.LENGTH_SHORT).show();
                     }
                 }

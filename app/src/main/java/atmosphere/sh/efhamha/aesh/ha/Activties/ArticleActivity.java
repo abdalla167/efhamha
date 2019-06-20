@@ -58,7 +58,7 @@ import static android.view.View.GONE;
 public class ArticleActivity extends AppCompatActivity {
 
     TextView title, time;
-    TextView content, source, comments_count,caption,page_numper;
+    TextView content, source, comments_count, caption, page_numper;
     ImageView imageArchi;
     MaterialRippleLayout edit_article_mrl;
     EditText commenttext;
@@ -82,12 +82,10 @@ public class ArticleActivity extends AppCompatActivity {
     ArticleModel articleModel;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article);
-
 
 
         init();
@@ -107,10 +105,10 @@ public class ArticleActivity extends AppCompatActivity {
         add_comment_btn = findViewById(R.id.add_comment_btn);
         rotateLoading = findViewById(R.id.rotateloading);
         bottom = findViewById(R.id.bottom);
-        caption=findViewById(R.id.showcaption_activity);
+        caption = findViewById(R.id.showcaption_activity);
         viewPager = findViewById(R.id.article_image_viewpagerfull);
         gobdf = findViewById(R.id.showpdf);
-        page_numper=findViewById(R.id.page_num_full);
+        page_numper = findViewById(R.id.page_num_full);
 
         rotateLoading.start();
 
@@ -140,16 +138,14 @@ public class ArticleActivity extends AppCompatActivity {
 
     private void addComment(String name, String imageurl, String content, String key) {
 
-        if (getUid()!=null) {
+        if (getUid() != null) {
             CommentModel commentModel = new CommentModel(imageurl, name, content, getUid());
             String comment_key = databaseReference.child("Comments").push().getKey();
             databaseReference.child("Comments").child(key).child(comment_key).setValue(commentModel);
 
             Toast.makeText(getApplicationContext(), "تم اضافة تعليق بنجاح", Toast.LENGTH_SHORT).show();
             commenttext.setText("");
-        }
-        else
-        {
+        } else {
             Toast.makeText(this, "من فضللك سجل دخولك", Toast.LENGTH_SHORT).show();
         }
     }
@@ -173,21 +169,22 @@ public class ArticleActivity extends AppCompatActivity {
         title.setText(articleModel.getTitle());
         String time_txt = articleModel.getArticle_time() + "\n" + articleModel.getArticle_day() + " " + articleModel.getArticle_month() + " " + articleModel.getArticle_year();
         time.setText(time_txt);
-        String sourc=source.getText().toString()+" ";
-        source.setText(sourc+articleModel.getSource());
+        String sourc = source.getText().toString() + " ";
+        source.setText(sourc + articleModel.getSource());
         content.setText(articleModel.getContent());
-       // caption.setText(articleModel.getCaption());
+        // caption.setText(articleModel.getCaption());
 
         if (articleModel.getType() == 1) {
             if (articleModel.getImage_url() != null) {
                 ViewPagerAdapter adapter = new ViewPagerAdapter(this, articleModel.getImage_url());
                 viewPager.setAdapter(adapter);
-                page_numper.setText(1+" / "+articleModel.getImage_url().size());
+                page_numper.setText(1 + " / " + articleModel.getImage_url().size());
 
 
-                if (articleModel.getCaption()!=null)
+                if (articleModel.getCaption() != null)
                     caption.setText(articleModel.getCaption().get(0));
-                    viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+                viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                     @Override
                     public void onPageScrolled(int i, float v, int i1) {
 
@@ -196,17 +193,19 @@ public class ArticleActivity extends AppCompatActivity {
                     @Override
                     public void onPageSelected(int i) {
 
-                        if (i<articleModel.getCaption().size())
-                            caption.setText(articleModel.getCaption().get(i));
+                        if (articleModel.getCaption() == null) {
+                             caption.setVisibility(GONE);
 
+                        } else {
+                            if (i < articleModel.getCaption().size())
+                                caption.setText(articleModel.getCaption().get(i));
 
+                            else
+                                caption.setVisibility(View.GONE);
+                        }
 
-                        else
-                            caption.setVisibility(View.GONE);
-
-
-                        int num= i+1;
-                        page_numper.setText(num+" / "+articleModel.getImage_url().size());
+                        int num = i + 1;
+                        page_numper.setText(num + " / " + articleModel.getImage_url().size());
                     }
 
                     @Override
@@ -214,10 +213,6 @@ public class ArticleActivity extends AppCompatActivity {
 
                     }
                 });
-
-
-
-
 
 
             }
@@ -230,8 +225,7 @@ public class ArticleActivity extends AppCompatActivity {
                     .error(R.drawable.ic_darkgrey)
                     .into(imageArchi);
                     */
-        }
-        else if (articleModel.getType()==2) {
+        } else if (articleModel.getType() == 2) {
 
             caption.setVisibility(View.GONE);
             viewPager.setVisibility(View.GONE);
@@ -241,14 +235,14 @@ public class ArticleActivity extends AppCompatActivity {
             imageArchi.setImageResource(R.drawable.play_button);
 
         }
-            imageArchi.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), VideoActivity.class);
-                    intent.putExtra("url", articleModel.getVideoURL());
-                    startActivity(intent);
-                }
-            });
+        imageArchi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), VideoActivity.class);
+                intent.putExtra("url", articleModel.getVideoURL());
+                startActivity(intent);
+            }
+        });
 
 
         edit_article_mrl.setOnClickListener(new View.OnClickListener() {
@@ -264,10 +258,9 @@ public class ArticleActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.delete:
-                                AlertDialog.Builder  alertDialog = new AlertDialog.Builder(ArticleActivity.this);
+                                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ArticleActivity.this);
                                 alertDialog.setTitle("هل انت متأكد");
-                                alertDialog.setPositiveButton("حذف", new DialogInterface.OnClickListener()
-                                {
+                                alertDialog.setPositiveButton("حذف", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         deleteArticle(articleModel.getAricle_id());
@@ -292,6 +285,7 @@ public class ArticleActivity extends AppCompatActivity {
             }
         });
     }
+
     private void deleteArticle(final String article_id) {
 
         databaseReference.child("Articles").child(article_id).removeValue().addOnCompleteListener(this, new OnCompleteListener<Void>() {
@@ -434,7 +428,7 @@ public class ArticleActivity extends AppCompatActivity {
         TextView username, content;
         CircleImageView image;
         MaterialRippleLayout materialRippleLayout;
-       FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         commentsViewHolder(View itemView) {
             super(itemView);
@@ -483,39 +477,39 @@ public class ArticleActivity extends AppCompatActivity {
     }
 
     public static String getUid() {
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    if (user!=null)
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null)
+            return FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                    return null;
+        return null;
     }
 
     public void returnData(String uid) {
 
-        FirebaseUser user =  FirebaseAuth.getInstance().getCurrentUser();
-        if (user!=null)
-        {
-        databaseReference.child("Users").child(uid).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        // Get user value
-                        UserModel userModel = dataSnapshot.getValue(UserModel.class);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            databaseReference.child("Users").child(uid).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            // Get user value
+                            UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
-                        if (userModel != null) {
-                            name = userModel.getUserName();
-                            imageurl = userModel.getImageUrl();
-                        } else {
-                            //Toast.makeText(getApplicationContext(), "Can't Get User ..", Toast.LENGTH_SHORT).show();
+                            if (userModel != null) {
+                                name = userModel.getUserName();
+                                imageurl = userModel.getImageUrl();
+                            } else {
+                                //Toast.makeText(getApplicationContext(), "Can't Get User ..", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }}
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            Toast.makeText(getApplicationContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
 
     @Override
     public void onBackPressed() {

@@ -249,14 +249,6 @@ public class AddArticleActivity extends AppCompatActivity {
 
     public void upload_article(View view) {
 
-        if (uri_image != null)
-            /*
-            if (captions.size() < uri_image.size()) {
-                Toast.makeText(this, "من فضلك ادخلك " + (uri_image.size() - captions.size()) + " مضمون الصوره", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            */
-
         if ((uri_image == null && video_uri == null) || arc_title.getText().toString().equals("") || arc_source.getText().toString().equals("") || arc_content.getText().toString().equals("") || category.equals("اختار موضوع")) {
             Toast.makeText(this, "من فضلك ادخل معلومات المقال", Toast.LENGTH_LONG).show();
         } else {
@@ -400,21 +392,15 @@ public class AddArticleActivity extends AppCompatActivity {
 
     public void insertcaption(View view) {
         String caption = captiontext.getText().toString();
-
-
-         while (captions.size()<uri_image.size()-1){
-
-
-                captions.add("");
+        while (captions.size() < uri_image.size() - 1) {
+            captions.add("");
 
         }
 
 
         if (caption.equals("")) {
             Toast.makeText(this, "من فضللك ادخل مضومن الصورة", Toast.LENGTH_SHORT).show();
-        }
-
-        else {
+        } else {
 
             captions.add(caption);
             captiontext.setText("");
