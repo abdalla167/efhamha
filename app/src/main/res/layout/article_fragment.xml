@@ -26,6 +26,17 @@
             android:textColorHint="@android:color/darker_gray"
             />
 
+        <TextView
+            android:id="@+id/show_writers_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:onClick="showwritersactivity"
+            android:text="عرض جميع الكُتاب"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_12sdp" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"

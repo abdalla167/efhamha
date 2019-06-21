@@ -39,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.victor.loading.rotate.RotateLoading;
 
 
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,6 +49,7 @@ import java.util.Random;
 import atmosphere.sh.efhamha.aesh.ha.Activties.ArticleActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.MainActivity;
 import atmosphere.sh.efhamha.aesh.ha.Activties.VideoActivity;
+import atmosphere.sh.efhamha.aesh.ha.Activties.Writers;
 import atmosphere.sh.efhamha.aesh.ha.Helpers.ViewPagerAdapter;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.R;
@@ -67,7 +69,10 @@ public class ArticlesFragment extends Fragment {
     ArrayList<ArticleModel> articleModels;
     Boolean likechecker = false;
     ArticleAdapter articleAdapter;
+    TextView showwriter;
 
+
+    public  static  String writer_name = "";
 
     @Nullable
     @Override
@@ -83,6 +88,14 @@ public class ArticlesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        showwriter=view.findViewById(R.id.show_writers_btn);
+        showwriter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), Writers.class);
+                startActivity(i);
+            }
+        });
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         recyclerView = view.findViewById(R.id.recyclerview);
@@ -118,6 +131,18 @@ public class ArticlesFragment extends Fragment {
 
             }
         });
+
+
+        if (!writer_name.equals(""))
+        {
+            search_auothar.setVisibility(GONE);
+            showwriter.setVisibility(GONE);
+        }
+
+        if (!MainActivity.catename.equals(""))
+        {
+            showwriter.setVisibility(GONE);
+        }
 
 
     }
@@ -184,7 +209,14 @@ public class ArticlesFragment extends Fragment {
 
                         filterbycategory(MainActivity.catename);
 
+                        if (!writer_name.equals(""))
+                            filterbywriter(writer_name);
+
+
                     }
+
+
+
                 } else
                     Toast.makeText(getActivity(), "No Data to show", Toast.LENGTH_SHORT).show();
 

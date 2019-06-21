@@ -32,4 +32,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="info">"افهمها و عيشها" هي أول منصة اعلامية الكترونية مصرية لحوار ثقافات الأديان, حيث تهتم بتقديم محتوي صحفي هادف يساهم في تجديد الخطاب الديني ونشر ثقافة التسامح.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

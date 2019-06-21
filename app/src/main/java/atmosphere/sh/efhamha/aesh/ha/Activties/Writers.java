@@ -1,5 +1,6 @@
 package atmosphere.sh.efhamha.aesh.ha.Activties;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import atmosphere.sh.efhamha.aesh.ha.AdminApp.AdminActivity;
 import atmosphere.sh.efhamha.aesh.ha.Fragments.ArticlesFragment;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
 import atmosphere.sh.efhamha.aesh.ha.Models.WriterModel;
@@ -82,9 +84,9 @@ public class Writers extends AppCompatActivity {
                         layout.setVisibility(View.VISIBLE);
 
 
+                        ArticlesFragment.writer_name=item.getName();
                         Fragment ArticlesFragment = new ArticlesFragment();
                         loadFragment(ArticlesFragment);
-
 
                         break;
 
@@ -117,7 +119,7 @@ public class Writers extends AppCompatActivity {
                     writers.add(dataSnapshot1.getValue(WriterModel.class));
                 }
 
-                Toast.makeText(Writers.this, ""+writers.size(), Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -131,16 +133,24 @@ public class Writers extends AppCompatActivity {
 
     public void loadFragment(Fragment fragment)
     {
-        fragmentTransaction = fragmentManager.beginTransaction();
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_writer, fragment);
-        fragmentTransaction.addToBackStack(null);
-
-        getSupportFragmentManager().popBackStack();
-        // Commit the transaction
+        fragmentTransaction.addToBackStack(fragment.toString());
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
 
+
+    @Override
+    public void onBackPressed() {
+
+
+            ArticlesFragment.writer_name="";
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
+
+    }
 
 }
 
