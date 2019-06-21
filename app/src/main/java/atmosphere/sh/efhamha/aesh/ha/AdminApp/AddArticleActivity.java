@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,17 +81,17 @@ public class AddArticleActivity extends AppCompatActivity {
     String time_txt, day_txt, month_txt, year_txt;
 
     ArrayList<String> captions = new ArrayList<>();
-
+    private Uri imageUri;
+    private LinearLayout uploadImageLayout;
 
 
     //--------------------
 
 
-    String title="";
-    String source="";
-    String content="";
+    String title = "";
+    String source = "";
+    String content = "";
     //--------
-
 
 
     @Override
@@ -100,7 +101,6 @@ public class AddArticleActivity extends AppCompatActivity {
 
 
         im = findViewById(R.id.add_article_image);
-        url_txt = findViewById(R.id.url);
         video = findViewById(R.id.add_article_video);
         arc_title = findViewById(R.id.add_article_title);
         arc_source = findViewById(R.id.add_article_by);
@@ -108,6 +108,7 @@ public class AddArticleActivity extends AppCompatActivity {
         spinner = findViewById(R.id.categ_spinner);
         addpdffile = findViewById(R.id.addpdf);
         captiontext = findViewById(R.id.add_caption);
+        uploadImageLayout = findViewById(R.id.upload_image_layout);
 
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getApplicationContext(),
                 R.array.categories, android.R.layout.simple_spinner_item);
@@ -212,10 +213,9 @@ public class AddArticleActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                 type = 1;
-                uri_image.add( data.getData());
-                url_txt.setText(uri_image.get(uri_image.size() - 1).getLastPathSegment());
+                imageUri = data.getData();
                 video_uri = null;
-                Toast.makeText(this, ""+uri_image, Toast.LENGTH_SHORT).show();
+                uploadImageLayout.setVisibility(View.VISIBLE);
 
             }
         } else if (requestCode == 2) {
@@ -233,9 +233,6 @@ public class AddArticleActivity extends AppCompatActivity {
                 video_uri = selectedImage;
                 uri_image = null;
                 c.close();
-
-
-                url_txt.setText(videoPath);
             }
 
         }
@@ -291,65 +288,31 @@ public class AddArticleActivity extends AppCompatActivity {
             }
 
 
-                title   = arc_title.getText().toString();
-                 source  = arc_source.getText().toString();
-                 content = arc_content.getText().toString();
+            title = arc_title.getText().toString();
+            source = arc_source.getText().toString();
+            content = arc_content.getText().toString();
 
-            if (uri_image != null) {
-                int i;
-                for (i = 0; i < uri_image.size(); i++) {
-                    final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(uri_image.get(i)));
-                    filereference.putFile(uri_image.get(i)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot) {
-                            filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-
-                                    image_url.add(uri.toString());
-                                    Toast.makeText(AddArticleActivity.this, ""+uri.toString(), Toast.LENGTH_SHORT).show();
+            if (imageUri != null) {
+                String ID = mdatarefre.push().getKey();
+                ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type, captions);
+                mdatarefre.child("Articles").child(ID).setValue(obj);
+                mdatarefre.child("Notifications").child(ID).setValue(obj);
 
 
-                                    if (uri_image.size() == image_url.size()) {
-                                        String ID = mdatarefre.push().getKey();
-                                        ArticleModel obj = new ArticleModel(ID, image_url, title, content, source, category, time_txt, day_txt, month_txt, year_txt, word_url, type, captions);
-                                        mdatarefre.child("Articles").child(ID).setValue(obj);
-                                        mdatarefre.child("Notifications").child(ID).setValue(obj);
+                title = "";
+                source = "";
+                content = "";
+
+                arc_title.setText("");
+                arc_source.setText("");
+                arc_content.setText("");
 
 
-                                        title = "";
-                                        source = "";
-                                        content="";
+                Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
+                prog.dismiss();
+                Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+                startActivity(intent);
 
-                                        arc_title.setText("");
-                                        arc_source.setText("");
-                                         arc_content.setText("");
-
-
-                                        Toast.makeText(AddArticleActivity.this, "تم اضافة المقال بنجاح", Toast.LENGTH_SHORT).show();
-                                        prog.dismiss();
-                                        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                                        startActivity(intent);
-                                    }
-
-                                }
-                            });
-
-                        }
-                    }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            prog.hide();
-                            Toast.makeText(AddArticleActivity.this, "Error Connection", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
             } else if (video_uri != null) {
                 final String videoName = UUID.randomUUID().toString() + ".mb4";
 
@@ -369,10 +332,9 @@ public class AddArticleActivity extends AppCompatActivity {
                                 mdatarefre.child("Notifications").child(ID).setValue(obj);
 
 
-
                                 title = "";
                                 source = "";
-                                content="";
+                                content = "";
 
                                 arc_title.setText("");
                                 arc_source.setText("");
@@ -401,12 +363,6 @@ public class AddArticleActivity extends AppCompatActivity {
         }
     }
 
-    public void removeuri(View view) {
-        uri_image = null;
-        video_uri = null;
-        url_txt.setText("المسار");
-    }
-
     public void addwordfile(View view) {
 
 
@@ -416,21 +372,53 @@ public class AddArticleActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select word"), word_id);
     }
 
-    public void insertcaption(View view) {
-        String caption = captiontext.getText().toString();
-        while (captions.size() < uri_image.size() - 1) {
-            captions.add("");
+    public void uploadImage(View view) {
+        if (imageUri == null)
+            Toast.makeText(this, "من فضلك إختار صوره", Toast.LENGTH_SHORT).show();
+        else {
+            String caption = captiontext.getText().toString();
+
+            if (caption.equals("")) {
+                captions.add("");
+            } else {
+                captions.add(caption);
+                captiontext.setText("");
+            }
+
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("رفع الصوره");
+            progressDialog.setMessage("جاري تحميل الصوره");
+            progressDialog.show();
+            final StorageReference filereference = mstorageref.child(System.currentTimeMillis() + "." + getfileextention(imageUri));
+            filereference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    filereference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            progressDialog.dismiss();
+                            Toast.makeText(AddArticleActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+                            image_url.add(uri.toString());
+                        }
+                    });
+                }
+            });
 
         }
+        uploadImageLayout.setVisibility(View.GONE);
+    }
 
-        if (caption.equals("")) {
-            Toast.makeText(this, "من فضللك ادخل مضومن الصورة", Toast.LENGTH_SHORT).show();
-        } else {
+    public void resetInput(View view) {
+        title = "";
+        source = "";
+        content = "";
 
-            captions.add(caption);
-            captiontext.setText("");
-        }
+        arc_title.setText("");
+        arc_source.setText("");
+        arc_content.setText("");
+
 
     }
 }
+
 

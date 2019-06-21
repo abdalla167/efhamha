@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import atmosphere.sh.efhamha.aesh.ha.Models.Artical_Move;
 import atmosphere.sh.efhamha.aesh.ha.Models.ArticleModel;
@@ -18,13 +22,12 @@ public class EditArtical extends AppCompatActivity {
 
 
     EditText editText;
-    Button updat,cancle;
+    Button updat, cancle;
     String old;
     FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     String KEY1;
     CircleImageView image;
-
 
 
     @Override
@@ -33,11 +36,10 @@ public class EditArtical extends AppCompatActivity {
         setContentView(R.layout.activity_edit_artical);
 
 
-        editText=findViewById(R.id.edite_artical_text);
+        editText = findViewById(R.id.edite_artical_text);
 
-        updat=findViewById(R.id.update_comment_art);
-        cancle=findViewById(R.id.cancle_update_art);
-
+        updat = findViewById(R.id.update_comment_art);
+        cancle = findViewById(R.id.cancle_update_art);
 
 
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -48,31 +50,24 @@ public class EditArtical extends AppCompatActivity {
         KEY1 = getIntent().getStringExtra("key_art");
 
         editText.setText(articleModel.getContent().toString());
-
-
-        //Toast.makeText(EditArtical.this, ""+editText.getText().toString(), Toast.LENGTH_LONG).show();
         updat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-                Artical_Move artical_move=new Artical_Move(articleModel.getImage_url(),articleModel.getTitle(),editText.getText().toString()
-                        ,articleModel.getSource(),articleModel.getArticle_time(),articleModel.getArticle_day(),
-                        articleModel.getArticle_month(),articleModel.getArticle_year(),articleModel.getWordfile(),articleModel.getType(),articleModel.getCaption().get(0));
-
-                       databaseReference.child("Articles").child(KEY1).setValue(artical_move);
-
-finish();
-
+                final String newContent = editText.getText().toString();
+                if (newContent.equals(""))
+                    Toast.makeText(EditArtical.this, "الرجاء تعديل المقال", Toast.LENGTH_SHORT).show();
+                else {
+                    databaseReference.child("Articles").child(KEY1).child("content").setValue(newContent);
+                    finish();
+                }
             }
+
         });
         cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 finish();
-
 
 
             }

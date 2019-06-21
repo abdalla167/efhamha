@@ -188,6 +188,9 @@ public class SignInActivity extends AppCompatActivity
                     {
                         if (task.isSuccessful())
                         {
+                            //Subscribe User To Topic
+                            FirebaseMessaging.getInstance().subscribeToTopic("messages");
+
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();

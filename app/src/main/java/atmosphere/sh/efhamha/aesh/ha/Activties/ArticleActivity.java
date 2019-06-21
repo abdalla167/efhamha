@@ -295,14 +295,25 @@ public class ArticleActivity extends AppCompatActivity {
                 if (task.isSuccessful())
                 {
                     Toast.makeText(ArticleActivity.this, "تم حذف المقال بنجاح", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
-                    startActivity(intent);
+                }
+                else
+                    Toast.makeText(ArticleActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        databaseReference.child("Notifications").child(article_id).removeValue().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful())
+                {
+
 
                 }
                 else
                     Toast.makeText(ArticleActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+        Intent intent = new Intent(getApplicationContext(), AdminActivity.class);
+        startActivity(intent);
 
     }
 

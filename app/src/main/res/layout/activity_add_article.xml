@@ -81,78 +81,40 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/comment_background"
-            >
-
-
-            <TextView
-                android:id="@+id/url"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="المسار"
-                android:padding="10dp"
-                android:textColor="@android:color/black"
-                />
-
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@android:color/black"
-                />
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_delete_forever_black_24dp"
-                android:tint="@color/colorAccent"
-                android:padding="5dp"
-                android:onClick="removeuri"
-                />
-
-        </LinearLayout>
-
 
         <LinearLayout
+            android:id="@+id/upload_image_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="4"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
-            android:gravity="right">
-
-            <Button
-                android:id="@+id/addcaptiontbtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="insertcaption"
-                android:text="تم"
-                android:textSize="@dimen/_14sdp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/btn_background"
-                />
+            android:visibility="gone"
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/add_caption"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
                 android:background="@drawable/comment_background"
                 android:hint="مضمون الصوره"
                 android:padding="10dp"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
+                />
+            <Button
+                android:id="@+id/addcaptiontbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="uploadImage"
+                android:layout_marginTop="8dp"
+                android:text="إضافه الصورة"
+                android:textSize="@dimen/_14sdp"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/btn_background"
                 />
 
         </LinearLayout>
@@ -222,6 +184,18 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:textColor="@color/colorPrimary"
             android:onClick="addwordfile"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="مسح البيانات"
+            android:layout_marginLeft="@dimen/_17sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:background="@color/profile_background_color"
+            android:textColor="#A70707"
+            android:onClick="resetInput"
+            />
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -233,7 +207,6 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
             >
-
             <com.balysv.materialripple.MaterialRippleLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -259,3 +232,6 @@
     </LinearLayout>
 
 </ScrollView>
+
+
+
