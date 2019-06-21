@@ -403,6 +403,7 @@ public class AddArticleActivity extends AppCompatActivity {
 
     public void removeuri(View view) {
         uri_image = null;
+        video_uri = null;
         url_txt.setText("المسار");
     }
 

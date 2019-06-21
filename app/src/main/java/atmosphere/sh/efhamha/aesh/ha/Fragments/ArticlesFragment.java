@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,7 +72,6 @@ public class ArticlesFragment extends Fragment {
     ArticleAdapter articleAdapter;
     TextView showwriter;
 
-
     public  static  String writer_name = "";
 
     @Nullable
@@ -87,6 +87,7 @@ public class ArticlesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
 
         showwriter=view.findViewById(R.id.show_writers_btn);
         showwriter.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +158,11 @@ public class ArticlesFragment extends Fragment {
         }
 
         articleAdapter.filterList(filteredList);
+
+        if (filteredList.size() == 0) {
+            Toast.makeText(getActivity(), "لا يوجد مقالات لهذا الكاتب", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void filterbycategory(String text) {
@@ -201,7 +207,8 @@ public class ArticlesFragment extends Fragment {
                         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
                         recyclerView.setLayoutManager(manager);
                         recyclerView.setAdapter(articleAdapter);
-                    } else
+
+                   } else
                         articleAdapter.notifyDataSetChanged();
 
                     //hana b3ml filter le category
@@ -218,12 +225,15 @@ public class ArticlesFragment extends Fragment {
 
 
                 } else
+
                     Toast.makeText(getActivity(), "No Data to show", Toast.LENGTH_SHORT).show();
 
             }
 
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
 
             }
         });
@@ -393,6 +403,7 @@ public class ArticlesFragment extends Fragment {
                     ViewPagerAdapter adapter = new ViewPagerAdapter(context, currentItem.getImage_url());
                     holder.viewPager.setAdapter(adapter);
                     holder.imageArchi.setVisibility(View.GONE);
+                    holder.caption.setVisibility(View.VISIBLE);
                     holder.page_numper.setVisibility(View.VISIBLE);
                     holder.page_numper.setText(1 + " / " + currentItem.getImage_url().size());
 
@@ -478,6 +489,7 @@ public class ArticlesFragment extends Fragment {
 
                         databaseReference.child("Views").child(key).child(user.getUid()).setValue(user.getUid());
                     } else {
+
                         Intent intent = new Intent(getContext(), ArticleActivity.class);
                         intent.putExtra("ar", currentItem);
                         intent.putExtra("ar2", key);

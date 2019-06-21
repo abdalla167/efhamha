@@ -446,7 +446,10 @@ public class ArticleActivity extends AppCompatActivity {
         }
 
         void BindPlaces(CommentModel commentModel) {
-            username.setText(commentModel.getUsername());
+
+            if (getUid()!=null)
+            {
+             username.setText(commentModel.getUsername());
             content.setText(commentModel.getContentcomment());
 
             String id = commentModel.getUserid();
@@ -462,7 +465,7 @@ public class ArticleActivity extends AppCompatActivity {
                     .placeholder(R.drawable.ic_user1)
                     .error(R.drawable.ic_user1)
                     .into(image);
-        }
+        }}
     }
 
     @Override
