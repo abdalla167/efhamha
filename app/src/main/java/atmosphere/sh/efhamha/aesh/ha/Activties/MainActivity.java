@@ -256,7 +256,6 @@ public class MainActivity extends AppCompatActivity
                                 return true;
 
 
-
                             case R.id.d11 :
                                 ArticlesFragment = new ArticlesFragment();
                                 loadFragment(ArticlesFragment);
@@ -269,8 +268,8 @@ public class MainActivity extends AppCompatActivity
                             case R.id.d12 :
                                 ArticlesFragment = new ArticlesFragment();
                                 loadFragment(ArticlesFragment);
-                                getSupportActionBar().setTitle("علي الأصل دور");
-                                catename="علي الأصل دور";
+                                getSupportActionBar().setTitle("على الأصل دور");
+                                catename="على الأصل دور";
                                 menuItem.setChecked(true);
                                 mDrawerLayout.closeDrawers();
                                 return true;
