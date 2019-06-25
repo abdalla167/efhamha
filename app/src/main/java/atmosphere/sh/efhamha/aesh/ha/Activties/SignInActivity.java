@@ -252,6 +252,7 @@ public class SignInActivity extends AppCompatActivity
 
                             final String email = user.getEmail();
 
+
                              ref.child("Admins").addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
