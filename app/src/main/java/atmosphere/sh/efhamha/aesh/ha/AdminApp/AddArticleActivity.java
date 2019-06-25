@@ -238,12 +238,12 @@ public class AddArticleActivity extends AppCompatActivity {
         }
         //3shan uri bta3 l word file
         else if (requestCode == word_id) {
-            assert data != null;
-            word_uri = data.getData();
-            addpdffile.setText("تغير ملف");
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                word_uri = data.getData();
+                addpdffile.setText("تغير ملف");
 
-            Toast.makeText(this, "تم ادراج ملف ", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(this, "تم ادراج ملف ", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
